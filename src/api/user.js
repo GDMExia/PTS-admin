@@ -1,12 +1,13 @@
 import axios from '@/libs/api.request'
-
+import qs from 'qs'
 export const login = ({ userName, password }) => {
-  const data = {
-    account: userName,
-    password: password
-  }
+  const data = qs.stringify({
+    admin_name: userName,
+    password: password,
+    verify_code: '9756'
+  })
   return axios.request({
-    url: '/shiro/auth',
+    url: `/admin.php/Account/loginUser?${data}`,
     data,
     method: 'post'
   })

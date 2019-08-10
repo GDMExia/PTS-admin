@@ -79,30 +79,31 @@ export default {
     handleLogin ({ commit }, {userName, password}) {
       userName = userName.trim()
       return new Promise((resolve, reject) => {
-        // if(userName!=''&&password!='') {
-        //   const data = {
-        //     user_name: userName,
-        //     user_id: '2',
-        //     access: [userName],
-        //     token: userName,
-        //     avator: '',
-        //     permission: [1,2,3,4,5,6,7,8,9,10,11]
-        //   }
-        //   commit('setToken', data.token)
-        //   commit('setUserName', data.user_name)
-        //   commit('setUserId', data.user_id)
-        //   commit('setAccess', data.access)
-        //   commit('setPermission', data.permission)
-        //   commit('setHasGetInfo', true)
-        //   // commit('setFormToken', res.data.sid)
-        //   // res.data.data = data
-        //   resolve(data)
-        // }
+        if(userName!=''&&password!='') {
+          const data = {
+            user_name: userName,
+            user_id: '2',
+            access: [userName],
+            token: userName,
+            avator: '',
+            permission: [1,2,3,4,5,6,7,8,9,10,11]
+          }
+          commit('setToken', data.token)
+          commit('setUserName', data.user_name)
+          commit('setUserId', data.user_id)
+          commit('setAccess', data.access)
+          commit('setPermission', data.permission)
+          commit('setHasGetInfo', true)
+          // commit('setFormToken', res.data.sid)
+          // res.data.data = data
+          resolve(data)
+        }
+        return
         login({
           userName,
           password
         }).then(res => {
-          if (res.data.code!=1000) {
+          if (res.data.code!=200) {
             resolve(res.data)
             return
           }

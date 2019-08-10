@@ -1,7 +1,7 @@
 import FormModel from '@/libs/form-model'
 // import moment from 'moment'
 
-class GuideCreateModel extends FormModel {
+class StoreCreateModel extends FormModel {
   constructor() {
     super()
     // this.init()
@@ -39,4 +39,4 @@ class GuideCreateModel extends FormModel {
   }
 }
 
-export default new GuideCreateModel()
+export default new StoreCreateModel()

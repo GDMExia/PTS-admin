@@ -1,9 +1,11 @@
 import axios from '@/libs/api.request'
 import qs from 'qs'
-export const guideColumn = [
-    { title: '标题', key: 'title', tooltip: true },
-    { title: '状态', key: 'status', tooltip: true },
-    { title: '发布时间', key: 'updateTime', tooltip: true },
+export const storeColumn = [
+    { title: '账号', key: 'title', tooltip: true },
+    { title: '商家名称', key: 'status', tooltip: true },
+    { title: '联系人', key: 'updateTime', tooltip: true },
+    { title: '联系方式', key: 'updateTime', tooltip: true },
+    { title: '状态', key: 'updateTime', tooltip: true },
     {
         title: '操作',
         key: 'handle',
@@ -33,8 +35,8 @@ export const guideColumn = [
                 h(
                     'i-button', {
                         props: {
-                            type: 'warning',
-                            icon: 'md-filing',
+                            type: 'success',
+                            icon: 'md-create',
                             size: 'small'
                         },
                         style: {
@@ -42,11 +44,11 @@ export const guideColumn = [
                         },
                         on: {
                             click: () => {
-                                vm.$emit('on-change', params)
+                                vm.$emit('on-edit', params)
                             }
                         }
                     },
-                    !params.row.enable?'下线':'上线'
+                    '编辑商家信息'
                 ),
                 h(
                     'Poptip',
@@ -77,6 +79,56 @@ export const guideColumn = [
                                 }
                             },
                             '删除'
+                        )
+                    ]
+                ),
+                h(
+                    'i-button', {
+                        props: {
+                            type: 'warning',
+                            icon: 'md-create',
+                            size: 'small'
+                        },
+                        style: {
+                            marginRight: '5px'
+                        },
+                        on: {
+                            click: () => {
+                                vm.$emit('on-edit', params)
+                            }
+                        }
+                    },
+                    '禁用'
+                ),
+                h(
+                    'Poptip',
+                    {
+                        props: {
+                            confirm: true,
+                            title: '确定要重置密码吗?',
+                            transfer: true,
+                            size: 'small'
+                        },
+                        style: {
+                            marginRight: '5px'
+                        },
+                        on: {
+                            'on-ok': () => {
+                                vm.$emit('on-delete', params)
+                            }
+                        }
+                    },
+                    [
+                        h(
+                            'i-button',
+                            {
+                                props: {
+                                    type: 'info',
+                                    icon: 'ios-trash-outline',
+                                    size: 'small'
+                                }
+                            },
+                            '重置密码'
                         )
                     ]
                 ),

@@ -82,6 +82,28 @@ export default [
     ]
   },
   {
+    path: '/stores',
+    name: 'stores',
+    meta: {
+      icon: 'ios-pin-outline',
+      title: '商家管理',
+      access: ['super_admin'],
+      id: 9
+    },
+    component: Main,
+    children: [
+      {
+        path: 'store',
+        name: 'store',
+        meta: {
+          icon: 'ios-pin-outline',
+          title: '商家管理'
+        },
+        component: () => import('@/pages/store-page/store-page.vue')
+      }
+    ]
+  },
+  {
     path: '/users',
     name: 'users',
     meta: {
@@ -147,7 +169,7 @@ export default [
     name: 'residences',
     meta: {
       icon: 'ios-home-outline',
-      title: '民宿管理',
+      title: '优惠券管理',
       access: ['super_admin'],
       id: 3
     },
@@ -199,7 +221,7 @@ export default [
     name: 'ticketing',
     meta: {
       icon: 'ios-card-outline',
-      title: '票务管理',
+      title: '活动订单管理',
       access: ['super_admin'],
       id: 4
     },
@@ -273,43 +295,11 @@ export default [
     ]
   },
   {
-    path: '/custom',
-    name: 'custom',
-    meta: {
-      icon: 'ios-card-outline',
-      title: '定制游管理',
-      access: ['super_admin'],
-      id: 5
-    },
-    component: Main,
-    children: [
-      {
-        path: 'customTour',
-        name: 'customTour',
-        meta: {
-          icon: 'ios-car',
-          title: '定制游管理'
-        },
-        component: () => import('@/pages/custom-tour-page/custom-tour-page.vue')
-      },
-      {
-        path: 'price',
-        name: 'price',
-        meta: {
-          hideInMenu: true,
-          icon: 'ios-car',
-          title: '价格设置'
-        },
-        component: () => import('@/pages/custom-tour-page/set-price-page.vue')
-      },
-    ]
-  },
-  {
     path: '/order',
     name: 'order',
     meta: {
       icon: 'md-reorder',
-      title: '订单管理',
+      title: '优惠券订单管理',
       access: ['super_admin'],
       id: 6
     },
@@ -401,24 +391,88 @@ export default [
     ]
   },
   {
-    path: '/amusement',
-    name: 'amusement',
+    path: '/custom',
+    name: 'custom',
+    meta: {
+      icon: 'ios-card-outline',
+      title: '定制游管理',
+      access: ['super_admin'],
+      id: 5
+    },
+    component: Main,
+    children: [
+      {
+        path: 'customTour',
+        name: 'customTour',
+        meta: {
+          icon: 'ios-car',
+          title: '旅游管理'
+        },
+        component: () => import('@/pages/custom-tour-page/custom-tour-page.vue')
+      },
+      {
+        path: 'price',
+        name: 'price',
+        meta: {
+          hideInMenu: true,
+          icon: 'ios-car',
+          title: '价格设置'
+        },
+        component: () => import('@/pages/custom-tour-page/set-price-page.vue')
+      },
+    ]
+  },
+  {
+    path: '/custom',
+    name: 'custom',
+    meta: {
+      icon: 'ios-card-outline',
+      title: '定制游管理',
+      access: ['super_admin'],
+      id: 5
+    },
+    component: Main,
+    children: [
+      {
+        path: 'customTour',
+        name: 'customTour',
+        meta: {
+          icon: 'ios-car',
+          title: '学院管理'
+        },
+        component: () => import('@/pages/custom-tour-page/custom-tour-page.vue')
+      },
+      {
+        path: 'price',
+        name: 'price',
+        meta: {
+          hideInMenu: true,
+          icon: 'ios-car',
+          title: '价格设置'
+        },
+        component: () => import('@/pages/custom-tour-page/set-price-page.vue')
+      },
+    ]
+  },
+  {
+    path: '/shares',
+    name: 'shares',
     meta: {
       icon: 'ios-cafe-outline',
-      title: '娱乐管理',
+      title: '活动分享管理',
       access: ['super_admin'],
       id: 7
     },
     component: Main,
     children: [
       {
-        path: 'entertainment',
-        name: 'entertainment',
+        path: 'share',
+        name: 'share',
         meta: {
           icon: 'ios-cafe-outline',
-          title: '娱乐管理'
+          title: '活动分享管理'
         },
-        component: () => import('@/pages/amusement-page/amusement-page.vue')
+        component: () => import('@/pages/share-page/share-page.vue')
       }
     ]
   },
@@ -427,7 +481,7 @@ export default [
     name: 'restaurants',
     meta: {
       icon: 'ios-ice-cream-outline',
-      title: '餐饮管理',
+      title: '使用指南管理',
       access: ['super_admin'],
       id: 8
     },
@@ -441,28 +495,6 @@ export default [
           title: '餐饮管理'
         },
         component: () => import('@/pages/restaurant-page/restaurant-page.vue')
-      }
-    ]
-  },
-  {
-    path: '/guide',
-    name: 'guide',
-    meta: {
-      icon: 'ios-pin-outline',
-      title: '岛内指南管理',
-      access: ['super_admin'],
-      id: 9
-    },
-    component: Main,
-    children: [
-      {
-        path: 'IntraIslandGuide',
-        name: 'IntraIslandGuide',
-        meta: {
-          icon: 'ios-pin-outline',
-          title: '岛内指南管理'
-        },
-        component: () => import('@/pages/guide-page/guide-page.vue')
       }
     ]
   },
@@ -489,33 +521,11 @@ export default [
     ]
   },
   {
-    path: '/statistics',
-    name: 'statistics',
-    meta: {
-      icon: 'ios-barcode-outline',
-      title: '统计管理',
-      access: ['super_admin'],
-      id: 11
-    },
-    component: Main,
-    children: [
-      {
-        path: 'vital',
-        name: 'vital',
-        meta: {
-          icon: 'ios-barcode-outline',
-          title: '统计管理'
-        },
-        component: () => import('@/pages/statistics-page/statistics-page.vue')
-      }
-    ]
-  },
-  {
     path: '/verify',
     name: 'verify',
     meta: {
       icon: 'ios-barcode-outline',
-      title: '民宿对账管理',
+      title: '资金管理',
       access: ['super_admin'],
       id: 11
     },
