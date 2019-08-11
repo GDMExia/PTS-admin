@@ -48,11 +48,11 @@ export default {
         handleSearch() {},
         handleQuery() {
             getTicketsList(this.page).then(res=>{
-                if(res.data.code == 1000) {
+                if(res.data.code == 200) {
                     this.tableData = res.data.data.dataInfo?res.data.data.dataInfo:[]
                     this.page = pageInfo.converter({pageIndex: this.page.index, pageSize: this.page.size, pageTotal: res.data.total,search: this.page.search})
                 } else {
-                    this.$Message.error(res.data.msg)
+                    this.$Message.error(res.data.message)
                 }
             })
         },

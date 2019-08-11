@@ -20,10 +20,10 @@
             <ModelDialog :status="modelStatus"
                 @handlerModelDialogOk="handlerModelDialogOk"
                 @handlerModelDialogCancel="handlerModelDialogCancel">
-                <StoreCreateForm ref='StoreCreateForm'
+                <ShareCreateForm ref='ShareCreateForm'
                     :formInline="createForm.formInline"
                     :ruleInline="createForm.ruleInline"
-                    v-if="modelStatus.name=='StoreCreateForm'"/>
+                    v-if="modelStatus.name=='ShareCreateForm'"/>
             </ModelDialog>
         </div>
     </div>
@@ -32,25 +32,18 @@
 <script>
 import Tables from '_c/tables'
 import ModelDialog from '_c/model-dialog'
-import StoreCreateForm from './forms/store-create-form'
-import StoreCreateModel from './model/store-create-model'
+import ShareCreateForm from './forms/share-create-form'
+import ShareCreateModel from './model/share-create-model'
 import pageInfo from "@/libs/page-info"
 import {
     shareColumn,
-    getGuideList,
-    setGuideCreate,
-    getGuideDetail,
-    setGuideEdit,
-    setGuideChange,
-    setGuideDelete,
-    setImage,
-    getImage
+    getShareList
 } from './api'
 export default {
     components: {
         Tables,
         ModelDialog,
-        StoreCreateForm,
+        ShareCreateForm,
     },
     data() {
         return {
@@ -64,17 +57,12 @@ export default {
     },
     methods: {
         handleQuery() {
-            getGuideList(this.page).then(res=>{
-                if(res.data.code == 1000) {
-                    this.tableData = res.data.data.dataInfo?res.data.data.dataInfo.map(item=>{
-                        item.status = item.enable?'下线':'展示'
-                        return item
-                    }):[]
-                    this.page = pageInfo.converter({pageIndex: this.page.index, pageSize: this.page.size, pageTotal: res.data.total,search: this.page.search})
-                    // 关闭表单框
-                    this.modelStatus.show = false
+            getShareList(1, this.page).then(res=>{
+                if(res.data.code==200) {
+                    this.tableData = res.data.data.newsList
+                    this.page = pageInfo.converter({pageIndex: this.page.index, pageSize: this.page.size, pageTotal: res.data.data.PageInfo.TotalCounts,search: this.page.search})
                 } else {
-                    this.$Message.error(res.data.msg)
+                    this.$Message.error(res.data.message)
                 }
             })
         },
@@ -83,36 +71,38 @@ export default {
             const form = {
                 id: '',
                 title: '',
-                details: ''
+                details: '',
+                activity: '',
+                image: ''
             }
-            this.setDialogProperty(600, '添加', 'StoreCreateForm')
-            this.createForm = StoreCreateModel.init(form)
+            this.setDialogProperty(900, '添加', 'ShareCreateForm')
+            this.createForm = ShareCreateModel.init(form)
             this.$nextTick(()=>{
-                this.$refs.StoreCreateForm.handleRichEditor()
+                this.$refs.ShareCreateForm.handleRichEditor()
             })
         },
         // 编辑
         handleEdit(params) {
             getGuideDetail(params.row.id).then(res=>{
-                if(res.data.code == 1000) {
+                if(res.data.code == 200) {
                     const form = {
                         id: res.data.data.dataInfo.id,
                         title: res.data.data.dataInfo.title,
                         details: res.data.data.dataInfo.intro
                     }
-                    this.setDialogProperty(600, '编辑', 'StoreCreateForm')
-                    this.createForm = StoreCreateModel.init(form)
+                    this.setDialogProperty(900, '编辑', 'ShareCreateForm')
+                    this.createForm = ShareCreateModel.init(form)
                     this.$nextTick(()=>{
-                        this.$refs.StoreCreateForm.handleRichEditor()
+                        this.$refs.ShareCreateForm.handleRichEditor()
                     })
                 } else {
-                    this.$Message.error(res.data.msg)
+                    this.$Message.error(res.data.message)
                 }
             })
             
         },
         handleSubmit() {
-            const form = StoreCreateModel.converter(this.createForm.formInline)
+            const form = ShareCreateModel.converter(this.createForm.formInline)
             if(form.id == '') {
                 this.setCreate(form)
             } else {
@@ -121,47 +111,47 @@ export default {
         },
         setCreate(form) {
             setGuideCreate(form).then(res=>{
-                if(res.data.code == 1000) {
+                if(res.data.code == 200) {
                     this.$Message.success('添加成功')
                     this.modelStatus.show = false
                     this.handleQuery()
                 } else {
-                    this.$Message.error(res.data.msg)
+                    this.$Message.error(res.data.message)
                 }
             })
         },
         setEdit(form) {
             setGuideEdit(form).then(res=>{
-                if(res.data.code == 1000) {
+                if(res.data.code == 200) {
                     this.$Message.success('编辑成功')
                     this.modelStatus.show = false
                     this.handleQuery()
                 } else {
-                    this.$Message.error(res.data.msg)
+                    this.$Message.error(res.data.message)
                 }
             })
         },
         // 上下线
         handleChange(params) {
             setGuideChange(params.row.id).then(res=>{
-                if(res.data.code == 1000) {
+                if(res.data.code == 200) {
                     this.$Message.success('操作成功')
                     this.modelStatus.show = false
                     this.handleQuery()
                 } else {
-                    this.$Message.error(res.data.msg)
+                    this.$Message.error(res.data.message)
                 }
             })
         },
         // 删除
         handleDelete(params) {
             setGuideDelete(params.row.id).then(res=>{
-                if(res.data.code == 1000) {
+                if(res.data.code == 200) {
                     this.$Message.success('删除成功')
                     this.modelStatus.show = false
                     this.handleQuery()
                 } else {
-                    this.$Message.error(res.data.msg)
+                    this.$Message.error(res.data.message)
                 }
             })
         },
@@ -175,8 +165,8 @@ export default {
         },
         /* 对话框确认 */
         handlerModelDialogOk(name) {
-            if(name==='StoreCreateForm') {
-                this.$refs.StoreCreateForm.validate(valid=>{
+            if(name==='ShareCreateForm') {
+                this.$refs.ShareCreateForm.validate(valid=>{
                     if(valid) {
                         this.handleSubmit()
                     }

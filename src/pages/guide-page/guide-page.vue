@@ -5,8 +5,6 @@
                 <div class="pull-left">
                     <Button @click="handleCreate" class="search-btn" type="primary" style="margin-right:5px">
                         <Icon type="md-add"/>&nbsp;&nbsp;添加</Button>
-                    <Button @click="handleShare" class="search-btn" type="success" style="margin-right:5px">
-                        <Icon type="ios-pricetag-outline" />&nbsp;&nbsp;商家列表头图</Button>
                 </div>
                 <div class="pull-right">
                     
@@ -22,14 +20,10 @@
             <ModelDialog :status="modelStatus"
                 @handlerModelDialogOk="handlerModelDialogOk"
                 @handlerModelDialogCancel="handlerModelDialogCancel">
-                <StoreCreateForm ref='StoreCreateForm'
+                <GuideCreateForm ref='GuideCreateForm'
                     :formInline="createForm.formInline"
                     :ruleInline="createForm.ruleInline"
-                    v-if="modelStatus.name=='StoreCreateForm'"/>
-                <ShareImageForm ref='ShareImageForm'
-                    :formInline="imageForm.formInline"
-                    :ruleInline="imageForm.ruleInline"
-                    v-if="modelStatus.name=='ShareImageForm'"/>
+                    v-if="modelStatus.name=='GuideCreateForm'"/>
             </ModelDialog>
         </div>
     </div>
@@ -38,28 +32,18 @@
 <script>
 import Tables from '_c/tables'
 import ModelDialog from '_c/model-dialog'
-import StoreCreateForm from './forms/store-create-form'
-import StoreCreateModel from './model/store-create-model'
-import ShareImageForm from './forms/share-image-form'
-import shareImageModel from './model/share-image-model'
+import GuideCreateForm from './forms/share-create-form'
+import GuideCreateModel from './model/share-create-model'
 import pageInfo from "@/libs/page-info"
 import {
-    storeColumn,
-    getStoreList,
-    setGuideCreate,
-    getGuideDetail,
-    setGuideEdit,
-    setGuideChange,
-    setGuideDelete,
-    setImage,
-    getImage
-} from './api'
+    shareColumn,
+    getShareList
+} from '_p/share-page/api'
 export default {
     components: {
         Tables,
         ModelDialog,
-        StoreCreateForm,
-        ShareImageForm
+        GuideCreateForm,
     },
     data() {
         return {
@@ -73,15 +57,10 @@ export default {
     },
     methods: {
         handleQuery() {
-            getStoreList(this.page).then(res=>{
-                if(res.data.code == 200) {
-                    this.tableData = res.data.data.userList?res.data.data.userList.map(item=>{
-                        item.status = item.is_disable=='0'?'启用':'禁用'
-                        return item
-                    }):[]
+            getShareList(2, this.page).then(res=>{
+                if(res.data.code==200) {
+                    this.tableData = res.data.data.newsList
                     this.page = pageInfo.converter({pageIndex: this.page.index, pageSize: this.page.size, pageTotal: res.data.data.PageInfo.TotalCounts,search: this.page.search})
-                    // 关闭表单框
-                    this.modelStatus.show = false
                 } else {
                     this.$Message.error(res.data.message)
                 }
@@ -92,12 +71,14 @@ export default {
             const form = {
                 id: '',
                 title: '',
-                details: ''
+                details: '',
+                activity: '',
+                image: ''
             }
-            this.setDialogProperty(600, '添加', 'StoreCreateForm')
-            this.createForm = StoreCreateModel.init(form)
+            this.setDialogProperty(900, '添加', 'GuideCreateForm')
+            this.createForm = GuideCreateModel.init(form)
             this.$nextTick(()=>{
-                this.$refs.StoreCreateForm.handleRichEditor()
+                this.$refs.GuideCreateForm.handleRichEditor()
             })
         },
         // 编辑
@@ -109,10 +90,10 @@ export default {
                         title: res.data.data.dataInfo.title,
                         details: res.data.data.dataInfo.intro
                     }
-                    this.setDialogProperty(600, '编辑', 'StoreCreateForm')
-                    this.createForm = StoreCreateModel.init(form)
+                    this.setDialogProperty(900, '编辑', 'GuideCreateForm')
+                    this.createForm = GuideCreateModel.init(form)
                     this.$nextTick(()=>{
-                        this.$refs.StoreCreateForm.handleRichEditor()
+                        this.$refs.GuideCreateForm.handleRichEditor()
                     })
                 } else {
                     this.$Message.error(res.data.message)
@@ -121,7 +102,7 @@ export default {
             
         },
         handleSubmit() {
-            const form = StoreCreateModel.converter(this.createForm.formInline)
+            const form = GuideCreateModel.converter(this.createForm.formInline)
             if(form.id == '') {
                 this.setCreate(form)
             } else {
@@ -145,20 +126,6 @@ export default {
                     this.$Message.success('编辑成功')
                     this.modelStatus.show = false
                     this.handleQuery()
-                } else {
-                    this.$Message.error(res.data.message)
-                }
-            })
-        },
-        // 分享图片设置
-        handleShare() {
-            getImage().then(res=>{
-                if(res.data.code == 200) {
-                    const form = {
-                        image: res.data.data.dataInfo.assets
-                    }
-                    this.setDialogProperty(550, '商家列表头图', 'ShareImageForm')
-                    this.imageForm = shareImageModel.init(form)
                 } else {
                     this.$Message.error(res.data.message)
                 }
@@ -188,17 +155,6 @@ export default {
                 }
             })
         },
-        handleShareSubmit() {
-            const form = shareImageModel.converter(this.imageForm.formInline)
-            setImage(form).then(res=>{
-                if(res.data.code == 200) {
-                    this.$Message.success('设置成功')
-                    this.modelStatus.show = false
-                } else {
-                    this.$Message.error(res.data.message)
-                }
-            })
-        },
         // 弹出框设置
         setDialogProperty(width, title, name) {
             this.modelStatus.show = true
@@ -209,19 +165,13 @@ export default {
         },
         /* 对话框确认 */
         handlerModelDialogOk(name) {
-            if(name==='StoreCreateForm') {
-                this.$refs.StoreCreateForm.validate(valid=>{
+            if(name==='GuideCreateForm') {
+                this.$refs.GuideCreateForm.validate(valid=>{
                     if(valid) {
                         this.handleSubmit()
                     }
                 })
-            } else if (name==='ShareImageForm') {
-                // this.$refs.ShareImageForm.validate(valid=>{
-                    // if(valid) {
-                        this.handleShareSubmit()
-                //     }
-                // })
-            }
+            } 
             this.modelStatus.loading = false
             this.$nextTick(() => {
                 this.modelStatus.loading = true
@@ -246,7 +196,7 @@ export default {
         },
     },
     mounted() {
-        this.columns = storeColumn
+        this.columns = shareColumn
         this.page = pageInfo.init()
         this.handleQuery()
     }

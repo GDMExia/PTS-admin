@@ -154,14 +154,14 @@ export default {
       // createData(this.createForm.formInline).then(res=>{
       //   if(res.data.code==="1000"){
       //     this.$Notice.success({
-      //       desc:res.data.msg
+      //       desc:res.data.message
       //     })
       //     this.$refs['CreateForm'].resetFields()
       //     this.setDialogProperty(false)
       //     this.handleQuery()
       //   }else{
       //     this.$Notice.error({
-      //       desc:res.data.msg
+      //       desc:res.data.message
       //     })
       //   }
       // })

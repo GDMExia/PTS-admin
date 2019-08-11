@@ -1,6 +1,8 @@
 import axios from '@/libs/api.request'
+import qs from 'qs'
 import store from '@/store'
 const account = store.state.user.userName
+const user = store.state.user
 // export const rightsType = [
 //   { id: 1, name: '权限管理' },
 //   { id: 2, name: '患者管理' },
@@ -12,8 +14,8 @@ const account = store.state.user.userName
 // ]
 
 export const roleColumns = [
-  { title: '系统角色类别', key: 'roleName' },
-  { title: '功能权限', key: 'functionStr', tooltip: true },
+  { title: '系统角色类别', key: 'permissions_name' },
+  { title: '功能权限', key: 'permissions_group', tooltip: true },
   {
     title: '操作',
     key: 'handle',
@@ -77,41 +79,29 @@ export const roleColumns = [
   }
 ]
 
-export const getRoleIndex = (page) => {
+export const getRoleIndex = () => {
   return axios.request({
-    url: `/role`,
-    headers: {
-      functionId: 1
-    },
+    url: `/admin.php/Permissions/roleList?token=${user.token}`,
     method: 'get'
   })
 }
 
 export const setRoleCreate = form => {
+  let params = qs.stringify(Object.assign(form, {token: user.token}))
   return axios.request({
-    url: '/role/create',
-    headers: {
-      functionId: 1
-    },
+    url: `/admin.php/Permissions/createRoleSave?${params}`,
     data: form,
     method: 'post'
   })
 }
 
-export const setRoleUpdate = form => {
-  return axios.request({
-    url:  `/role/update`,
-    data: form,
-    headers: {
-      functionId: 1
-    },
-    method: 'put'
-  })
-}
-
 export const setRoleDelete = id => {
+  const params = qs.stringify({
+    token: user.token,
+    role_id:id
+  })
   return axios.request({
-    url: `/role/delete/${id}`,
+    url: `/admin.php/Permissions/deleteRole?${params}`,
     headers: {
       functionId: 1
     },
@@ -120,10 +110,10 @@ export const setRoleDelete = id => {
 }
 
 export const adminColumns = [
-  { title: 'ID', key: 'adminUserId', width: 80 },
-  { title: '帐号', key: 'account' },
-  { title: '姓名', key: 'name' },
-  { title: '角色', key: 'roleName' },
+  { title: 'ID', key: 'uid', width: 80 },
+  { title: '帐号', key: 'admin_name' },
+  { title: '姓名', key: 'real_name' },
+  { title: '角色', key: 'permissions_name' },
   { title: '状态', key: 'enabledStr' },
   {
     title: '操作',
@@ -204,7 +194,7 @@ export const adminColumns = [
                 }
               }
             },
-            !params.row.enabled ? '启用' : '禁用'
+            params.row.is_disable!='0' ? '启用' : '禁用'
           ),
           h(
             'Poptip',
@@ -246,39 +236,26 @@ export const adminColumns = [
 
 export const getAdminIndex = page => {
   return axios.request({
-    url: `/admin?pageIndex=${page.index}&pageSize=${page.size}`,
-    headers: {
-      functionId: 1
-    },
+    url: `/admin.php/Permissions/userList?page=${page.index}&pageSize=${page.size}&token=${user.token}`,
     method: 'get'
   })
 }
 
 export const setAdminCreate = form => {
+  let params = qs.stringify(Object.assign(form, {token: user.token}))
   return axios.request({
-    url: '/admin/create',
-    headers: {
-      functionId: 1
-    },
-    data: form,
+    url: `/admin.php/Permissions/createUserSave?${params}`,
     method: 'post'
   })
 }
 
-export const setAdminUpdate = form => {
-  return axios.request({
-    url: `/admin/update`,
-    headers: {
-      functionId: 1
-    },
-    data: form,
-    method: 'put'
-  })
-}
-
 export const setAdminDelete = id => {
+  let params = qs.stringify({
+    token: user.token,
+    uid: id
+  })
   return axios.request({
-    url: `/admin/delete/${id}`,
+    url: `/admin.php/Permissions/deleteUser?${params}`,
     headers: {
       functionId: 1
     },
@@ -286,9 +263,10 @@ export const setAdminDelete = id => {
   })
 }
 
-export const setAdminForbit = id => {
+export const setAdminForbit = form => {
+  let params = qs.stringify(Object.assign(form, {token: user.token}))
   return axios.request({
-    url: `/admin/enable/${id}`,
+    url: `/admin.php/Permissions/stopUser?${params}`,
     headers: {
       functionId: 1
     },
@@ -297,8 +275,12 @@ export const setAdminForbit = id => {
 }
 
 export const setAdminReset = id => {
+  let params = qs.stringify({
+    token: user.token,
+    uid: id
+  })
   return axios.request({
-    url: `/admin/rest/${id}`,
+    url: `/admin.php/Permissions/restPassUser?${params}`,
     headers: {
       functionId: 1
     },
@@ -308,10 +290,7 @@ export const setAdminReset = id => {
 
 export const getRightsType = () => {
   return axios.request({
-    url: `/function`,
+    url: `/admin.php/Permissions/getMenuList?token=${user.token}`,
     method: 'get',
-    headers: {
-      functionId: 1
-    }
   })
 }

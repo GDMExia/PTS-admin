@@ -477,8 +477,8 @@ export default [
     ]
   },
   {
-    path: '/restaurants',
-    name: 'restaurants',
+    path: '/guides',
+    name: 'guides',
     meta: {
       icon: 'ios-ice-cream-outline',
       title: '使用指南管理',
@@ -488,13 +488,13 @@ export default [
     component: Main,
     children: [
       {
-        path: 'restaurant',
-        name: 'restaurant',
+        path: 'guide',
+        name: 'guide',
         meta: {
           icon: 'ios-ice-cream-outline',
-          title: '餐饮管理'
+          title: '使用指南管理'
         },
-        component: () => import('@/pages/restaurant-page/restaurant-page.vue')
+        component: () => import('@/pages/guide-page/guide-page.vue')
       }
     ]
   },

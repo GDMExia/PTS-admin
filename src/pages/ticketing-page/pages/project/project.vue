@@ -181,7 +181,7 @@ export default {
         console.log(res)
         if(res.data.code==='1000'){
           this.$Notice.success({
-            desc:res.data.msg
+            desc:res.data.message
           })
           this.$refs['CreateForm'].resetFields()
           this.$refs['CreateForm'].formInline.amusementItemTimeList=[{ beginTime: '', endTime: '' }]
@@ -189,7 +189,7 @@ export default {
           this.handleQuery()
         }else{
           this.$Notice.error({
-            desc:res.data.msg
+            desc:res.data.message
           })
         }
       })
@@ -204,7 +204,7 @@ export default {
         console.log(res)
         if(res.data.code==='1000'){
           this.$Notice.success({
-            desc:res.data.msg
+            desc:res.data.message
           })
           this.$refs['EditForm'].resetFields()
           this.$refs['EditForm'].formInline.amusementItemTimeList=[{ beginTime: '', endTime: '' }]
@@ -212,7 +212,7 @@ export default {
           this.handleQuery()
         }else{
           this.$Notice.error({
-            desc:res.data.msg
+            desc:res.data.message
           })
         }
       })

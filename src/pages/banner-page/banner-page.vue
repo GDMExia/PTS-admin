@@ -65,7 +65,7 @@ export default {
         // 编辑
         handleEdit(params) {
             getBannerDetail(params.row.bannerId).then(res=>{
-                if(res.data.code==1000) {
+                if(res.data.code==200) {
                     const form = res.data.data.dataInfo
                     this.setDialogProperty(900, '编辑', 'BnnerEditForm')
                     this.editForm = BnnerEditModel.init(form)
@@ -73,7 +73,7 @@ export default {
                         this.$refs.BnnerEditForm.handleRichEditor()
                     })
                 } else {
-                    this.$Message.error(res.data.msg)
+                    this.$Message.error(res.data.message)
                 }
             })
         },
@@ -84,12 +84,12 @@ export default {
                 return
             }
             setBannerUpdate(form).then(res=>{
-                if(res.data.code==1000) {
+                if(res.data.code==200) {
                     this.$Message.success('编辑成功')
                     this.modelStatus.show = false
                     this.handleQuery()
                 } else {
-                    this.$Message.error(res.data.msg)
+                    this.$Message.error(res.data.message)
                 }
             })
         },
@@ -128,11 +128,11 @@ export default {
             const id1 = this.tableData[index1].bannerId
             const id2 = this.tableData[index2].bannerId
             setBannerChange(id1, id2).then(res=>{
-                if(res.data.code==1000) {
+                if(res.data.code==200) {
                     this.$Message.success('操作成功')
                     this.handleQuery()
                 } else {
-                    this.$Message.error(res.data.msg)
+                    this.$Message.error(res.data.message)
                 }
             })
         },
@@ -140,11 +140,11 @@ export default {
         // 上线下线
         handleChange(params) {
             setBannerEnable(params.row.bannerId).then(res=>{
-                if(res.data.code==1000) {
+                if(res.data.code==200) {
                     this.$Message.success('操作成功')
                     this.handleQuery()
                 } else {
-                    this.$Message.error(res.data.msg)
+                    this.$Message.error(res.data.message)
                 }
             })
         },

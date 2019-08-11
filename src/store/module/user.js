@@ -76,44 +76,25 @@ export default {
   },
   actions: {
     // 登录
-    handleLogin ({ commit }, {userName, password}) {
+    handleLogin ({ commit }, {userName, password, ucode}) {
       userName = userName.trim()
       return new Promise((resolve, reject) => {
-        if(userName!=''&&password!='') {
-          const data = {
-            user_name: userName,
-            user_id: '2',
-            access: [userName],
-            token: userName,
-            avator: '',
-            permission: [1,2,3,4,5,6,7,8,9,10,11]
-          }
-          commit('setToken', data.token)
-          commit('setUserName', data.user_name)
-          commit('setUserId', data.user_id)
-          commit('setAccess', data.access)
-          commit('setPermission', data.permission)
-          commit('setHasGetInfo', true)
-          // commit('setFormToken', res.data.sid)
-          // res.data.data = data
-          resolve(data)
-        }
-        return
         login({
           userName,
-          password
+          password,
+          ucode
         }).then(res => {
           if (res.data.code!=200) {
             resolve(res.data)
             return
           }
           const data = {
-            user_name: res.data.data.dataInfo.adminInfo.account,
+            user_name: res.data.data.admin_name,
             user_id: '',
-            access: [res.data.data.dataInfo.adminInfo.account],
-            token: res.data.data.dataInfo.token,
+            access: [res.data.data.admin_name],
+            token: res.data.data.token,
             avator: '',
-            permission: res.data.data.dataInfo.adminInfo.functionStr.split(',')
+            permission: [1,2,3,4,5,6,7,8,9,10]
           }
           commit('setToken', data.token)
           commit('setAvator', data.avator)

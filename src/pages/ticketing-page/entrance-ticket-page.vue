@@ -187,7 +187,7 @@ export default {
         console.log(res)
         if(res.data.code==='1000'){
           this.$Notice.success({
-            desc:res.data.msg
+            desc:res.data.message
           })
           this.$refs['CreateForm'].resetFields()
           this.setDialogProperty(false)
@@ -195,7 +195,7 @@ export default {
           this.getPrice()
         }else{
           this.$Notice.error({
-            desc:res.data.msg
+            desc:res.data.message
           })
         }
       })
@@ -216,7 +216,7 @@ export default {
         console.log(res)
         if(res.data.code==='1000'){
           this.$Notice.success({
-            desc:res.data.msg
+            desc:res.data.message
           })
           this.$refs['SetForm'].resetFields()
           this.setDialogProperty(false)

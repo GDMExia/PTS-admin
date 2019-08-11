@@ -34,9 +34,9 @@ class RoleEditModel extends FormModel {
 
   converter(form) {
     return {
-      roleId: form.id,
-      roleName: form.name,
-      functionIdList: form.permission
+      role_id: form.id,
+      permissions_name: form.name,
+      permissions_group: form.permission
     }
   }
 }

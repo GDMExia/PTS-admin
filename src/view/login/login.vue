@@ -27,15 +27,15 @@ export default {
       'handleLogin',
       'getUserInfo'
     ]),
-    handleSubmit ({ userName, password }) {
-      this.handleLogin({ userName, password }).then(res => {
-        // if(res.code!='1000'){
-        //   this.$Notice.error({
-        //     title: '错误',
-        //     desc: res.message 
-        //   })
-        //   return
-        // }
+    handleSubmit ({ userName, password, ucode }) {
+      this.handleLogin({ userName, password, ucode }).then(res => {
+        if(res.code!='200'){
+          this.$Notice.error({
+            title: '错误',
+            desc: res.message 
+          })
+          return
+        }
         this.getUserInfo().then(res => {
           this.$router.push({
             name: this.$config.homeName

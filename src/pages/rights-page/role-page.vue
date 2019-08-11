@@ -45,7 +45,6 @@ import {
   roleColumns,  
   getRoleIndex,
   setRoleCreate,
-  setRoleUpdate,
   setRoleDelete
 } from './api/rights'
 
@@ -71,9 +70,9 @@ export default {
   methods: {
     // 查询
     handleQuery() {
-      getRoleIndex(this.page).then(res => {
-        this.tableData = res.data.data.dataInfo?res.data.data.dataInfo:[]
-        this.page = pageInfo.converter({pageIndex: this.page.index, pageSize: this.page.size, pageTotal: res.data.total,search: this.page.search})
+      getRoleIndex().then(res => {
+        this.tableData = res.data.data.roleList?res.data.data.roleList:[]
+        // this.page = pageInfo.converter({pageIndex: this.page.index, pageSize: this.page.size, pageTotal: res.data.total,search: this.page.search})
         // 关闭表单框
         this.modelStatus.show = false
       })
@@ -82,7 +81,7 @@ export default {
     /** 获取菜单权限列表 */
     getRightsType() {
       getRightsType().then(res=>{
-        this.rightsType = res.data.data.dataInfo
+        this.rightsType = res.data.data.menuList
       })
     },
 
@@ -105,19 +104,19 @@ export default {
       const form = roleCreateModel.converter(this.createForm.formInline)
       setRoleCreate(form).then(res => {
         // console.log(res.data);
-        if (res.data.code==1000) {
+        if (res.data.code==200) {
           this.$Message.success('添加成功')
           this.modelStatus.show = false
           this.handleQuery()
         } else {
-          this.$Message.error(res.data.msg)
+          this.$Message.error(res.data.message)
         }
       })
     },
 
     /* 编辑 */
     handleEdit(params) {
-      const form = {id: params.row.roleId, name: params.row.roleName, permission: params.row.functionIdList, functions: params.row.functionStr}
+      const form = {id: params.row.role_id, name: params.row.permissions_name, permission: params.row.permissions_group, functions: params.row.permissions_group}
       this.modelStatus.show = true
       this.modelStatus.loading = true
       this.modelStatus.title = '修改角色'
@@ -139,13 +138,13 @@ export default {
     /* 编辑提交 */
     handleEditSubmit() {
       const form = roleEditModel.converter(this.editForm.formInline)
-      setRoleUpdate(form).then(res => {
-        if (res.data.code==1000) {
+      setRoleCreate(form).then(res => {
+        if (res.data.code==200) {
           this.$Message.success('编辑成功')
           this.modelStatus.show = false
           this.handleQuery()
         } else {
-          this.$Message.error(res.data.msg)
+          this.$Message.error(res.data.message)
         }
       })
     },
@@ -194,12 +193,12 @@ export default {
 
     /* 删除 */
     handleDelete(params) {
-      setRoleDelete(params.row.roleId).then(res => {
-        if(res.data.code==1000) {
+      setRoleDelete(params.row.role_id).then(res => {
+        if(res.data.code==200) {
           this.$Message.success('删除成功')
           this.handleQuery()
         } else {
-          this.$Message.error(res.data.msg)
+          this.$Message.error(res.data.message)
         }
       })
     }

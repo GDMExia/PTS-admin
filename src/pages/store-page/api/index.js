@@ -1,16 +1,18 @@
 import axios from '@/libs/api.request'
 import qs from 'qs'
+import store from '@/store'
+const user = store.state.user
 export const storeColumn = [
-    { title: '账号', key: 'title', tooltip: true },
-    { title: '商家名称', key: 'status', tooltip: true },
-    { title: '联系人', key: 'updateTime', tooltip: true },
-    { title: '联系方式', key: 'updateTime', tooltip: true },
-    { title: '状态', key: 'updateTime', tooltip: true },
+    { title: '账号', key: 'admin_name', tooltip: true },
+    { title: '商家名称', key: 'real_name', tooltip: true },
+    { title: '联系人', key: 'contact', tooltip: true },
+    { title: '联系方式', key: 'phone', tooltip: true },
+    { title: '状态', key: 'status', tooltip: true },
     {
         title: '操作',
         key: 'handle',
         align: 'center',
-        width: 360,
+        width: 440,
         fixed: 'right',
         button: [(h, params, vm) => {
             return h('div', [
@@ -137,12 +139,9 @@ export const storeColumn = [
     }
 ]
 
-export const getGuideList = page => {
+export const getStoreList = page => {
     return axios.request({
-        url: `/guides/list?pageIndex=${page.index}&pageSize=${page.size}`,
-        headers: {
-          functionId: 9
-        },
+        url: `/admin.php/Merchants/getMerchantsList?page=${page.index}&pageSize=${page.size}&token=${user.token}`,
         method: 'get'
     })
 }

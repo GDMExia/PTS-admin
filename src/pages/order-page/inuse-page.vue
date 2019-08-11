@@ -52,7 +52,7 @@ export default {
         handleSearch() {},
         handleQuery() {
             getOrderList(this.page, 3).then(res=>{
-                if(res.data.code == 1000) {
+                if(res.data.code == 200) {
                     this.tableData = res.data.data.dataInfo.list?res.data.data.dataInfo.list.map(item=>{
                         item.useTime = (item.beginDate==item.finishDate)?item.beginDate:`${item.beginDate}~${item.finishDate}`
                         return item
@@ -60,7 +60,7 @@ export default {
                     const total = res.data.data.dataInfo.pages * this.page.size
                     this.page = pageInfo.converter({pageIndex: this.page.index, pageSize: this.page.size, pageTotal: total,search: this.page.search})
                 } else {
-                    this.$Message.error(res.data.msg)
+                    this.$Message.error(res.data.message)
                 }
             })
         },

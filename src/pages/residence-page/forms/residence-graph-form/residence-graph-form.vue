@@ -59,7 +59,7 @@ export default {
       setUpload(formData).then(res=>{
           console.log(res)
           event.target.value=''
-          if(res.data.code == 1000) {
+          if(res.data.code == 200) {
               this.$Message.info('上传成功')
               this.formInline.image = `${res.data.data.dataInfo.key}`
           }

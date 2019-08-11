@@ -133,7 +133,7 @@ export default {
       const form = AdminChangeModel.converter(this.changeForm.formInline)
       setChangePassword(form).then(res => {
         console.log(res.data)
-        if (res.data.code == 1000) {
+        if (res.data.code == 200) {
           this.$Message.success('修改密码成功')
           this.modelStatus.show = false
           this.handleLogOut().then(() => {
@@ -142,7 +142,7 @@ export default {
             })
           })
         } else {
-          this.$Message.error(res.data.msg)
+          this.$Message.error(res.data.message)
         }
       })
     },

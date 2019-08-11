@@ -14,9 +14,9 @@ export default {
    */
   baseUrl: {
     dev: '',
-    pro: '/admin/v1'
+    pro: ''
   },
-  configUrl: 'https://hnisland.ugpaas.club/admin/v1',
+  configUrl: 'http://pts.suoqoo.com',
   /**
    * @description 默认打开的首页的路由name值，默认为home
    */

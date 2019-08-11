@@ -99,7 +99,7 @@ export default {
     getalreadysetdate(){
       getentrancedate(this.$store.state.user.token).then(res=>{
         console.log(res)
-        if(res.data.code==1000){
+        if(res.data.code==200){
           this.setdateList=res.data.data.dataInfo
           console.log(this.setdateList)
         }
