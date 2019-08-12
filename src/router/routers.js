@@ -100,6 +100,15 @@ export default [
           title: '商家管理'
         },
         component: () => import('@/pages/store-page/store-page.vue')
+      },
+      {
+        path: 'storeRecomond',
+        name: 'storeRecomond',
+        meta: {
+          icon: 'ios-pin-outline',
+          title: '商家推荐'
+        },
+        component: () => import('@/pages/store-page/store-recomond-page.vue')
       }
     ]
   },
@@ -115,52 +124,84 @@ export default [
     component: Main,
     children: [
       {
-        path: 'tourist',
-        name: 'tourist',
+        path: 'users',
+        name: 'users',
         meta: {
           icon: 'md-happy',
-          title: '游客管理'
+          title: '用户管理'
         },
-        component: () => import('@/pages/users-page/tourists-page.vue')
+        component: () => import('@/pages/users-page/users-page.vue')
       },
+      // {
+      //   path: 'staff',
+      //   name: 'staff',
+      //   meta: {
+      //     icon: 'ios-man',
+      //     title: '工作人员管理'
+      //   },
+      //   component: () => import('@/pages/users-page/staff-page.vue')
+      // },
+      // {
+      //   path: 'check',
+      //   name: 'check',
+      //   meta: {
+      //     icon: 'ios-barcode-outline',
+      //     title: '检票管理',
+      //     hideInMenu: true
+      //   },
+      //   component: () => import('@/pages/users-page/pages/staff/checkmanagement/checkmanagement.vue')
+      // },
       {
-        path: 'staff',
-        name: 'staff',
-        meta: {
-          icon: 'ios-man',
-          title: '工作人员管理'
-        },
-        component: () => import('@/pages/users-page/staff-page.vue')
-      },
-      {
-        path: 'check',
-        name: 'check',
-        meta: {
-          icon: 'ios-barcode-outline',
-          title: '检票管理',
-          hideInMenu: true
-        },
-        component: () => import('@/pages/users-page/pages/staff/checkmanagement/checkmanagement.vue')
-      },
-      {
-        path: 'travel',
-        name: 'travel',
-        meta: {
-          icon: 'ios-barcode-outline',
-          title: '出行人信息',
-          hideInMenu: true
-        },
-        component: () => import('@/pages/users-page/pages/tourist/travelInfo/travelInfo.vue')
-      },
-      {
-        path: 'travelmanage',
-        name: 'travelmanage',
+        path: 'integral',
+        name: 'integral',
         meta: {
           icon: 'ios-barcode-outline',
-          title: '出行管理',
+          title: '查看积分信息',
           hideInMenu: true
         },
-        component: () => import('@/pages/users-page/pages/staff/travelmanagement/travelmanagement.vue')
+        component: () => import('@/pages/users-page/pages/integral/integral/integral.vue')
+      },
+      {
+        path: 'showlower',
+        name: 'showlower',
+        meta: {
+          icon: 'ios-barcode-outline',
+          title: '查看下级用户',
+          hideInMenu: true
+        },
+        component: () => import('@/pages/users-page/pages/showlower/showlower/showlower.vue')
+      }
+      // {
+      //   path: 'travelmanage',
+      //   name: 'travelmanage',
+      //   meta: {
+      //     icon: 'ios-barcode-outline',
+      //     title: '出行管理',
+      //     hideInMenu: true
+      //   },
+      //   component: () => import('@/pages/users-page/pages/staff/travelmanagement/travelmanagement.vue')
+      // }
+    ]
+  },
+  {
+    path: '/discountcoupon',
+    name: 'discountcoupon',
+    meta: {
+      icon: 'ios-people',
+      title: '优惠券管理',
+      access: ['super_admin'],
+      id: 2
+    },
+    component: Main,
+    children: [
+      {
+        path: 'discountcoupon',
+        name: 'discountcoupon',
+        meta: {
+          icon: 'ios-home-outline',
+          title: '优惠券管理'
+        },
+        component: () => import('@/pages/discountcoupon-page/discountcoupon-page.vue')
       }
     ]
   },
@@ -406,7 +447,7 @@ export default [
         name: 'customTour',
         meta: {
           icon: 'ios-car',
-          title: '旅游管理'
+          title: '学院管理'
         },
         component: () => import('@/pages/custom-tour-page/custom-tour-page.vue')
       },
@@ -423,35 +464,25 @@ export default [
     ]
   },
   {
-    path: '/custom',
-    name: 'custom',
+    path: '/tours',
+    name: 'tours',
     meta: {
-      icon: 'ios-card-outline',
-      title: '定制游管理',
+      icon: 'ios-cafe-outline',
+      title: '旅游管理',
       access: ['super_admin'],
-      id: 5
+      id: 8
     },
     component: Main,
     children: [
       {
-        path: 'customTour',
-        name: 'customTour',
+        path: 'tour',
+        name: 'tour',
         meta: {
-          icon: 'ios-car',
-          title: '学院管理'
+          icon: 'ios-cafe-outline',
+          title: '旅游管理'
         },
-        component: () => import('@/pages/custom-tour-page/custom-tour-page.vue')
-      },
-      {
-        path: 'price',
-        name: 'price',
-        meta: {
-          hideInMenu: true,
-          icon: 'ios-car',
-          title: '价格设置'
-        },
-        component: () => import('@/pages/custom-tour-page/set-price-page.vue')
-      },
+        component: () => import('@/pages/tour-page/tour-page.vue')
+      }
     ]
   },
   {

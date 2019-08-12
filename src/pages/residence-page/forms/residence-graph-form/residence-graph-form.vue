@@ -7,7 +7,7 @@
                   <div class="main-box">
                     <div class="img-box">
                       <Icon type="ios-cloud-upload" size="52" v-show="formInline.image==''"/>
-                      <img :src="configurl+'/cos/get/'+formInline.image" v-show="formInline.image!=''" style="width:380px;height:150px"/>
+                      <img :src="formInline.image" v-show="formInline.image!=''" style="width:380px;height:150px"/>
                     </div>
                     <div style="position:absolute;left:0;top:0;width:380px;height:150px;">
                       <input type="file" id="upload" @change="uploadImage" style="width:380px;height:150px;opacity:0;"/>
@@ -55,13 +55,13 @@ export default {
           return
       } 
       var formData = new FormData();
-      formData.append('head_file', file)
+      formData.append('file_image', file)
       setUpload(formData).then(res=>{
           console.log(res)
           event.target.value=''
           if(res.data.code == 200) {
               this.$Message.info('上传成功')
-              this.formInline.image = `${res.data.data.dataInfo.key}`
+              this.formInline.image = `${res.data.data.fileUrl}`
           }
       })
     }

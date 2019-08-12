@@ -12,7 +12,7 @@
                         <div style="width: 50px;height: 50px; position: relative;cursor:pointer">
                             <div style="position:absolute;left:0;top:0;width:50px;height:50px">
                                 <Icon type="ios-person-add-outline" size="50" v-show="formInline.photo==''"/>
-                                <img :src="configurl+'/cos/get/'+formInline.photo" v-show="formInline.photo!=''" style="width:50px;height:50px"/>
+                                <img :src="formInline.photo" v-show="formInline.photo!=''" style="width:50px;height:50px"/>
                             </div>
                             <div style="position:absolute;left:0;top:0;width:50px;height:50px">
                                 <input type="file" id="upload" @change="uploadImage" style="width:50px;height:50px;opacity:0;"/>

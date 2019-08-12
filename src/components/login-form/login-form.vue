@@ -60,7 +60,7 @@ export default {
         password: '',
         ucode: ''
       },
-      stickyImg: this.$config.configUrl+'/admin.php/Account/verify',
+      stickyImg: this.$config.configUrl+'/Account/verify',
       done: false
     }
   },
@@ -98,7 +98,7 @@ export default {
       var that = this;
       that.stickyImg ='';
       setTimeout(function(){
-        that.stickyImg = that.$config.configUrl+'/admin.php/Account/verify';
+        that.stickyImg = that.$config.configUrl+'/Account/verify';
       },100)
     }
   }

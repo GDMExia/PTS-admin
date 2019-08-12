@@ -7,7 +7,7 @@ export const login = ({ userName, password, ucode }) => {
     verify_code: ucode
   })
   return axios.request({
-    url: `/admin.php/Account/loginUser?${data}`,
+    url: `/Account/loginUser?${data}`,
     data,
     method: 'post'
   })

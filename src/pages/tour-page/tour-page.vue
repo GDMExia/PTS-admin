@@ -5,13 +5,25 @@
                 <div class="pull-left">
                     <Button @click="handleCreate" class="search-btn" type="primary" style="margin-right:5px">
                         <Icon type="md-add"/>&nbsp;&nbsp;添加</Button>
+                    <Button @click="handleCreate" class="search-btn" type="success" style="margin-right:5px">
+                        <Icon type="md-add"/>&nbsp;&nbsp;相关旅游设置</Button>
                 </div>
                 <div class="pull-right">
-                    
+                    <Form ref="searchBarForm" inline @keydown.native.enter.prevent ="()=>{}">
+                        <FormItem>
+                            <Row>
+                                <Col span="21">
+                                    <Input v-model="page.search" placeholder="请输入旅游标题" style="width: 230px"/>
+                                </Col>
+                                <Col span="2" style="margin-left: 5px;">
+                                    <Button @click="handleSearch" size="small" type="primary" shape="circle" icon="ios-search"></Button>
+                                </Col>
+                            </Row>
+                        </FormItem>
+                    </Form>
                 </div>
             </div>
-            <tables class="self-table-wrap" ref="tables" stripe v-model="tableData" :columns="columns" @on-edit="handleEdit"
-            @on-info="handleInfo" @on-delete="handleDelete" @on-forbid="handleForbid" @on-reset="handleReset" />
+            <tables class="self-table-wrap" ref="tables" stripe v-model="tableData" :columns="columns" @on-edit="handleEdit" @on-delete="handleDelete" />
             <div style="margin-top:10px;text-align:right;">
                 <Page :total="page.total" :current="page.index" :page-size="page.size" @on-change="handleOnChange" 
                 show-sizer size="small" :page-size-opts="[10,20,50,100,1000]" @on-page-size-change="handleOnChangeSize"/>
@@ -21,15 +33,7 @@
             <ModelDialog :status="modelStatus"
                 @handlerModelDialogOk="handlerModelDialogOk"
                 @handlerModelDialogCancel="handlerModelDialogCancel">
-                <StoreCreateForm ref='StoreCreateForm'
-                    :formInline="createForm.formInline"
-                    :ruleInline="createForm.ruleInline"
-                    v-if="modelStatus.name=='StoreCreateForm'"/>
-                <StoreInfoForm ref='StoreInfoForm'
-                    :formInline="infoForm.formInline"
-                    :ruleInline="infoForm.ruleInline"
-                    :typeList="typeList"
-                    v-if="modelStatus.name=='StoreInfoForm'"/>
+                
             </ModelDialog>
         </div>
     </div>
@@ -38,30 +42,16 @@
 <script>
 import Tables from '_c/tables'
 import ModelDialog from '_c/model-dialog'
-import StoreCreateForm from './forms/store-create-form'
-import StoreCreateModel from './model/store-create-model'
-import StoreInfoForm from './forms/store-info-form'
-import StoreInfoModel from './model/store-info-model'
 import pageInfo from "@/libs/page-info"
 import {
-    storeColumn,
-    getStoreList,
-    setStoreCreate,
-    setStoreDelete,
-    getStoreInfo,
-    getType,
-    setStoreInfo
+    tourColumn,
+    getTourList,
+    setTourDelete
 } from './api'
-import {
-    setAdminReset,
-    setAdminForbit
-} from '_p/rights-page/api/rights.js'
 export default {
     components: {
         Tables,
         ModelDialog,
-        StoreCreateForm,
-        StoreInfoForm
     },
     data() {
         return {
@@ -69,17 +59,19 @@ export default {
             columns: [],
             page: {},
             modelStatus: { show: false, hide: false, loading: true, title: '', name: '' },
-            createForm: {},
-            infoForm: {},
-            typeList: []
+            createForm: {}
         }
     },
     methods: {
+        handleSearch() {
+            this.page.index = 1
+            this.handleQuery()
+        },
         handleQuery() {
-            getStoreList(this.page).then(res=>{
+            getTourList(this.page).then(res=>{
                 if(res.data.code == 200) {
-                    this.tableData = res.data.data.userList?res.data.data.userList.map(item=>{
-                        item.status = item.is_disable=='0'?'启用':'禁用'
+                    this.tableData = res.data.data.newsList?res.data.data.newsList.map(item=>{
+                        item.join_time = `${item.start_time}~${item.end_time}`
                         return item
                     }):[]
                     this.page = pageInfo.converter({pageIndex: this.page.index, pageSize: this.page.size, pageTotal: res.data.data.PageInfo.TotalCounts,search: this.page.search})
@@ -147,85 +139,11 @@ export default {
                 }
             })
         },
-        // 商家信息设置
-        handleInfo(params) {
-            this.handleType()
-            getStoreInfo(params.row.mid).then(res=>{
-                if(res.data.code == 200) {
-                    let form = res.data.data.merchantsInfo
-                    form.mid = params.row.mid
-                    this.setDialogProperty(900, '编辑商家信息', 'StoreInfoForm')
-                    this.infoForm = StoreInfoModel.init(form)
-                    this.$nextTick(()=>{
-                        this.$refs.StoreInfoForm.handleRichEditor()
-                    })
-                } else {
-                    this.$Message.error(res.data.message)
-                }
-            })
-        },
         // 删除
         handleDelete(params) {
-            setStoreDelete(params.row.mid).then(res=>{
+            setTourDelete(params.row.id).then(res=>{
                 if(res.data.code == 200) {
                     this.$Message.success('删除成功')
-                    this.modelStatus.show = false
-                    this.handleQuery()
-                } else {
-                    this.$Message.error(res.data.message)
-                }
-            })
-        },
-        /* 禁止 */
-        handleForbid(params) {
-            const form = {
-                uid: params.row.uid,
-                is_disable: params.row.is_disable=='0'?1:0
-            }
-            setAdminForbit(form).then(res => {
-                if(res.data.code==200) {
-                this.$Message.success('操作成功')
-                this.handleQuery()
-                } else {
-                this.$Message.error(res.data.message)
-                }
-            })
-        },
-
-        /* 重置密码 */
-        handleReset(params) {
-            setAdminReset(params.row.uid).then(res => {
-                if(res.data.code==200) {
-                    this.$Message.success('操作成功')
-                    this.handleQuery()
-                } else {
-                    this.$Message.error(res.data.message)
-                }
-            })
-        }, 
-        handleType() {
-            getType().then(res=>{
-                if(res.data.code==200) {
-                    this.typeList = res.data.data.Classification.map(item=>{
-                        item.id = item.merchants_cid
-                        item.label = item.cate_name
-                        item.children = item.Classification.map(value=>{
-                            value.id = value.merchants_cid
-                            value.label = value.cate_name
-                            return value
-                        })
-                        return item
-                    })
-                } else {
-                    this.$Message.error(res.data.message)
-                }
-            })
-        },
-        handleInfoSubmit() {
-            const form = StoreInfoModel.converter(this.infoForm.formInline)
-            setStoreInfo(form).then(res=>{
-                if(res.data.code == 200) {
-                    this.$Message.success('编辑成功')
                     this.modelStatus.show = false
                     this.handleQuery()
                 } else {
@@ -252,7 +170,7 @@ export default {
             } else if (name==='StoreInfoForm') {
                 this.$refs.StoreInfoForm.validate(valid=>{
                     if(valid) {
-                        this.handleInfoSubmit()
+                        this.handleShareSubmit()
                     }
                 })
             }
@@ -280,7 +198,7 @@ export default {
         },
     },
     mounted() {
-        this.columns = storeColumn
+        this.columns = tourColumn
         this.page = pageInfo.init()
         this.handleQuery()
     }

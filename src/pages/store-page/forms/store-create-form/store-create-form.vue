@@ -3,29 +3,29 @@
         <Form ref="StoreCreateForm" :model="formInline" :rules="ruleInline" :label-width="80" label-position="left">
             <Row>
               <Col span="24">
-                <FormItem label="账号" prop="title">
-                  <Input v-model="formInline.title" placeholder="请输入" />
+                <FormItem label="账号" prop="admin_name">
+                  <Input v-model="formInline.admin_name" placeholder="请输入" />
                 </FormItem>
               </Col>
             </Row>
             <Row>
               <Col span="24">
-                <FormItem label="商家名称" prop="title">
-                  <Input v-model="formInline.title" placeholder="请输入" />
+                <FormItem label="商家名称" prop="real_name">
+                  <Input v-model="formInline.real_name" placeholder="请输入" />
                 </FormItem>
               </Col>
             </Row>
             <Row>
               <Col span="24">
-                <FormItem label="联系人" prop="title">
-                  <Input v-model="formInline.title" placeholder="请输入" />
+                <FormItem label="联系人" prop="contact">
+                  <Input v-model="formInline.contact" placeholder="请输入" />
                 </FormItem>
               </Col>
             </Row>
             <Row>
               <Col span="24">
-                <FormItem label="联系方式" prop="title">
-                  <Input v-model="formInline.title" placeholder="请输入" />
+                <FormItem label="联系方式" prop="phone">
+                  <Input v-model="formInline.phone" placeholder="请输入" />
                 </FormItem>
               </Col>
             </Row>

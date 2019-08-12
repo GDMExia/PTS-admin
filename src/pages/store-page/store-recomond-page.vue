@@ -3,8 +3,8 @@
         <Card>
             <div class="clearfix" style="margin-bottom: 10px;">
                 <div class="pull-left">
-                    <Button @click="handleCreate" class="search-btn" type="primary" style="margin-right:5px">
-                        <Icon type="md-add"/>&nbsp;&nbsp;添加</Button>
+                    <!-- <Button @click="handleCreate" class="search-btn" type="primary" style="margin-right:5px">
+                        <Icon type="md-add"/>&nbsp;&nbsp;添加</Button> -->
                 </div>
                 <div class="pull-right">
                     
@@ -49,13 +49,12 @@ import {
     setStoreCreate,
     setStoreDelete,
     getStoreInfo,
-    getType,
-    setStoreInfo
+    getType
 } from './api'
 import {
     setAdminReset,
     setAdminForbit
-} from '_p/rights-page/api/rights.js'
+} from '_p/rights-page/api/rights'
 export default {
     components: {
         Tables,
@@ -149,7 +148,6 @@ export default {
         },
         // 商家信息设置
         handleInfo(params) {
-            this.handleType()
             getStoreInfo(params.row.mid).then(res=>{
                 if(res.data.code == 200) {
                     let form = res.data.data.merchantsInfo
@@ -166,7 +164,7 @@ export default {
         },
         // 删除
         handleDelete(params) {
-            setStoreDelete(params.row.mid).then(res=>{
+            setStoreDelete(params.row.id).then(res=>{
                 if(res.data.code == 200) {
                     this.$Message.success('删除成功')
                     this.modelStatus.show = false
@@ -179,7 +177,7 @@ export default {
         /* 禁止 */
         handleForbid(params) {
             const form = {
-                uid: params.row.uid,
+                uid: params.row.mid,
                 is_disable: params.row.is_disable=='0'?1:0
             }
             setAdminForbit(form).then(res => {
@@ -194,7 +192,7 @@ export default {
 
         /* 重置密码 */
         handleReset(params) {
-            setAdminReset(params.row.uid).then(res => {
+            setAdminReset(params.row.mid).then(res => {
                 if(res.data.code==200) {
                     this.$Message.success('操作成功')
                     this.handleQuery()
@@ -207,10 +205,10 @@ export default {
             getType().then(res=>{
                 if(res.data.code==200) {
                     this.typeList = res.data.data.Classification.map(item=>{
-                        item.id = item.merchants_cid
+                        item.value = item.merchants_cid
                         item.label = item.cate_name
                         item.children = item.Classification.map(value=>{
-                            value.id = value.merchants_cid
+                            value.value = value.merchants_cid
                             value.label = value.cate_name
                             return value
                         })
@@ -221,17 +219,8 @@ export default {
                 }
             })
         },
-        handleInfoSubmit() {
-            const form = StoreInfoModel.converter(this.infoForm.formInline)
-            setStoreInfo(form).then(res=>{
-                if(res.data.code == 200) {
-                    this.$Message.success('编辑成功')
-                    this.modelStatus.show = false
-                    this.handleQuery()
-                } else {
-                    this.$Message.error(res.data.message)
-                }
-            })
+        handleShareSubmit() {
+            
         },
         // 弹出框设置
         setDialogProperty(width, title, name) {
@@ -252,7 +241,7 @@ export default {
             } else if (name==='StoreInfoForm') {
                 this.$refs.StoreInfoForm.validate(valid=>{
                     if(valid) {
-                        this.handleInfoSubmit()
+                        this.handleShareSubmit()
                     }
                 })
             }

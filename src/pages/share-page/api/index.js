@@ -87,7 +87,7 @@ export const shareColumn = [
 
 export const getShareList = (type, page) => {
   return axios.request({
-    url: `/admin.php/News/newsList?gid=${type}&pageSize=${page.size}&page=${page.index}&token=${user.token}`,
+    url: `/News/newsList?gid=${type}&pageSize=${page.size}&page=${page.index}&token=${user.token}`,
     method: 'get'
   })
 }

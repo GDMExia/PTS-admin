@@ -41,7 +41,7 @@ class AdminEditModel extends FormModel {
     return {
       id: form.id,
       role_id: form.roleId,
-      admin_name: form.accountNo,
+      // admin_name: form.accountNo,
       real_name: form.accountName,
     }
   }
