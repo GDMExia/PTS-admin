@@ -20,10 +20,10 @@
             <ModelDialog :status="modelStatus"
                 @handlerModelDialogOk="handlerModelDialogOk"
                 @handlerModelDialogCancel="handlerModelDialogCancel">
-                <StoreCreateForm ref='StoreCreateForm'
+                <!-- <StoreCreateForm ref='StoreCreateForm'
                     :formInline="createForm.formInline"
                     :ruleInline="createForm.ruleInline"
-                    v-if="modelStatus.name=='StoreCreateForm'"/>
+                    v-if="modelStatus.name=='StoreCreateForm'"/> -->
             </ModelDialog>
         </div>
     </div>
@@ -32,8 +32,8 @@
 <script>
 import Tables from '_c/tables'
 import ModelDialog from '_c/model-dialog'
-import StoreCreateForm from './forms/store-create-form'
-import StoreCreateModel from './model/store-create-model'
+// import StoreCreateForm from './forms/store-create-form'
+// import StoreCreateModel from './model/store-create-model'
 import pageInfo from "@/libs/page-info"
 import {
     shareColumn,
@@ -50,7 +50,7 @@ export default {
     components: {
         Tables,
         ModelDialog,
-        StoreCreateForm,
+        // StoreCreateForm,
     },
     data() {
         return {
