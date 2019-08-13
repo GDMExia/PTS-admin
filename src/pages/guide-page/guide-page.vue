@@ -10,7 +10,7 @@
                     
                 </div>
             </div>
-            <tables class="self-table-wrap" ref="tables" stripe v-model="tableData" :columns="columns" @on-edit="handleEdit" @on-change="handleChange" @on-delete="handleDelete" />
+            <tables class="self-table-wrap" ref="tables" stripe v-model="tableData" :columns="columns" @on-edit="handleEdit" @on-offline="handleChange" @on-delete="handleDelete" />
             <div style="margin-top:10px;text-align:right;">
                 <Page :total="page.total" :current="page.index" :page-size="page.size" @on-change="handleOnChange" 
                 show-sizer size="small" :page-size-opts="[10,20,50,100,1000]" @on-page-size-change="handleOnChangeSize"/>
@@ -32,12 +32,15 @@
 <script>
 import Tables from '_c/tables'
 import ModelDialog from '_c/model-dialog'
-import GuideCreateForm from './forms/share-create-form'
-import GuideCreateModel from './model/share-create-model'
+import GuideCreateForm from './forms/guide-create-form'
+import GuideCreateModel from './model/guide-create-model'
 import pageInfo from "@/libs/page-info"
 import {
     shareColumn,
-    getShareList
+    getShareList,
+    setShareDelete,
+    setShareChange,
+    setShareCreate
 } from '_p/share-page/api'
 export default {
     components: {
@@ -59,7 +62,10 @@ export default {
         handleQuery() {
             getShareList(2, this.page).then(res=>{
                 if(res.data.code==200) {
-                    this.tableData = res.data.data.newsList
+                    this.tableData = res.data.data.newsList?res.data.data.newsList.map(item=>{
+                        item.status = item.is_show==1?'展示':'下线'
+                        return item
+                    }):[]
                     this.page = pageInfo.converter({pageIndex: this.page.index, pageSize: this.page.size, pageTotal: res.data.data.PageInfo.TotalCounts,search: this.page.search})
                 } else {
                     this.$Message.error(res.data.message)
@@ -71,9 +77,7 @@ export default {
             const form = {
                 id: '',
                 title: '',
-                details: '',
-                activity: '',
-                image: ''
+                content: '',
             }
             this.setDialogProperty(900, '添加', 'GuideCreateForm')
             this.createForm = GuideCreateModel.init(form)
@@ -83,21 +87,15 @@ export default {
         },
         // 编辑
         handleEdit(params) {
-            getGuideDetail(params.row.id).then(res=>{
-                if(res.data.code == 200) {
-                    const form = {
-                        id: res.data.data.dataInfo.id,
-                        title: res.data.data.dataInfo.title,
-                        details: res.data.data.dataInfo.intro
-                    }
-                    this.setDialogProperty(900, '编辑', 'GuideCreateForm')
-                    this.createForm = GuideCreateModel.init(form)
-                    this.$nextTick(()=>{
-                        this.$refs.GuideCreateForm.handleRichEditor()
-                    })
-                } else {
-                    this.$Message.error(res.data.message)
-                }
+            const form = {
+                id: params.row.id,
+                title: params.row.title,
+                content: params.row.content,
+            }
+            this.setDialogProperty(900, '编辑', 'GuideCreateForm')
+            this.createForm = GuideCreateModel.init(form)
+            this.$nextTick(()=>{
+                this.$refs.GuideCreateForm.handleRichEditor()
             })
             
         },
@@ -110,7 +108,7 @@ export default {
             }
         },
         setCreate(form) {
-            setGuideCreate(form).then(res=>{
+            setShareCreate(form).then(res=>{
                 if(res.data.code == 200) {
                     this.$Message.success('添加成功')
                     this.modelStatus.show = false
@@ -121,7 +119,7 @@ export default {
             })
         },
         setEdit(form) {
-            setGuideEdit(form).then(res=>{
+            setShareCreate(form).then(res=>{
                 if(res.data.code == 200) {
                     this.$Message.success('编辑成功')
                     this.modelStatus.show = false
@@ -133,7 +131,11 @@ export default {
         },
         // 上下线
         handleChange(params) {
-            setGuideChange(params.row.id).then(res=>{
+            const form = {
+                id: params.row.id,
+                is_show: params.row.is_show==0?1:0
+            }
+            setShareChange(form).then(res=>{
                 if(res.data.code == 200) {
                     this.$Message.success('操作成功')
                     this.modelStatus.show = false
@@ -145,7 +147,7 @@ export default {
         },
         // 删除
         handleDelete(params) {
-            setGuideDelete(params.row.id).then(res=>{
+            setShareDelete(params.row.id).then(res=>{
                 if(res.data.code == 200) {
                     this.$Message.success('删除成功')
                     this.modelStatus.show = false

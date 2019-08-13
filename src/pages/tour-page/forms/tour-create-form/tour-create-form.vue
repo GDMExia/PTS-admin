@@ -3,51 +3,65 @@
         <Form ref="TourCreateForm" :model="formInline" :rules="ruleInline" :label-width="80" label-position="left">
             <Row>
               <Col span="12">
-                <FormItem label="标题" prop="real_name">
-                  <Input v-model="formInline.real_name" placeholder="请输入" />
-                </FormItem>
-              </Col>
-              <Col span="12">
-                <FormItem label="图片" prop="pic">
-                    <div style="width: 50px;height: 50px; position: relative;cursor:pointer">
-                        <div style="position:absolute;left:0;top:0;width:50px;height:50px">
-                            <Icon type="ios-person-add-outline" size="50" v-show="formInline.pic==''"/>
-                            <img :src="formInline.pic" v-show="formInline.pic!=''" style="width:50px;height:50px"/>
-                        </div>
-                        <div style="position:absolute;left:0;top:0;width:50px;height:50px">
-                            <input type="file" id="upload" @change="uploadImage" style="width:50px;height:50px;opacity:0;"/>
-                        </div>
-                    </div>
-                    <p style="height:0">（仅限一张图，尺寸为345*150）</p>
+                <FormItem label="标题" prop="goods_name">
+                  <Input v-model="formInline.goods_name" placeholder="请输入" />
                 </FormItem>
               </Col>
             </Row>
             <Row>
-                <Col span="12">
-                    <FormItem label="参与日期" prop="merchants_cid">
-                        
-                    </FormItem>
-                </Col>
-                <Col span="12">
-                    <FormItem label="参与日期" prop="merchants_cid">
-                        
+                <Col span="24">
+                    <FormItem label="图片" prop="img_list" class="ivu-form-item-required">
+                        <p>（默认第一张为封面图，且当被放置在首页展示，默认展示该封面图）</p>
+                        <div class="demo-upload-list" v-for="(item, index) in formInline.img_list" :key="index">
+                            <template>
+                                <img :src="item.file_url">
+                                <div class="demo-upload-list-cover">
+                                    <Icon type="ios-trash-outline" @click.native="handleRemove(item.file_id)"></Icon>
+                                </div>
+                            </template>
+                            </div>
+                            <Upload
+                                ref="upload"
+                                :show-upload-list="false"
+                                :default-file-list="formInline.img_list"
+                                :format="['jpg','jpeg','png']"
+                                :before-upload="beforeUpload"
+                                multiple
+                                action=""
+                                style="display: inline-block;width:58px;">
+                            <div class="demo-upload-list" style="width: 58px;height:58px;line-height: 58px;text-align: center; cursor: pointer;">
+                                <Icon type="ios-camera" size="20"></Icon>
+                            </div>
+                        </Upload>
                     </FormItem>
                 </Col>
             </Row>
             <Row>
                 <Col span="12">
-                    <FormItem label="地址" prop="address">
-                        <Input v-model="formInline.address" placeholder="请输入" />
+                    <FormItem label="参与日期" prop="date">
+                        <DatePicker v-model="formInline.date" type="daterange" placement="bottom-end" placeholder="请选择" style="width: 200px"></DatePicker>
                     </FormItem>
                 </Col>
                 <Col span="12">
-                    <FormItem label="电话" prop="phone">
-                        <Input v-model="formInline.phone" placeholder="请输入" />
+                    <FormItem label="价格" prop="goods_price">
+                        <Input v-model="formInline.goods_price" placeholder="请输入" />
                     </FormItem>
                 </Col>
             </Row>
             <Row>
-                <FormItem label="简介" prop="content">
+                <Col span="12">
+                    <FormItem label="积分抵扣" prop="discount_point">
+                        <Input v-model="formInline.discount_point" placeholder="请输入" />
+                    </FormItem>
+                </Col>
+                <Col span="12">
+                    <FormItem label="发布者" prop="create_name">
+                        <Input v-model="formInline.create_name" placeholder="请输入" />
+                    </FormItem>
+                </Col>
+            </Row>
+            <Row>
+                <FormItem label="正文" prop="content">
                     <editor ref="editor" v-model="formInline.content" :value = "formInline.content"/>
                 </FormItem>
             </Row>
@@ -56,12 +70,9 @@
 </template>
 <script>
 import Editor from "_c/editor";
-import Treeselect from '@riophae/vue-treeselect'
-import '@riophae/vue-treeselect/dist/vue-treeselect.css'
-import {setUpload} from '_p/banner-page/api'
+import {setUpload, setFileDelete} from '_p/banner-page/api'
 export default {
     components: {
-        Treeselect,
         Editor
     },
     props: {
@@ -71,7 +82,7 @@ export default {
     },
     data() {
         return {
-            configurl: this.$config.configUrl
+            fileList: []
         }
     },
     methods: {
@@ -91,8 +102,15 @@ export default {
         handleRichEditor() {
             this.$refs.editor.handleRichEditor(this.formInline.content)
         },
-        uploadImage(event) {
-            var file = event.target.files[0]
+        handleRemove(id) {
+            this.formInline.img_list = this.formInline.img_list.filter(item=>{
+                return item.file_id!=id
+            })
+            this.fileList = this.formInline.img_list.filter(item=>{
+                return item.file_id!=id
+            });
+        },
+        beforeUpload(file) {
             if(file.size > 5*1024*1024) {
                 this.$Message.warning('上传图片不得大于5兆，请重新上传')
                 return
@@ -102,13 +120,20 @@ export default {
                 alert("文件不是图片类型");
                 return
             } 
+            this.fileList.push(file)
+            const check = this.formInline.img_list.length < 5;
+            if(!check) {
+                this.$Notice.warning({
+                    title: '最多上传5张图片'
+                });
+                return
+            }
             var formData = new FormData();
             formData.append('file_image', file)
             setUpload(formData).then(res=>{
-                event.target.value=''
                 if(res.data.code == 200) {
                     this.$Message.info('上传成功')
-                    this.formInline.pic = `${res.data.data.fileUrl}`
+                    this.formInline.img_list.push({file_id: res.data.data.fileId,file_url: res.data.data.fileUrl})
                 }
             })
         }
@@ -116,7 +141,42 @@ export default {
 }
 </script>
 <style>
-
+    .demo-upload-list{
+        display: inline-block;
+        width: 60px;
+        height: 60px;
+        text-align: center;
+        line-height: 60px;
+        border: 1px solid transparent;
+        border-radius: 4px;
+        overflow: hidden;
+        background: #fff;
+        position: relative;
+        box-shadow: 0 1px 1px rgba(0,0,0,.2);
+        margin-right: 4px;
+    }
+    .demo-upload-list img{
+        width: 100%;
+        height: 100%;
+    }
+    .demo-upload-list-cover{
+        display: none;
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background: rgba(0,0,0,.6);
+    }
+    .demo-upload-list:hover .demo-upload-list-cover{
+        display: block;
+    }
+    .demo-upload-list-cover i{
+        color: #fff;
+        font-size: 20px;
+        cursor: pointer;
+        margin: 0 2px;
+    }
 </style>
 
 

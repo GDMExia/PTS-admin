@@ -34,21 +34,21 @@ export const shareColumn = [
         ),
         h(
           'i-button', {
-            props: {
-              type: 'primary',
-              icon: 'md-create',
-              size: 'small'
-            },
-            style: {
-              marginRight: '5px'
-            },
-            on: {
-              click: () => {
-                vm.$emit('on-edit', params)
+              props: {
+                  type: 'warning',
+                  icon: 'md-filing',
+                  size: 'small'
+              },
+              style: {
+                  marginRight: '5px'
+              },
+              on: {
+                  click: () => {
+                      vm.$emit('on-offline', params)
+                  }
               }
-            }
           },
-          '下线' 
+          params.row.is_show==1?'下线':'上线'
         ),
         h(
           'Poptip',{
@@ -84,10 +84,3 @@ export const shareColumn = [
     }]
   }
 ]
-
-export const getShareList = (type, page) => {
-  return axios.request({
-    url: `/News/newsList?gid=${type}&pageSize=${page.size}&page=${page.index}&token=${user.token}`,
-    method: 'get'
-  })
-}

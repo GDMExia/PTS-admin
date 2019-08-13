@@ -99,3 +99,34 @@ export const setTourCreate = form => {
         method: 'post'
     })
 }
+
+export const getArticleInfo = type => {
+    const params = qs.stringify({
+        cid: type,
+        token: user.token
+    })
+    return axios.request({
+        url: `/Goods/getBindArticleGroup?${params}`,
+        method: 'get'
+    })
+}
+
+export const setArticle = form => {
+    let params = qs.stringify(Object.assign(form, {
+        token: user.token
+    }))
+    return axios.request({
+        url: `/News/bindArticleGroup?${params}`,
+        method: 'post'
+    })
+}
+
+export const getFileList = form => {
+    let params = qs.stringify(Object.assign(form, {
+        token: user.token
+    }))
+    return axios.request({
+        url: `/Goods/getFiles?${params}`,
+        method: 'get'
+    })
+}

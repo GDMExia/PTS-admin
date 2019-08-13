@@ -1,5 +1,5 @@
 import FormModel from '@/libs/form-model'
-// import moment from 'moment'
+import moment from 'moment'
 
 class TourCreateModel extends FormModel {
   constructor() {
@@ -9,62 +9,68 @@ class TourCreateModel extends FormModel {
     this.ruleInline = {
       content: [{
         required: true,
-        message: '请输入简介',
+        message: '请输入正文',
         trigger: 'blur'
       }],
-      real_name: [{
+      goods_name: [{
         required: true,
-        message: '请输入商家名称',
+        message: '请输入标题',
         trigger: 'blur'
       }],
-      address: [{
+      date: [{
         required: true,
-        message: '请输入地址',
+        message: '请选择参与日期',
+        trigger: 'blur',
+        type: 'array'
+      }],
+      goods_price: [{
+        required: true,
+        message: '请输入价格',
         trigger: 'blur'
       }],
-      phone: [{
+      discount_point: [{
         required: true,
-        message: '请输入电话',
-        trigger: 'blur'
-      }],
-      merchants_cid: [{
-        required: true,
-        message: '请选择分类',
+        message: '请输入积分抵扣',
         trigger: 'blur',
       }],
-      pic: [{
+      create_name: [{
         required: true,
-        message: '请上传图片',
-        trigger: 'blur'
+        message: '请输入发布者',
+        trigger: 'blur',
       }],
     }
   }
 
   init(form) {
     this.formInline = {
-      mid: form.mid,
+      id: form.id,
+      goods_name: form.goods_name,
+      start_time: form.start_time,
+      end_time: form.end_time,
+      discount_point: form.discount_point,
+      goods_price: form.goods_price,
+      create_name: form.create_name,
       content: form.content,
-      address: form.address,
-      phone: form.phone,
-      pic: form.pic,
-      real_name: form.real_name,
-      merchants_cid: form.merchants_cid,
-      contact: form.contact,
+      img_list: form.img_list,
+      date: form.date
     }
     return this
   }
 
   converter(form) {
+    const [start_time, end_time] = form.date
     return {
       id: form.id,
       goods_name: form.goods_name,
-      img_list: form.img_list,
-      content: form.content,
-      create_name: form.create_name,
-      goods_price: form.goods_price,
+      start_time: moment(start_time).format("YYYY-MM-DD"),
+      end_time: moment(end_time).format("YYYY-MM-DD"),
       discount_point: form.discount_point,
-      end_time: form.end_time,
-      start_time: form.start_time,
+      goods_price: form.goods_price,
+      create_name: form.create_name,
+      content: form.content,
+      img_list: form.img_list.map(item=>{
+        return item.file_url
+      }),
     }
   }
 }

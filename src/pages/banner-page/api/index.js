@@ -111,3 +111,14 @@ export const setUpload = form => {
         method: 'post'
     })
 }
+
+export const setFileDelete = id => {
+    const params = qs.stringify({
+        file_id: id,
+        token: user.token
+    })
+    return axios.request({
+        url: `/Goods/deleteFiles?${params}`,
+        method: 'get'
+    })
+}

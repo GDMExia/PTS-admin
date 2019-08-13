@@ -25,7 +25,7 @@
             <Row>
                 <Col span="12">
                     <FormItem label="分类" prop="merchants_cid">
-                        <treeselect v-model="formInline.merchants_cid" :options="typeList" style="width: 200px" placeholder="分类"/>
+                        <treeselect v-model="formInline.merchants_cid" :disable-branch-nodes="true" :options="typeList" style="width: 200px" placeholder="分类"/>
                         <!-- <Cascader :data="typeList" v-model="formInline.merchants_cid"></Cascader> -->
                     </FormItem>
                 </Col>

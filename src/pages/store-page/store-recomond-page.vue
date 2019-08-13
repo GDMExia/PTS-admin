@@ -3,11 +3,11 @@
         <Card>
             <div class="clearfix" style="margin-bottom: 10px;">
                 <div class="pull-left">
-                    <!-- <Button @click="handleCreate" class="search-btn" type="primary" style="margin-right:5px">
-                        <Icon type="md-add"/>&nbsp;&nbsp;添加</Button> -->
+                    
                 </div>
                 <div class="pull-right">
-                    
+                    <Button @click="handleCreate" v-for="(item, index) in category" :key="index" class="search-btn" :type="item.id==categoryId?'pramiry':'default'" style="margin-right:5px">
+                        <Icon type="md-add"/>&nbsp;&nbsp;{{item.name}}</Button>
                 </div>
             </div>
             <tables class="self-table-wrap" ref="tables" stripe v-model="tableData" :columns="columns" @on-edit="handleEdit"
@@ -70,7 +70,13 @@ export default {
             modelStatus: { show: false, hide: false, loading: true, title: '', name: '' },
             createForm: {},
             infoForm: {},
-            typeList: []
+            typeList: [],
+            categoryId: 1,
+            category: [
+                {id: 1,name: '大类1'},
+                {id: 2,name: '大类2'},
+                {id: 3,name: '大类3'},
+            ]
         }
     },
     methods: {

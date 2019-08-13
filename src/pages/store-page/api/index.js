@@ -12,7 +12,7 @@ export const storeColumn = [
         title: '操作',
         key: 'handle',
         align: 'center',
-        width: 440,
+        width: 460,
         fixed: 'right',
         button: [(h, params, vm) => {
             return h('div', [
