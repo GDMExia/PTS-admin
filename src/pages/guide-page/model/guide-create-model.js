@@ -1,7 +1,7 @@
 import FormModel from '@/libs/form-model'
 // import moment from 'moment'
 
-class ShareCreateModel extends FormModel {
+class GuideCreateModel extends FormModel {
   constructor() {
     super()
     // this.init()
@@ -12,7 +12,7 @@ class ShareCreateModel extends FormModel {
         message: '请输入标题',
         trigger: 'blur'
       }],
-      details: [{
+      content: [{
         required: true,
         message: '请输入详情',
         trigger: 'blur'
@@ -24,10 +24,8 @@ class ShareCreateModel extends FormModel {
   init(form) {
     this.formInline = {
       title: form.title,
-      details: form.details,
+      content: form.content,
       id: form.id,
-      activity: form.activity,
-      image: form.image,
     }
     return this
   }
@@ -35,10 +33,11 @@ class ShareCreateModel extends FormModel {
   converter(form) {
     return {
       title: form.title,
-      intro: form.details,
+      content: form.content,
       id: form.id,
+      gid: '2',
     }
   }
 }
 
-export default new ShareCreateModel()
+export default new GuideCreateModel()

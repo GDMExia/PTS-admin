@@ -35,7 +35,7 @@
         <Col span="14">
           <div v-if="imgList" style="display:flex;flex-wrap:wrap">
             <div v-for="(item,index) of imgList" style="display:inlineBlock">
-              <img :src="configurl+'/cos/get/'+item" style="width:200px;height:200px" />
+              <img :src="item" style="width:200px;height:200px" />
               <Button type="error" shape="circle" icon="ios-trash" style="display:block;marginLeft:90px;" @click="deleteimg(index)"></Button>
             </div>
           </div>
@@ -101,12 +101,12 @@ export default {
       } 
       // this.formInline.assets.push(file.name)
       var formData = new FormData();
-      formData.append('head_file', file)
+      formData.append('file_image', file)
       setUpload(formData).then(res=>{
           console.log(res)
-          if(res.data.code == 1000) {
+          if(res.data.code == 200) {
               this.$Message.info('上传成功')
-              this.imgList.push(res.data.data.dataInfo.key)
+              this.imgList.push(res.data.data.fileUrl)
               this.formInline.assets=this.imgList.join(',')
           }
       })

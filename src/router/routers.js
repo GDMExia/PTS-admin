@@ -100,6 +100,15 @@ export default [
           title: '商家管理'
         },
         component: () => import('@/pages/store-page/store-page.vue')
+      },
+      {
+        path: 'storeRecomond',
+        name: 'storeRecomond',
+        meta: {
+          icon: 'ios-pin-outline',
+          title: '商家推荐'
+        },
+        component: () => import('@/pages/store-page/store-recomond-page.vue')
       }
     ]
   },
@@ -212,7 +221,7 @@ export default [
         name: 'residence',
         meta: {
           icon: 'ios-home-outline',
-          title: '民宿管理'
+          title: '活动管理'
         },
         component: () => import('@/pages/residence-page/residence-page.vue')
       },
@@ -432,35 +441,25 @@ export default [
     ]
   },
   {
-    path: '/custom',
-    name: 'custom',
+    path: '/tours',
+    name: 'tours',
     meta: {
-      icon: 'ios-card-outline',
-      title: '定制游管理',
+      icon: 'ios-cafe-outline',
+      title: '旅游管理',
       access: ['super_admin'],
-      id: 5
+      id: 8
     },
     component: Main,
     children: [
       {
-        path: 'customTour',
-        name: 'customTour',
+        path: 'tour',
+        name: 'tour',
         meta: {
-          icon: 'ios-car',
+          icon: 'ios-cafe-outline',
           title: '旅游管理'
         },
-        component: () => import('@/pages/custom-tour-page/custom-tour-page.vue')
-      },
-      {
-        path: 'price',
-        name: 'price',
-        meta: {
-          hideInMenu: true,
-          icon: 'ios-car',
-          title: '价格设置'
-        },
-        component: () => import('@/pages/custom-tour-page/set-price-page.vue')
-      },
+        component: () => import('@/pages/tour-page/tour-page.vue')
+      }
     ]
   },
   {
@@ -561,38 +560,38 @@ export default [
       }
     ]
   },
-  {
-    path: '/verify',
-    name: 'verify',
-    meta: {
-      icon: 'ios-barcode-outline',
-      title: '资金管理',
-      access: ['super_admin'],
-      id: 11
-    },
-    component: Main,
-    children: [
-      {
-        path: 'account',
-        name: 'account',
-        meta: {
-          icon: 'ios-barcode-outline',
-          title: '民宿对账管理'
-        },
-        component: () => import('@/pages/verify-account-page/verify-account-page.vue')
-      },
-      {
-        path: 'varifyOrder',
-        name: 'varifyOrder',
-        meta: {
-          hideInMenu: true,
-          icon: 'ios-barcode-outline',
-          title: '查看相关订单'
-        },
-        component: () => import('@/pages/verify-account-page/verify-order-page.vue')
-      }
-    ]
-  },
+  // {
+  //   path: '/verify',
+  //   name: 'verify',
+  //   meta: {
+  //     icon: 'ios-barcode-outline',
+  //     title: '资金管理',
+  //     access: ['super_admin'],
+  //     id: 11
+  //   },
+  //   component: Main,
+  //   children: [
+  //     {
+  //       path: 'account',
+  //       name: 'account',
+  //       meta: {
+  //         icon: 'ios-barcode-outline',
+  //         title: '民宿对账管理'
+  //       },
+  //       component: () => import('@/pages/verify-account-page/verify-account-page.vue')
+  //     },
+  //     {
+  //       path: 'varifyOrder',
+  //       name: 'varifyOrder',
+  //       meta: {
+  //         hideInMenu: true,
+  //         icon: 'ios-barcode-outline',
+  //         title: '查看相关订单'
+  //       },
+  //       component: () => import('@/pages/verify-account-page/verify-order-page.vue')
+  //     }
+  //   ]
+  // },
   {
     path: '/401',
     name: 'error_401',

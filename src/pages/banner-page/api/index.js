@@ -106,11 +106,19 @@ export const setBannerChange = (id1, id2) => {
 // 上传图片
 export const setUpload = form => {
     return axios.request({
-        url: `/cos/put`,
-        headers: {
-          functionId: 8
-        },
+        url: `/File/uploadsImage`,
         data: form,
         method: 'post'
+    })
+}
+
+export const setFileDelete = id => {
+    const params = qs.stringify({
+        file_id: id,
+        token: user.token
+    })
+    return axios.request({
+        url: `/Goods/deleteFiles?${params}`,
+        method: 'get'
     })
 }

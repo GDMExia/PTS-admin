@@ -12,7 +12,7 @@ export const storeColumn = [
         title: '操作',
         key: 'handle',
         align: 'center',
-        width: 440,
+        width: 460,
         fixed: 'right',
         button: [(h, params, vm) => {
             return h('div', [
@@ -37,7 +37,7 @@ export const storeColumn = [
                 h(
                     'i-button', {
                         props: {
-                            type: 'success',
+                            type: 'info',
                             icon: 'md-create',
                             size: 'small'
                         },
@@ -46,7 +46,7 @@ export const storeColumn = [
                         },
                         on: {
                             click: () => {
-                                vm.$emit('on-edit', params)
+                                vm.$emit('on-info', params)
                             }
                         }
                     },
@@ -87,8 +87,8 @@ export const storeColumn = [
                 h(
                     'i-button', {
                         props: {
-                            type: 'warning',
-                            icon: 'md-create',
+                            type: 'success',
+                            icon: 'md-lock',
                             size: 'small'
                         },
                         style: {
@@ -96,11 +96,11 @@ export const storeColumn = [
                         },
                         on: {
                             click: () => {
-                                vm.$emit('on-edit', params)
+                                vm.$emit('on-forbid', params)
                             }
                         }
                     },
-                    '禁用'
+                    params.row.is_disable!='0' ? '启用' : '禁用'
                 ),
                 h(
                     'Poptip',
@@ -116,7 +116,7 @@ export const storeColumn = [
                         },
                         on: {
                             'on-ok': () => {
-                                vm.$emit('on-delete', params)
+                                vm.$emit('on-reset', params)
                             }
                         }
                     },
@@ -125,8 +125,8 @@ export const storeColumn = [
                             'i-button',
                             {
                                 props: {
-                                    type: 'info',
-                                    icon: 'ios-trash-outline',
+                                    type: 'warning',
+                                    icon: 'ios-redo',
                                     size: 'small'
                                 }
                             },
@@ -141,84 +141,56 @@ export const storeColumn = [
 
 export const getStoreList = page => {
     return axios.request({
-        url: `/admin.php/Merchants/getMerchantsList?page=${page.index}&pageSize=${page.size}&token=${user.token}`,
+        url: `/Merchants/getMerchantsList?page=${page.index}&pageSize=${page.size}&token=${user.token}`,
         method: 'get'
     })
 }
 
-export const setGuideCreate = form => {
-    let params = {
-        intro: form.intro,
-        title: form.title
-    }
+export const setStoreCreate = form => {
+    let params = qs.stringify(Object.assign(form, {
+        token: user.token
+    }))
     return axios.request({
-        url: `/guides/add`,
-        headers: {
-          functionId: 9
-        },
-        data: params,
+        url: `/Merchants/create?${params}`,
         method: 'post'
     })
 }
 
-export const getGuideDetail = id => {
+export const setStoreDelete = id => {
+    const params = qs.stringify({
+        mid: id,
+        token: user.token
+    })
     return axios.request({
-        url: `/guides/list/${id}`,
-        headers: {
-          functionId: 9
-        },
+        url: `/Merchants/delete?${params}`,
         method: 'get'
     })
 }
 
-export const setGuideEdit = form => {
-    return axios.request({
-        url: `/guides/editorGuides`,
-        headers: {
-          functionId: 9
-        },
-        data: form,
-        method: 'put'
+export const getStoreInfo = id => {
+    const params = qs.stringify({
+        mid: id,
+        token: user.token
     })
-}
-
-export const setGuideChange = id => {
     return axios.request({
-        url: `/guides/editorStatus/${id}`,
-        headers: {
-          functionId: 9
-        },
-        method: 'put'
-    })
-}
-
-export const setGuideDelete = id => {
-    return axios.request({
-        url: `/guides/deleteInfo/${id}`,
-        headers: {
-          functionId: 9
-        },
-        method: 'delete'
-    })
-}
-
-export const getImage = () => {
-    return axios.request({
-        url: `/guides/getPicture`,
-        headers: {
-          functionId: 9
-        },
+        url: `/Merchants/getMerchantsInfo?${params}`,
         method: 'get'
     })
 }
 
-export const setImage = form => {
+export const setStoreInfo = form => {
+    let params = qs.stringify(Object.assign(form, {
+        token: user.token
+    }))
     return axios.request({
-        url: `/guides/addPicture`,
-        headers: {
-          functionId: 9
-        },
-        data: form,
-        method: 'put'
+        url: `/Merchants/updateMerchantsInfo?${params}`,
+        method: 'post'
+    })
+}
+
+export const getType = () => {
+    return axios.request({
+        url: `/Category/getMerchantsCatetree?token=${user.token}`,
+        method: 'get'
     })
 }

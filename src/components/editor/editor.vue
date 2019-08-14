@@ -68,19 +68,19 @@ export default {
       this.$emit('on-change', html, text)
     }
     let that = this
-    // this.editor.customConfig.uploadFileName ='head_file'
+    // this.editor.customConfig.uploadFileName ='file_image'
     this.editor.customConfig.uploadImgHeaders = {
       token: token
     }
-    this.editor.customConfig.uploadImgServer = this.$config.baseUrl.pro + '/cos/put';
+    this.editor.customConfig.uploadImgServer = this.$config.baseUrl.pro + '/File/uploadsImage';
     this.editor.customConfig.customUploadImg = function (files, insert) {
       // files 是 input 中选中的文件列表
       // insert 是获取图片 url 后，插入到编辑器的方法
       files.forEach(file => {
         var formData = new FormData();
-        formData.append('head_file', file)
+        formData.append('file_image', file)
         setUpload(formData).then(res=>{
-          var url = `${that.$config.configUrl}/cos/get/${res.data.data.dataInfo.key}`
+          var url = `${res.data.data.fileUrl}`
           insert(url)
         })
       });

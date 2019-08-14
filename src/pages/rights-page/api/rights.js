@@ -81,7 +81,7 @@ export const roleColumns = [
 
 export const getRoleIndex = () => {
   return axios.request({
-    url: `/admin.php/Permissions/roleList?token=${user.token}`,
+    url: `/Permissions/roleList?token=${user.token}`,
     method: 'get'
   })
 }
@@ -89,7 +89,7 @@ export const getRoleIndex = () => {
 export const setRoleCreate = form => {
   let params = qs.stringify(Object.assign(form, {token: user.token}))
   return axios.request({
-    url: `/admin.php/Permissions/createRoleSave?${params}`,
+    url: `/Permissions/createRoleSave?${params}`,
     data: form,
     method: 'post'
   })
@@ -101,10 +101,7 @@ export const setRoleDelete = id => {
     role_id:id
   })
   return axios.request({
-    url: `/admin.php/Permissions/deleteRole?${params}`,
-    headers: {
-      functionId: 1
-    },
+    url: `/Permissions/deleteRole?${params}`,
     method: 'delete'
   })
 }
@@ -236,7 +233,7 @@ export const adminColumns = [
 
 export const getAdminIndex = page => {
   return axios.request({
-    url: `/admin.php/Permissions/userList?page=${page.index}&pageSize=${page.size}&token=${user.token}`,
+    url: `/Permissions/userList?page=${page.index}&pageSize=${page.size}&token=${user.token}`,
     method: 'get'
   })
 }
@@ -244,7 +241,7 @@ export const getAdminIndex = page => {
 export const setAdminCreate = form => {
   let params = qs.stringify(Object.assign(form, {token: user.token}))
   return axios.request({
-    url: `/admin.php/Permissions/createUserSave?${params}`,
+    url: `/Permissions/createUserSave?${params}`,
     method: 'post'
   })
 }
@@ -255,10 +252,7 @@ export const setAdminDelete = id => {
     uid: id
   })
   return axios.request({
-    url: `/admin.php/Permissions/deleteUser?${params}`,
-    headers: {
-      functionId: 1
-    },
+    url: `/Permissions/deleteUser?${params}`,
     method: 'delete'
   })
 }
@@ -266,7 +260,7 @@ export const setAdminDelete = id => {
 export const setAdminForbit = form => {
   let params = qs.stringify(Object.assign(form, {token: user.token}))
   return axios.request({
-    url: `/admin.php/Permissions/stopUser?${params}`,
+    url: `/Permissions/stopUser?${params}`,
     headers: {
       functionId: 1
     },
@@ -280,7 +274,7 @@ export const setAdminReset = id => {
     uid: id
   })
   return axios.request({
-    url: `/admin.php/Permissions/restPassUser?${params}`,
+    url: `/Permissions/restPassUser?${params}`,
     headers: {
       functionId: 1
     },
@@ -290,7 +284,7 @@ export const setAdminReset = id => {
 
 export const getRightsType = () => {
   return axios.request({
-    url: `/admin.php/Permissions/getMenuList?token=${user.token}`,
+    url: `/Permissions/getMenuList?token=${user.token}`,
     method: 'get',
   })
 }

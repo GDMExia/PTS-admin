@@ -212,7 +212,7 @@ export default {
         console.log(res)
         if(res.data.code==='1000'){
           this.$Notice.success({
-            desc:res.data.message
+            desc:res.data.data.dataInfo
           })
           this.$refs['CreateForm'].resetFields()
           this.setDialogProperty(false)
@@ -238,7 +238,7 @@ export default {
           this.handleQuery()
         }else{
           this.$Notice.error({
-            desc:res.data.message
+            desc:res.data.data.errorInfo.errorInfo
           })
         }
       })

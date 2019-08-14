@@ -12,12 +12,16 @@ class ShareCreateModel extends FormModel {
         message: '请输入标题',
         trigger: 'blur'
       }],
+      image: [{
+        required: true,
+        message: '请上传封面图',
+        trigger: 'blur'
+      }],
       details: [{
         required: true,
-        message: '请输入详情',
+        message: '请输入正文',
         trigger: 'blur'
       }]
-
     }
   }
 
@@ -35,8 +39,11 @@ class ShareCreateModel extends FormModel {
   converter(form) {
     return {
       title: form.title,
-      intro: form.details,
+      content: form.details,
       id: form.id,
+      gid: '1',
+      pic: form.image,
+      goods_id: form.activity,
     }
   }
 }

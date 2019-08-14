@@ -14,9 +14,9 @@ export default {
    */
   baseUrl: {
     dev: '',
-    pro: ''
+    pro: 'http://pts.suoqoo.com/admin.php'
   },
-  configUrl: 'http://pts.suoqoo.com',
+  configUrl: 'http://pts.suoqoo.com/admin.php',
   /**
    * @description 默认打开的首页的路由name值，默认为home
    */

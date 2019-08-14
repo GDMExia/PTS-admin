@@ -8,32 +8,31 @@
                     </FormItem>
                 </Col>
                 <Col span="12">
-                    <FormItem label="封面图" prop="photo">
+                    <FormItem label="封面图" prop="image">
                         <div style="width: 50px;height: 50px; position: relative;cursor:pointer">
                             <div style="position:absolute;left:0;top:0;width:50px;height:50px">
-                                <Icon type="ios-person-add-outline" size="50" v-show="formInline.photo==''"/>
-                                <img :src="configurl+'/cos/get/'+formInline.photo" v-show="formInline.photo!=''" style="width:50px;height:50px"/>
+                                <Icon type="ios-person-add-outline" size="50" v-show="formInline.image==''"/>
+                                <img :src="formInline.image" v-show="formInline.image!=''" style="width:50px;height:50px"/>
                             </div>
                             <div style="position:absolute;left:0;top:0;width:50px;height:50px">
                                 <input type="file" id="upload" @change="uploadImage" style="width:50px;height:50px;opacity:0;"/>
                             </div>
                         </div>
-                        <p style="height:0">（仅限一张图，尺寸为345*150）</p>
                     </FormItem>
                 </Col>
             </Row>
             <Row>
               <Col span="24">
-                <FormItem label="关联活动" prop="id">
-                  <Select v-model="formInline" multiple @on-change="handleResidence">
-                    <Option v-for="item in ruleList" :value="item.value" :key="item.value">{{ item.label }}</Option>
-                  </Select>
+                <FormItem label="关联活动">
+                  <!-- <Select v-model="formInline">
+                    <Option v-for="item in activityList" :value="item.value" :key="item.value">{{ item.label }}</Option>
+                  </Select> -->
                 </FormItem>
               </Col>
             </Row>
             <Row>
-                <FormItem label="正文" prop="content">
-                    <editor ref="editor" v-model="formInline.content" :value = "formInline.content"/>
+                <FormItem label="正文" prop="details">
+                  <editor ref="editor" v-model="formInline.details" :value = "formInline.content"/>
                 </FormItem>
             </Row>
         </Form>
@@ -41,6 +40,7 @@
 </template>
 <script>
 import Editor from '_c/editor'
+import { setUpload } from '_p/banner-page/api'
 export default {
   name: 'ShareCreateForm',
   components: {
@@ -49,6 +49,7 @@ export default {
   props: {
     formInline: Object,
     ruleInline: Object,
+    activityList: Array
   },
   data() {
     return {
@@ -63,8 +64,28 @@ export default {
     },
     resetFields() {
       this.$refs.ShareCreateForm.resetFields()
-    }
-
+    },
+    uploadImage(event) {
+      var file = event.target.files[0]
+      if(file.size > 5*1024*1024) {
+        this.$Message.warning('上传图片不得大于5兆，请重新上传')
+        return
+      }
+      var imgStr = /\.(jpg|jpeg|png|bmp|BMP|JPG|PNG|JPEG)$/;
+      if(!imgStr.test(file.name)) {
+          alert("文件不是图片类型");
+          return
+      } 
+      var formData = new FormData();
+      formData.append('file_image', file)
+      setUpload(formData).then(res=>{
+          event.target.value=''
+          if(res.data.code == 200) {
+            this.$Message.info('上传成功')
+            this.formInline.image = `${res.data.data.fileUrl}`
+          }
+      })
+    },
   }
 }
 </script>

@@ -7,14 +7,24 @@ class StoreCreateModel extends FormModel {
     // this.init()
 
     this.ruleInline = {
-      title: [{
+      phone: [{
         required: true,
-        message: '请输入标题',
+        message: '请输入联系方式',
         trigger: 'blur'
       }],
-      details: [{
+      real_name: [{
         required: true,
-        message: '请输入详情',
+        message: '请输入商家名称',
+        trigger: 'blur'
+      }],
+      contact: [{
+        required: true,
+        message: '请输入联系人',
+        trigger: 'blur'
+      }],
+      admin_name: [{
+        required: true,
+        message: '请输入账号',
         trigger: 'blur'
       }]
 
@@ -23,18 +33,22 @@ class StoreCreateModel extends FormModel {
 
   init(form) {
     this.formInline = {
-      title: form.title,
-      details: form.details,
-      id: form.id,
+      phone: form.phone,
+      contact: form.contact,
+      real_name: form.real_name,
+      admin_name: form.admin_name,
+      mid: form.mid,
     }
     return this
   }
 
   converter(form) {
     return {
-      title: form.title,
-      intro: form.details,
-      id: form.id,
+      phone: form.phone,
+      contact: form.contact,
+      real_name: form.real_name,
+      admin_name: form.admin_name,
+      mid: form.mid,
     }
   }
 }
