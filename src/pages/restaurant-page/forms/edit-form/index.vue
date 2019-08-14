@@ -124,7 +124,7 @@ export default {
       formData.append('head_file', file)
       setUpload(formData).then(res=>{
           console.log(res)
-          if(res.data.code == 1000) {
+          if(res.data.code == 200) {
               this.$Message.info('上传成功')
               this.imgList.push(res.data.data.dataInfo.key)
               this.formInline.assets=this.imgList.join(',')

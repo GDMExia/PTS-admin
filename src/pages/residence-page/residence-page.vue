@@ -99,7 +99,7 @@ export default {
         },
         handleQuery() {
             getResidenceList(this.page).then(res=>{
-                if(res.data.code == 1000) {
+                if(res.data.code == 200) {
                     this.tableData = res.data.data.dataInfo?res.data.data.dataInfo.map(item=>{
                         item.isrecommendStr = item.isrecommend?'是':'否'
                         return item
@@ -108,7 +108,7 @@ export default {
                     // 关闭表单框
                     this.modelStatus.show = false
                 } else {
-                    this.$Message.error(res.data.msg)
+                    this.$Message.error(res.data.message)
                 }
             })
         },
@@ -119,12 +119,12 @@ export default {
         setCreateSubmit() {
             const form = ResidenceCreateModel.converter(this.createForm.formInline)
             setResidenceCreate(form).then(res=>{
-                if(res.data.code == 1000) {
+                if(res.data.code == 200) {
                     this.$Message.success('添加成功')
                     this.modelStatus.show = false
                     this.handleQuery()
                 } else {
-                    this.$Message.error(res.data.msg)
+                    this.$Message.error(res.data.message)
                 }
             })
         },
@@ -160,11 +160,11 @@ export default {
         setChangeSubmit() {
             const form = ResidenceGraphModel.converter(this.graphForm.formInline)
             setResidenceChange(form).then(res=>{
-                if(res.data.code == 1000) {
+                if(res.data.code == 200) {
                     this.$Message.success('操作成功')
                     this.handleQuery()
                 } else {
-                    this.$Message.error(res.data.msg)
+                    this.$Message.error(res.data.message)
                 }
             })
         },

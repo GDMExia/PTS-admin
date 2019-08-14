@@ -1,10 +1,10 @@
 import axios from '@/libs/api.request'
 import qs from 'qs'
-export const login = ({ userName, password }) => {
+export const login = ({ userName, password, ucode }) => {
   const data = qs.stringify({
     admin_name: userName,
     password: password,
-    verify_code: '9756'
+    verify_code: ucode
   })
   return axios.request({
     url: `/admin.php/Account/loginUser?${data}`,

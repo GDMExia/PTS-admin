@@ -38,9 +38,9 @@ class AdminCreateModel extends FormModel {
 
   converter(form) {
     return {
-      roleId: form.roleId,
-      account: form.accountNo,
-      name: form.accountName
+      role_id: form.roleId,
+      admin_name: form.accountNo,
+      real_name: form.accountName
     }
   }
 }

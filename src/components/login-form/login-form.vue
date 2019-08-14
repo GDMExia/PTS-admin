@@ -14,9 +14,15 @@
         </span>
       </Input>
     </FormItem>
-    <FormItem>
+    <FormItem label="验证码">
+      <div class="flx flx_m" style="display: flex;">
+        <Input v-model="form.ucode" placeholder="请输入" style=""></Input>
+        <img :src="stickyImg" alt="" width="80" height="32" style="margin-left: 15px;" @click="refresh">
+      </div>
+    </FormItem>
+    <!-- <FormItem>
       <SlidingBlock @on-sliding-block="handleSlidingBlock"/>
-    </FormItem>  
+    </FormItem>   -->
     <FormItem>
       <Button @click="handleSubmit" type="primary" long>登录</Button>
     </FormItem>
@@ -51,8 +57,10 @@ export default {
     return {
       form: {
         userName: 'admin',
-        password: ''
+        password: '',
+        ucode: ''
       },
+      stickyImg: this.$config.configUrl+'/admin.php/Account/verify',
       done: false
     }
   },
@@ -66,24 +74,32 @@ export default {
   },
   methods: {
     handleSubmit () {
-      if (!this.done) {
-        this.$Notice.error({
-          title: '错误',
-          desc: '请完成验证'
-        })
-        return
-      }
+      // if (!this.done) {
+      //   this.$Notice.error({
+      //     title: '错误',
+      //     desc: '请完成验证'
+      //   })
+      //   return
+      // }
       this.$refs.loginForm.validate((valid) => {
         if (valid) {
           this.$emit('on-success-valid', {
             userName: this.form.userName,
-            password: this.form.password
+            password: this.form.password,
+            ucode: this.form.ucode,
           })
         }
       })
     },
     handleSlidingBlock() {
       this.done = true
+    },
+    refresh() {
+      var that = this;
+      that.stickyImg ='';
+      setTimeout(function(){
+        that.stickyImg = that.$config.configUrl+'/admin.php/Account/verify';
+      },100)
     }
   }
 }

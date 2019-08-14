@@ -245,12 +245,12 @@ export default [
           title: '添加分票规则'
         },
         component: () => import('@/pages/residence-page/tickets-create-page.vue')
-      },
+      }
     ]
   },
   {
-    path: '/ticketing',
-    name: 'ticketing',
+    path: '/activityorder',
+    name: 'activityorder',
     meta: {
       icon: 'ios-card-outline',
       title: '活动订单管理',
@@ -260,59 +260,68 @@ export default [
     component: Main,
     children: [
       {
-        path: 'steamerTicket',
-        name: 'steamerTicket',
+        path: 'waitingusing',
+        name: 'waitingusing',
         meta: {
           icon: 'ios-boat-outline',
-          title: '船票'
+          title: '待使用'
         },
-        component: () => import('@/pages/ticketing-page/steamer-ticket-page.vue')
+        component: () => import('@/pages/activityorder-page/waiting-using-page.vue')
       },
       {
-        path: 'busTicket',
-        name: 'busTicket',
+        path: 'waitingevaluate',
+        name: 'waitingevaluate',
         meta: {
           icon: 'md-bus',
-          title: '大巴车票'
+          title: '待评价'
         },
-        component: () => import('@/pages/ticketing-page/bus-ticket-page.vue')
+        component: () => import('@/pages/activityorder-page/waiting-evaluate-page.vue')
       },
       {
-        path: 'entranceTicket',
-        name: 'entranceTicket',
+        path: 'evaluate',
+        name: 'evaluate',
         meta: {
           icon: 'ios-exit-outline',
-          title: '门票'
+          title: '已评价'
         },
-        component: () => import('@/pages/ticketing-page/entrance-ticket-page.vue')
+        component: () => import('@/pages/activityorder-page/evaluate-page.vue')
       },
       {
-        path: 'trafficTicket',
-        name: 'trafficTicket',
+        path: 'waitingunsubscribe',
+        name: 'waitingunsubscribe',
         meta: {
           icon: 'ios-car',
-          title: '交通车票'
+          title: '退订待审核'
         },
-        component: () => import('@/pages/ticketing-page/traffic-ticket-page.vue')
+        component: () => import('@/pages/activityorder-page/waiting-unsubscribe-page.vue')
       },
       {
-        path: 'ItemTicket',
-        name: 'ItemTicket',
+        path: 'unsubscribe',
+        name: 'unsubscribe',
         meta: {
           icon: 'ios-barcode-outline',
-          title: '项目票'
+          title: '已退订'
         },
-        component: () => import('@/pages/ticketing-page/Item-ticket-page.vue')
+        component: () => import('@/pages/activityorder-page/unsubscribe-page.vue')
+      },
+      {
+        path: 'all',
+        name: 'all',
+        meta: {
+          icon: 'ios-barcode-outline',
+          title: '全部'
+        },
+        component: () => import('@/pages/activityorder-page/all-page.vue')
       },
       {
         path: 'setproject',
         name: 'setproject',
         meta: {
           icon: 'ios-barcode-outline',
-          title: '项目设置',
+          title: '全部',
           hideInMenu: true
         },
-        component: () => import('@/pages/ticketing-page/pages/project/project.vue')
+        component: () => import('@/pages/activityorder-page/pages/project/project.vue')
       },
       {
         path: 'projectticket',
@@ -322,13 +331,13 @@ export default [
           title: '查看预定情况',
           hideInMenu: true
         },
-        component: () => import('@/pages/ticketing-page/pages/projectticket/projectticket.vue')
+        component: () => import('@/pages/activityorder-page/pages/projectticket/projectticket.vue')
       }
     ]
   },
   {
-    path: '/order',
-    name: 'order',
+    path: '/discountcouponorder',
+    name: 'discountcouponorder',
     meta: {
       icon: 'md-reorder',
       title: '优惠券订单管理',
@@ -338,88 +347,88 @@ export default [
     component: Main,
     children: [
       {
-        path: 'standby',
-        name: 'standby',
-        meta: {
-          icon: 'md-reorder',
-          title: '待出票'
-        },
-        component: () => import('@/pages/order-page/standby-page.vue')
-      },
-      {
-        path: 'tobeused',
-        name: 'tobeused',
+        path: 'waitingtouse',
+        name: 'waitingtouse',
         meta: {
           icon: 'md-reorder',
           title: '待使用'
         },
-        component: () => import('@/pages/order-page/tobeused-page.vue')
+        component: () => import('@/pages/discountcoupon-order-page/waiting-page.vue')
       },
       {
-        path: 'inuse',
-        name: 'inuse',
+        path: 'waitingunchecked',
+        name: 'waitingunchecked',
         meta: {
           icon: 'md-reorder',
-          title: '使用中'
+          title: '退订待审核'
         },
-        component: () => import('@/pages/order-page/inuse-page.vue')
+        component: () => import('@/pages/discountcoupon-order-page/waitingunchecked-page.vue')
       },
       {
-        path: 'tobeevaluated',
-        name: 'tobeevaluated',
+        path: 'unchecked',
+        name: 'unchecked',
         meta: {
           icon: 'md-reorder',
-          title: '待评价'
+          title: '已退订'
         },
-        component: () => import('@/pages/order-page/tobeevaluated-page.vue')
+        component: () => import('@/pages/discountcoupon-order-page/unchecked-page.vue')
       },
       {
-        path: 'evaluated',
-        name: 'evaluated',
-        meta: {
-          icon: 'md-reorder',
-          title: '已评价'
-        },
-        component: () => import('@/pages/order-page/evaluated-page.vue')
-      },
-      {
-        path: 'cancel',
-        name: 'cancel',
-        meta: {
-          icon: 'md-reorder',
-          title: '已取消'
-        },
-        component: () => import('@/pages/order-page/cancel-page.vue')
-      },
-      {
-        path: 'all',
-        name: 'all',
+        path: 'allorder',
+        name: 'allorder',
         meta: {
           icon: 'md-reorder',
           title: '全部'
         },
-        component: () => import('@/pages/order-page/all-order-page.vue')
-      },
-      {
-        path: 'detail',
-        name: 'detail',
-        meta: {
-          hideInMenu: true,
-          icon: 'md-reorder',
-          title: '订单详情'
-        },
-        component: () => import('@/pages/order-page/order-detail-page.vue')
-      },
-      {
-        path: 'audit',
-        name: 'audit',
-        meta: {
-          hideInMenu: true,
-          icon: 'md-reorder',
-          title: '统一审核评价'
-        },
-        component: () => import('@/pages/order-page/order-audit-page.vue')
+        component: () => import('@/pages/discountcoupon-order-page/allorder-page.vue')
       }
+      // {
+      //   path: 'evaluated',
+      //   name: 'evaluated',
+      //   meta: {
+      //     icon: 'md-reorder',
+      //     title: '已评价'
+      //   },
+      //   component: () => import('@/pages/order-page/evaluated-page.vue')
+      // },
+      // {
+      //   path: 'cancel',
+      //   name: 'cancel',
+      //   meta: {
+      //     icon: 'md-reorder',
+      //     title: '已取消'
+      //   },
+      //   component: () => import('@/pages/order-page/cancel-page.vue')
+      // },
+      // {
+      //   path: 'all',
+      //   name: 'all',
+      //   meta: {
+      //     icon: 'md-reorder',
+      //     title: '全部'
+      //   },
+      //   component: () => import('@/pages/order-page/all-order-page.vue')
+      // },
+      // {
+      //   path: 'detail',
+      //   name: 'detail',
+      //   meta: {
+      //     hideInMenu: true,
+      //     icon: 'md-reorder',
+      //     title: '订单详情'
+      //   },
+      //   component: () => import('@/pages/order-page/order-detail-page.vue')
+      // },
+      // {
+      //   path: 'audit',
+      //   name: 'audit',
+      //   meta: {
+      //     hideInMenu: true,
+      //     icon: 'md-reorder',
+      //     title: '统一审核评价'
+      //   },
+      //   component: () => import('@/pages/order-page/order-audit-page.vue')
+      // }
     ]
   },
   {
@@ -509,8 +518,8 @@ export default [
     ]
   },
   {
-    path: '/restaurants',
-    name: 'restaurants',
+    path: '/guides',
+    name: 'guides',
     meta: {
       icon: 'ios-ice-cream-outline',
       title: '使用指南管理',
@@ -520,13 +529,13 @@ export default [
     component: Main,
     children: [
       {
-        path: 'restaurant',
-        name: 'restaurant',
+        path: 'guide',
+        name: 'guide',
         meta: {
           icon: 'ios-ice-cream-outline',
-          title: '餐饮管理'
+          title: '使用指南管理'
         },
-        component: () => import('@/pages/restaurant-page/restaurant-page.vue')
+        component: () => import('@/pages/guide-page/guide-page.vue')
       }
     ]
   },

@@ -87,7 +87,7 @@ export default {
             } 
             if(this.$route.query.id) {
                 getTicketsDetail(this.$route.query.id, this.page).then(res=>{
-                    if(res.data.code == 1000) {
+                    if(res.data.code == 200) {
                         this.createForm.name = res.data.data.dataInfo.date.title
                         this.tableData = res.data.data.dataInfo.date.sortTicketInfoResponses?res.data.data.dataInfo.date.sortTicketInfoResponses.map(item=>{
                             this.$route.query.type!='view'?item.isEdit = true:item.isEdit = false
@@ -95,12 +95,12 @@ export default {
                         }):[]
                         this.page = pageInfo.converter({pageIndex: this.page.index, pageSize: this.page.size, pageTotal: res.data.data.dataInfo.total,search: this.page.search})
                     } else {
-                        this.$Message.error(res.data.msg)
+                        this.$Message.error(res.data.message)
                     }
                 })
             } else {
                 getTicketsInfo(this.page).then(res=>{
-                    if(res.data.code == 1000) {
+                    if(res.data.code == 200) {
                         this.createForm.name = res.data.data.dataInfo.date.title
                         this.tableData = res.data.data.dataInfo.date.sortTicketInfoResponses?res.data.data.dataInfo.date.sortTicketInfoResponses.map(item=>{
                             item.isEdit = true
@@ -108,7 +108,7 @@ export default {
                         }):[]
                         this.page = pageInfo.converter({pageIndex: this.page.index, pageSize: this.page.size, pageTotal: res.data.data.dataInfo.total,search: this.page.search})
                     } else {
-                        this.$Message.error(res.data.msg)
+                        this.$Message.error(res.data.message)
                     }
                 })
             }
@@ -130,20 +130,20 @@ export default {
             if(this.$route.query.id) {
                 form.id = this.$route.query.id
                 setTicketsInfoEdit(form).then(res=>{
-                    if(res.data.code == 1000) {
+                    if(res.data.code == 200) {
                         this.$Message.success('编辑成功')
                         this.$router.back()
                     } else {
-                        this.$Message.error(res.data.msg)
+                        this.$Message.error(res.data.message)
                     }
                 })
             } else {
                 setTicketsInfo(form).then(res=>{
-                    if(res.data.code == 1000) {
+                    if(res.data.code == 200) {
                         this.$Message.success('添加成功')
                         this.$router.back()
                     } else {
-                        this.$Message.error(res.data.msg)
+                        this.$Message.error(res.data.message)
                     }
                 })
             }

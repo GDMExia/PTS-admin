@@ -46,7 +46,6 @@ import {
   getRoleIndex,
   getAdminIndex,
   setAdminCreate,
-  setAdminUpdate,
   setAdminDelete,
   setAdminForbit,
   setAdminReset,
@@ -75,11 +74,11 @@ export default {
     // 查询
     handleQuery() {
       getAdminIndex(this.page).then(res => {
-        this.tableData = res.data.data.dataInfo?res.data.data.dataInfo.map(item=>{
-          item.enabledStr = item.enabled?'启用':'禁用'
+        this.tableData = res.data.data.userList?res.data.data.userList.map(item=>{
+          item.enabledStr = item.is_disable=='0'?'启用':'禁用'
           return item
         }):[]
-        this.page = pageInfo.converter({pageIndex: this.page.index, pageSize: this.page.size, pageTotal: res.data.total,search: this.page.search})
+        this.page = pageInfo.converter({pageIndex: this.page.index, pageSize: this.page.size, pageTotal: res.data.data.PageInfo.TotalCounts,search: this.page.search})
         // 关闭表单框
         this.modelStatus.show = false
         this.handleRolesList()
@@ -87,8 +86,8 @@ export default {
     },
     // 获取角色列表
     handleRolesList() {
-      getRoleIndex({index: 1, size: 100}).then(res=>{
-        this.rolesType = res.data.data.dataInfo
+      getRoleIndex().then(res=>{
+        this.rolesType = res.data.data.roleList
       })
     },
     /* 新增 */
@@ -114,12 +113,12 @@ export default {
       const form = adminCreateModel.converter(this.createForm.formInline)
       setAdminCreate(form).then(res => {
         // console.log(res.data);
-        if (res.data.code==1000) {
+        if (res.data.code==200) {
           this.$Message.success( '添加成功')
           this.modelStatus.show = false
           this.handleQuery()
         } else {
-          this.$Message.error(res.data.msg)
+          this.$Message.error(res.data.message)
         }
       })
     },
@@ -129,11 +128,14 @@ export default {
         this.$Message.error('请先设置角色')
         return
       }
+      const role = this.rolesType.find(item=>{
+        return item.permissions_name == params.row.permissions_name
+      })
       const form = {
-        id: params.row.adminUserId, 
-        accountNo: params.row.account,
-        accountName: params.row.name, 
-        roleId: params.row.roleId
+        id: params.row.uid, 
+        accountNo: params.row.admin_name,
+        accountName: params.row.real_name, 
+        roleId: role.role_id
       }
       // console.log(form)
       this.modelStatus.show = true
@@ -146,14 +148,13 @@ export default {
     /* 编辑提交 */
     handleEditSubmit() {
       const form = adminEditModel.converter(this.editForm.formInline)
-      console.log(form)
-      setAdminUpdate(form).then(res => {
-        if (res.data.code==1000) {
+      setAdminCreate(form).then(res => {
+        if (res.data.code==200) {
           this.$Message.success('编辑成功')
           this.modelStatus.show = false
           this.handleQuery()
         } else {
-          this.$Message.error(res.data.msg)
+          this.$Message.error(res.data.message)
         }
       })
     },
@@ -161,37 +162,40 @@ export default {
     /* 删除 */
     handleDelete(params) {
       // alert(params)
-      setAdminDelete(params.row.adminUserId).then(res => {
-        if(res.data.code==1000) {
+      setAdminDelete(params.row.uid).then(res => {
+        if(res.data.code==200) {
           this.$Message.success('删除成功')
           this.handleQuery()
         } else {
-          this.$Message.error(res.data.msg)
+          this.$Message.error(res.data.message)
         }
       })
     },
 
     /* 禁止 */
     handleForbid(params) {
-      setAdminForbit(params.row.adminUserId).then(res => {
-        if(res.data.code==1000) {
+      const form = {
+        uid: params.row.uid,
+        is_disable: params.row.is_disable=='0'?1:0
+      }
+      setAdminForbit(form).then(res => {
+        if(res.data.code==200) {
           this.$Message.success('操作成功')
           this.handleQuery()
         } else {
-          this.$Message.error(res.data.msg)
+          this.$Message.error(res.data.message)
         }
       })
     },
 
     /* 重置密码 */
     handleReset(params) {
-      // alert(params)
-      setAdminReset(params.row.adminUserId).then(res => {
-        if(res.data.code==1000) {
+      setAdminReset(params.row.uid).then(res => {
+        if(res.data.code==200) {
           this.$Message.success('操作成功')
           this.handleQuery()
         } else {
-          this.$Message.error(res.data.msg)
+          this.$Message.error(res.data.message)
         }
       })
     },    

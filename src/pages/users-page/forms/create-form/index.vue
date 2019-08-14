@@ -101,7 +101,7 @@ export default {
         if(res.data.code==="1000"){
           this.projectList=res.data.data.dataInfo
         }else{
-          this.$Notice.error({desc:res.data.msg})
+          this.$Notice.error({desc:res.data.message})
         }
       })
     }

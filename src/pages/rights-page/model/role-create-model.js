@@ -34,8 +34,8 @@ class RoleCreateModel extends FormModel {
 
   converter(form) {
     return {
-      roleName: form.name,
-      functionIdList: form.permission
+      permissions_name: form.name,
+      permissions_group: form.permission
     }
   }
 }
