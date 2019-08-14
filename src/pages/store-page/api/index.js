@@ -151,7 +151,8 @@ export const setStoreCreate = form => {
         token: user.token
     }))
     return axios.request({
-        url: `/Merchants/create?${params}`,
+        url: `/Merchants/create`,
+        data: params,
         method: 'post'
     })
 }
@@ -183,7 +184,8 @@ export const setStoreInfo = form => {
         token: user.token
     }))
     return axios.request({
-        url: `/Merchants/updateMerchantsInfo?${params}`,
+        url: `/Merchants/updateMerchantsInfo`,
+        data: params,
         method: 'post'
     })
 }
@@ -192,5 +194,156 @@ export const getType = () => {
     return axios.request({
         url: `/Category/getMerchantsCatetree?token=${user.token}`,
         method: 'get'
+    })
+}
+
+export const applyColumn = [
+    { title: '商家ID', key: 'id', tooltip: true },
+    { title: '商家名称', key: 'merchants_name', tooltip: true },
+    { title: '联系人', key: 'merchant_applicant', tooltip: true },
+    { title: '联系方式', key: 'merchant_applicant_phone', tooltip: true },
+    { title: '地址', key: 'address', tooltip: true },
+    { title: '服务热线', key: 'hotline_phone', tooltip: true },
+    { title: '推介人姓名', key: 'recommended_real_name', tooltip: true },
+    { title: '推介人手机号', key: 'recommended_phone', tooltip: true },
+    { title: '提交时间', key: 'create_time', tooltip: true },
+    { 
+        title: '状态',
+        key: 'is_audit',
+        render: (h, params) => {
+            return h('div', {
+                domProps: {
+                    innerHTML: params.row.is_audit==0?'待审核':params.row.is_audit==1?'通过':'未通过'
+                },
+                type: {
+                    color: params.row.is_audit==0?'black':params.row.is_audit==1?'green':'red'
+                }
+            })
+        },
+        tooltip: true
+    },
+    {
+        title: '操作',
+        key: 'handle',
+        align: 'center',
+        width: 300,
+        fixed: 'right',
+        button: [(h, params, vm) => {
+            return h('div', [
+                h(
+                    'i-button', {
+                        props: {
+                            type: 'primary',
+                            size: 'small'
+                        },
+                        style: {
+                            marginRight: '5px'
+                        },
+                        on: {
+                            click: () => {
+                                vm.$emit('on-view', params)
+                            }
+                        }
+                    },
+                    '查看完整信息'
+                ),
+                h(
+                    'Poptip',
+                    {
+                        props: {
+                            confirm: true,
+                            title: '您是否确定审核通过?通过后将为该商户创建账号',
+                            transfer: true,
+                            size: 'small'
+                        },
+                        style: {
+                            marginRight: '5px'
+                        },
+                        on: {
+                            'on-ok': () => {
+                                vm.$emit('on-able', params)
+                            }
+                        }
+                    },
+                    [
+                        h(
+                            'i-button',
+                            {
+                                props: {
+                                    type: 'success',
+                                    size: 'small'
+                                },
+                                style: {
+                                    display: params.row.is_audit == 0 ? '' : 'none'
+                                }
+                            },
+                            '审核通过'
+                        )
+                    ]
+                ),
+                h(
+                    'Poptip',
+                    {
+                        props: {
+                            confirm: true,
+                            title: '您是否确定审核不通过?',
+                            transfer: true,
+                            size: 'small'
+                        },
+                        style: {
+                            marginRight: '5px'
+                        },
+                        on: {
+                            'on-ok': () => {
+                                vm.$emit('on-disable', params)
+                            }
+                        }
+                    },
+                    [
+                        h(
+                            'i-button',
+                            {
+                                props: {
+                                    type: 'error',
+                                    size: 'small'
+                                },
+                                style: {
+                                    display: params.row.is_audit == 0 ? '' : 'none'
+                                }
+                            },
+                            '审核不通过'
+                        )
+                    ]
+                ),
+            ])
+        }]
+    }
+]
+
+export const getApplyList = page => {
+    return axios.request({
+        url: `/Merchants/getMerchantsInformation?page=${page.index}&pageSize=${page.size}&token=${user.token}`,
+        method: 'get'
+    })
+}
+
+export const getApplyDetail = id => {
+    return axios.request({
+        url: `/Merchants/getMerchantsInformationView?id=${id}&token=${user.token}`,
+        method: 'get'
+    })
+}
+
+export const setAgree = id => {
+    return axios.request({
+        url: `/Merchants/updateMerchantsInformation?id=${id}&token=${user.token}&is_audit=1`,
+        method: 'post'
+    })
+}
+
+export const setDisagree = id => {
+    return axios.request({
+        url: `/Merchants/updateMerchantsInformation?id=${id}&token=${user.token}&is_audit=2`,
+        method: 'post'
     })
 }

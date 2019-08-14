@@ -95,7 +95,8 @@ export const setTourCreate = form => {
         token: user.token
     }))
     return axios.request({
-        url: `/Goods/createNews?${params}`,
+        url: `/Goods/createNews`,
+        data: params,
         method: 'post'
     })
 }
@@ -116,7 +117,8 @@ export const setArticle = form => {
         token: user.token
     }))
     return axios.request({
-        url: `/News/bindArticleGroup?${params}`,
+        url: `/News/bindArticleGroup`,
+        data: params,
         method: 'post'
     })
 }

@@ -62,8 +62,8 @@ class TourCreateModel extends FormModel {
     return {
       id: form.id,
       goods_name: form.goods_name,
-      start_time: moment(start_time).format("YYYY-MM-DD"),
-      end_time: moment(end_time).format("YYYY-MM-DD"),
+      start_time: start_time?moment(start_time).format("YYYY-MM-DD"):'',
+      end_time: end_time?moment(end_time).format("YYYY-MM-DD"):'',
       discount_point: form.discount_point,
       goods_price: form.goods_price,
       create_name: form.create_name,

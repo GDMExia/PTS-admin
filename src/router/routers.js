@@ -109,6 +109,15 @@ export default [
           title: '商家推荐'
         },
         component: () => import('@/pages/store-page/store-recomond-page.vue')
+      },
+      {
+        path: 'storeApply',
+        name: 'storeApply',
+        meta: {
+          icon: 'ios-pin-outline',
+          title: '商家申请'
+        },
+        component: () => import('@/pages/store-page/store-apply-page.vue')
       }
     ]
   },

@@ -61,6 +61,7 @@ export default {
     this.editor = new Editor(`#${this.editorId}`)
     this.editor.customConfig.uploadImgShowBase64 = true
     this.editor.customConfig.uploadImgMaxSize = 5 * 1024 * 1024
+    this.editor.customConfig.pasteFilterStyle = false
     this.editor.customConfig.onchange = (html) => {
       let text = this.editor.txt.text()
       if (this.cache) localStorage.editorCache = html

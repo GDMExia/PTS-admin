@@ -159,6 +159,10 @@ export default {
                 this.$Message.error('请上传图片')
                 return 
             }
+            if(form.end_time == '' || form.start_time == '') {
+                this.$Message.error('请选择参与日期')
+                return 
+            }
             if(form.id == '') {
                 this.setCreate(form)
             } else {
