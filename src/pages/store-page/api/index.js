@@ -151,7 +151,8 @@ export const setStoreCreate = form => {
         token: user.token
     }))
     return axios.request({
-        url: `/Merchants/create?${params}`,
+        url: `/Merchants/create`,
+        data: params,
         method: 'post'
     })
 }
@@ -183,7 +184,8 @@ export const setStoreInfo = form => {
         token: user.token
     }))
     return axios.request({
-        url: `/Merchants/updateMerchantsInfo?${params}`,
+        url: `/Merchants/updateMerchantsInfo`,
+        data: params,
         method: 'post'
     })
 }

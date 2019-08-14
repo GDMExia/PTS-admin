@@ -98,7 +98,8 @@ export const setShareCreate = form => {
     token: user.token
   }))
   return axios.request({
-    url: `/News/createNews?${params}`,
+    url: `/News/createNews`,
+    data: params,
     method: 'post'
   })
 }
@@ -108,7 +109,8 @@ export const setShareChange = (form) => {
     token: user.token
   }))
   return axios.request({
-    url: `/News/updateNewsSate?${params}`,
+    url: `/News/updateNewsSate`,
+    data: params,
     method: 'post'
   })
 }

@@ -10,9 +10,11 @@ class TourArticleModel extends FormModel {
       article_id: [{
         required: true,
         message: '请选择旅游',
-        trigger: 'blur',
+        trigger: 'change',
         type: 'array'
-      }],
+      },
+      { type: 'array', max: 10, message: '最多选择10个', trigger: 'change' }
+    ],
     }
   }
 

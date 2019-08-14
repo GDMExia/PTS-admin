@@ -103,7 +103,6 @@ export default {
           commit('setAccess', data.access)
           commit('setPermission', data.permission)
           commit('setHasGetInfo', true)
-          commit('setFormToken', res.data.sid)
 
           res.data.data = data
           resolve(res.data)

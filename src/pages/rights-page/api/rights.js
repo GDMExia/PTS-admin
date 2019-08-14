@@ -89,8 +89,8 @@ export const getRoleIndex = () => {
 export const setRoleCreate = form => {
   let params = qs.stringify(Object.assign(form, {token: user.token}))
   return axios.request({
-    url: `/Permissions/createRoleSave?${params}`,
-    data: form,
+    url: `/Permissions/createRoleSave`,
+    data: params,
     method: 'post'
   })
 }
@@ -241,7 +241,8 @@ export const getAdminIndex = page => {
 export const setAdminCreate = form => {
   let params = qs.stringify(Object.assign(form, {token: user.token}))
   return axios.request({
-    url: `/Permissions/createUserSave?${params}`,
+    url: `/Permissions/createUserSave`,
+    data: params,
     method: 'post'
   })
 }

@@ -44,7 +44,9 @@ class HttpRequest {
       }
       if (store.state.user.token) {
         config.headers.token = `${store.state.user.token}`
-        config.headers.sid = `${store.state.user.formToken}`
+      }
+      if (config.method == 'post') {
+        config.headers['Content-Type'] = 'application/x-www-form-urlencoded'
       }
       this.queue[url] = true
       return config
@@ -55,13 +57,9 @@ class HttpRequest {
     instance.interceptors.response.use(res => {
       this.destroy(url)
       const { data, status } = res
-      store.commit('setFormToken', data.sid)
       return { data, status }
     }, error => {
       this.destroy(url)
-      if(error.response.data.sid) {
-        store.commit('setFormToken', error.response.data.sid)
-      }
       if(error.response.data.msg == 'functionId invalid') {
         confirm('暂无权限')
         router.replace({
@@ -75,9 +73,6 @@ class HttpRequest {
         router.replace({
           name: 'login'
         })
-      } else if (error.response.data.msg == 'sid invalid') {
-        confirm('sid 无效,请重新提交')
-        window.location.reload()
       } else {
         Notice.error({title: error.response.data.data?error.response.data.msg:error.response.data.message
         // Notice.error({title: '错误', desc: error.response.data.message

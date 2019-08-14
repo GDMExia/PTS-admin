@@ -3,6 +3,55 @@ import config from '@/config/'
 
 import { ObjectFormatFormData, ObjectFormatQueryString, ObjectEncodeBase64, getMethodRequestUrl } from '@/libs/util'
 
+// waiting
+export const waitingcolumns = [
+  {
+    title: '订单号',
+    key: 'orderNo',
+    tooltip: true
+  },
+  {
+    title: '活动所属',
+    key: 'standby',
+    tooltip: true
+  },
+  {
+    title: '活动标题',
+    key: 'title',
+    tooltip: true
+  },
+  {
+    title: '联系人',
+    key: 'content',
+    tooltip: true
+  },
+  {
+    title: '联系电话',
+    key: 'phone',
+    tooltip: true
+  },
+  {
+    title: '报名人数',
+    key: 'number',
+    tooltip: true
+  },
+  {
+    title: '线下需支付（元）',
+    key: 'price',
+    tooltip: true
+  },
+  {
+    title: '积分抵扣',
+    key: 'integral',
+    tooltip: true
+  },
+  {
+    title: '下单时间',
+    key: 'ordertime',
+    tooltip: true
+  }
+]
+
 // entrance
 export const entrancecolumns = [
   {
