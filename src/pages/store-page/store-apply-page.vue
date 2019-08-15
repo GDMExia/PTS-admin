@@ -73,8 +73,10 @@ export default {
             this.setDialogProperty(800, '添加', 'ApplyViewForm')
             this.createForm = ApplyViewModel.init()
             this.id=params.row.id
+            this.$refs['ApplyViewForm'].getDetail(this.id)
             this.$nextTick(()=>{
-                
+                this.id=params.row.id
+                this.$refs['ApplyViewForm'].getDetail(this.id)
             })
         },
         handleAble(params){
@@ -114,6 +116,8 @@ export default {
         },
         /* 对话框取消 */
         handlerModelDialogCancel() {
+            this.id=''
+            this.$refs['ApplyViewForm'].data={}
             // 确保关闭对话框
             this.modelStatus.show = false
             // 对话框显示footer恢复

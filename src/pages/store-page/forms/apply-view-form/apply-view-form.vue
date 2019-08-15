@@ -1,6 +1,6 @@
 <template>
     <div>
-        <Form ref="ApplyViewForm" :model="formInline" :rules="ruleInline" :label-width="80" label-position="left">
+        <Form ref="ApplyViewForm" :model="formInline" :rules="ruleInline" :label-width="150" label-position="left">
             <Row>
               <Col span="12">
                 <FormItem label="商家ID" prop="id">
@@ -37,8 +37,8 @@
                   {{data.merchants_content}}
                 </FormItem>
                 <FormItem label="资质文件" prop="document_pic">
-                  <div v-for="(item,index) of data.document_pic" :key="index" style="width:20px;height:20px;display:inline-block">
-                    <img :src="item.img_url" alt="" style="width:20px;height:20px">
+                  <div v-for="(item,index) of data.document_pic" :key="index" style="width:40px;height:40px;display:inline-block">
+                    <img :src="item.img_url" alt="" style="width:40px;height:40px">
                   </div>
                 </FormItem>
               </Col>
@@ -47,23 +47,24 @@
                   {{data.operator_content}}
                 </FormItem>
                 <FormItem label="个人形象照及个人相关证书" prop="photo">
-                  <div v-for="(item,index) of data.photo" :key="index" style="width:20px;height:20px;display:inline-block">
-                    <img :src="item.img_url" alt="" style="width:20px;height:20px">
+                  <div v-for="(item,index) of data.photo" :key="index" style="width:40px;height:40px;display:inline-block">
+                    <img :src="item.img_url" alt="" style="width:40px;height:40px">
                   </div>
                 </FormItem>
                 <FormItem label="店铺实景" prop="shop_picture">
-                  <div v-for="(item,index) of data.shop_picture" :key="index" style="width:20px;height:20px;display:inline-block">
-                    <img :src="item.img_url" alt="" style="width:20px;height:20px">
+                  <div v-for="(item,index) of data.shop_picture" :key="index" style="width:40px;height:40px;display:inline-block">
+                    <img :src="item.img_url" alt="" style="width:40px;height:40px">
                   </div>
                 </FormItem>
                 <FormItem label="产品图片" prop="goods_pic">
-                  <div v-for="(item,index) of data.goods_pic" :key="index" style="width:20px;height:20px;display:inline-block">
-                    <img :src="item.img_url" alt="" style="width:20px;height:20px">
+                  <div v-for="(item,index) of data.goods_pic" :key="index" style="overflow:hidden;vertical-align:top;">
+                    <img :src="item.pic" alt="" style="width:40px;height:40px;display:inline-block">{{item.content}}
+                    <!-- <p style="display:inline-block;vertical-align:top;float:right">{{item.content}}</p> -->
                   </div>
                 </FormItem>
-                <FormItem label="第一种产品描述" prop="goods_content">
+                <!-- <FormItem label="第一种产品描述" prop="goods_content">
                   {{data.goods_content}}
-                </FormItem>
+                </FormItem> -->
               </Col>
             </Row>
         </Form>
@@ -93,20 +94,25 @@ export default {
     resetFields() {
       this.$refs.StoreCreateForm.resetFields()
     },
-    getDetail(){
-      getApplyDetail(this.id).then(res=>{
-        console.log(res)
+    getDetail(id){
+      getApplyDetail(id).then(res=>{
+        console.log(res.data.data.merchantsInfo.goods_pic)
+        // res.data.data.merchantsInfo.goods_pic.splice(res.data.data.merchantsInfo.goods_pic.length-1,1)
+        this.data=res.data.data.merchantsInfo
+        this.data.goods_pic.splice(res.data.data.merchantsInfo.goods_pic.length-1,1)
+        // this.data.goods_pic=this.data.goods_pic.pop()
         this.$nextTick(()=>{
         this.data=res.data.data.merchantsInfo
-
+        // this.data.goods_pic=this.data.goods_pic.pop()
         })
-        this.data=res.data.data.merchantsInfo
+        // console.log(this.data.goods_pic.pop())
+        
         console.log(this.data,111)
       })
     }
   },
   mounted(){
-    this.getDetail()
+    this.getDetail(this.id)
   }
 }
 </script>
