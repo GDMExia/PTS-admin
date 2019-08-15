@@ -1,8 +1,6 @@
 <template>
   <div style="width:100%">
-    <!-- <Card> -->
-        <script id="editor" type="text/plain" style="width:1024px;height:500px;"></script>
-    <!-- </Card> -->
+    <script id="editor" type="text/plain" style="width:1024px;height:500px;"></script>
   </div>
 </template>
 <script>
@@ -37,6 +35,11 @@ import '../../../static/UE/themes/default/css/ueditor.min.css'
       });
     },
     methods: {
+      handleRichEditor(val) {
+        this.editor.addListener("ready", function () {
+          _this.editor.setContent(val); // 确保UE加载完成后，放入内容。
+        });
+      },
       getUEContent() { // 获取内容方法
         return this.editor.getContent()
       }
