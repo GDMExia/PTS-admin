@@ -37,7 +37,7 @@
                   {{data.merchants_content}}
                 </FormItem>
                 <FormItem label="资质文件" prop="document_pic">
-                  <div v-for="(item,index) of data.document_pic" :key="index" style="width:40px;height:40px;display:inline-block">
+                  <div v-for="(item,index) of data.document_pic" :key="index" style="width:40px;height:40px;display:inline-block" @click="turnTo(item.img_url)">
                     <img :src="item.img_url" alt="" style="width:40px;height:40px">
                   </div>
                 </FormItem>
@@ -47,17 +47,17 @@
                   {{data.operator_content}}
                 </FormItem>
                 <FormItem label="个人形象照及个人相关证书" prop="photo">
-                  <div v-for="(item,index) of data.photo" :key="index" style="width:40px;height:40px;display:inline-block">
+                  <div v-for="(item,index) of data.photo" :key="index" style="width:40px;height:40px;display:inline-block" @click="turnTo(item.img_url)">
                     <img :src="item.img_url" alt="" style="width:40px;height:40px">
                   </div>
                 </FormItem>
                 <FormItem label="店铺实景" prop="shop_picture">
-                  <div v-for="(item,index) of data.shop_picture" :key="index" style="width:40px;height:40px;display:inline-block">
+                  <div v-for="(item,index) of data.shop_picture" :key="index" style="width:40px;height:40px;display:inline-block" @click="turnTo(item.img_url)">
                     <img :src="item.img_url" alt="" style="width:40px;height:40px">
                   </div>
                 </FormItem>
                 <FormItem label="产品图片" prop="goods_pic">
-                  <div v-for="(item,index) of data.goods_pic" :key="index" style="overflow:hidden;vertical-align:top;">
+                  <div v-for="(item,index) of data.goods_pic" :key="index" style="overflow:hidden;vertical-align:top;"  @click="turnTo(item.pic)">
                     <img :src="item.pic" alt="" style="width:40px;height:40px;display:inline-block">{{item.content}}
                     <!-- <p style="display:inline-block;vertical-align:top;float:right">{{item.content}}</p> -->
                   </div>
@@ -109,6 +109,9 @@ export default {
         
         console.log(this.data,111)
       })
+    },
+    turnTo(url){
+      window.open(url)
     }
   },
   mounted(){

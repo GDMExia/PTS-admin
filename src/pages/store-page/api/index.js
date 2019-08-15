@@ -198,12 +198,12 @@ export const getType = () => {
 }
 
 export const applyColumn = [
-    { title: '商家ID', key: 'id', tooltip: true },
+    // { title: '商家ID', key: 'id', tooltip: true },
     { title: '商家名称', key: 'merchants_name', tooltip: true },
-    { title: '联系人', key: 'merchant_applicant', tooltip: true },
-    { title: '联系方式', key: 'merchant_applicant_phone', tooltip: true },
-    { title: '地址', key: 'address', tooltip: true },
-    { title: '服务热线', key: 'hotline_phone', tooltip: true },
+    // { title: '联系人', key: 'merchant_applicant', tooltip: true },
+    // { title: '联系方式', key: 'merchant_applicant_phone', tooltip: true },
+    // { title: '地址', key: 'address', tooltip: true },
+    // { title: '服务热线', key: 'hotline_phone', tooltip: true },
     { title: '推介人姓名', key: 'recommended_real_name', tooltip: true },
     { title: '推介人手机号', key: 'recommended_phone', tooltip: true },
     { title: '提交时间', key: 'create_time', tooltip: true },
