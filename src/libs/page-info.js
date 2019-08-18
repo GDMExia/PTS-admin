@@ -33,6 +33,13 @@ class PageInfo {
       search: this.search
     }
   }
+
+  base64Decode(val) {
+    let search = val.replace(/\-/g, '+')
+    search = val.replace(/\_/g, '/')
+    let searchObj = Base64.decode(search)
+    return searchObj
+  }
 }
 
 export default new PageInfo()

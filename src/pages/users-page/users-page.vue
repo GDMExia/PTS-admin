@@ -4,7 +4,7 @@
       <div>
         <top-menu class="button" @on-create="handleCreate" @on-export="handleExport" @on-price="handlePrice" @on-sign="handleSign"></top-menu>
         <div class="search search-con search-con-top">
-        <Select v-model="character" class="search-col" style="width:100px;margin-right:10px">
+        <Select v-model="queryForm.is_member" clearable class="search-col" style="width:100px;margin-right:10px">
             <Option v-for="(item,index) of characterList"
             :key="index"
             :value="item.key"
@@ -12,7 +12,7 @@
             {{item.value}}
             </Option>
         </Select>
-        <Input type="text" placeholder="请输入手机号进行搜索" v-model="phone" style="width:200px" />
+        <Input type="text" placeholder="请输入手机号进行搜索" v-model="queryForm.phone" style="width:200px" />
         <Button @click="handleSearch" class="search-btn" type="primary"><Icon type="search"/>&nbsp;&nbsp;搜索</Button>
       </div>
       </div>
@@ -30,7 +30,7 @@
       </Tables>
       <div style="margin-top:10px;text-align:right;">
         <Page :total="page.total" :current="page.index" :page-size="page.size" @on-change="handleChangePage" 
-        show-sizer size="small" :page-size-opts="[10,20,50,100,1000]" @on-page-size-change="handleChangePageSize"/>
+        size="small" :page-size-opts="[10,20,50,100,1000]" @on-page-size-change="handleChangePageSize"/>
       </div>
       <ModelDialog
         :status="modelStatus"
@@ -65,7 +65,7 @@ import CreateForm from "./forms/create-form"
 import CreateFormModel from "./model/create-form";
 import SetForm from "./forms/set-form"
 import SetFormModel from "./model/set-form";
-import { userscolumns , getData , createData , changeData } from "./api";
+import { userscolumns , getData , createData , setPrice } from "./api";
 export default {
   components:{
     Tables,
@@ -76,9 +76,13 @@ export default {
   },
   data(){
     return{
-      tableData:[{id:'12',nickname:'nickname',phone:'13817070484',age:'27',upperID:'12363',overtime:'2020-08-22',identify:'VIP'}],
+      tableData:[],
       columns:[],
       page: {},
+      queryForm: {
+        phone: '',
+        is_member: ''
+      },
       modelStatus: {
           show: false,
           hide: false,
@@ -94,34 +98,27 @@ export default {
   methods: {
     //获取列表
     handleQuery(){
-      // getData(Object.assign(this.page,{character:'tourists'})).then(res=>{
-      //   if(res.data.code==="1000"){
-      //     this.tableData=res.data.data.dataInfo;
-      //     this.page={
-      //       index:res.data.pageIndex,
-      //       size:res.data.pageSize,
-      //       total:res.data.total
-      //     }
-      //   }else{
-      //     this.$Notice.error({
-      //       desc:'获取失败'
-      //     })
-      //   }
-      // })
+      getData(this.page, this.queryForm).then(res=>{
+        if(res.data.code==200) {
+          this.tableData = res.data.data.userList?res.data.data.userList.map(item=>{
+            item.identify = item.is_member==1?'VIP':'普通用户'
+            return item
+          }):[]
+          this.page = pageInfo.converter({pageIndex: this.page.index, pageSize: this.page.size, pageTotal: res.data.data.PageInfo.TotalCounts,search: this.page.search})
+        } else {
+          this.$Message.error(res.data.message)
+        }
+      })
     },
     // 改变页码
     handleChangePage(params) {
-        console.log("改变页码", params);
         this.page.index=params
-        this.handleQuery(params);
-        // console.log(this.page)
+        this.handleQuery();
     },
     // 改变显示条目
     handleChangePageSize(params) {
-        console.log("改变显示条目", params);
         this.page.size=params
-        this.handleQuery(params);
-        // console.log(this.page)
+        this.handleQuery();
     },
     // 弹出框设置
     setDialogProperty(show, title, name, width) {
@@ -136,19 +133,44 @@ export default {
     },
     //搜索
     handleSearch(){
+      this.queryForm.is_member = this.queryForm.is_member||this.queryForm.is_member===0?this.queryForm.is_member:''
+      this.page.search = pageInfo.transfer(this.queryForm)
       this.handleQuery()
     },
     //导出
     handleExport(){
-
+      this.queryForm.is_member = this.queryForm.is_member||this.queryForm.is_member===0?this.queryForm.is_member:''
+      const form = this.queryForm
+      location.href = `${this.$config.baseUrl.pro}/Export/userExcalPut?is_member=${form.is_member}&phone=${form.phone}`
     },
     //设置vip价格
     handlePrice(){
       this.setDialogProperty(true,'VIP年费设置','SetForm',500)
     },
+    handleSetPrice() {
+      const form = this.setForm.formInline
+      setPrice(form).then(res=>{
+        if(res.data.code==200) {
+          this.$Message.success('设置成功')
+          this.modelStatus.show = false
+        } else {
+          this.$Message.error(res.data.message)
+        }
+      })
+    },
     // 弹出框点击确定
     ok(name){
-      
+      if(name==='SetForm') {
+        this.$refs.SetForm.validate(valid=>{
+            if(valid) {
+                this.handleSetPrice()
+            }
+        })
+      } 
+      this.modelStatus.loading = false
+      this.$nextTick(() => {
+          this.modelStatus.loading = true
+      })
     },
     //弹出框取消
     cancel(name){
