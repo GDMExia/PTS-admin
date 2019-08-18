@@ -36,8 +36,10 @@ import '../../../static/UE/themes/default/css/ueditor.min.css'
     },
     methods: {
       handleRichEditor(val) {
+        const _this = this;
         this.editor.addListener("ready", function () {
-          _this.editor.setContent(val); // 确保UE加载完成后，放入内容。
+           // 确保UE加载完成后，放入内容。
+           _this.editor.setContent(val);
         });
       },
       getUEContent() { // 获取内容方法
