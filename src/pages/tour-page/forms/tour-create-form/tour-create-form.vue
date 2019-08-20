@@ -44,24 +44,25 @@
                 </Col>
                 <Col span="12">
                     <FormItem label="价格" prop="goods_price">
-                        <Input v-model="formInline.goods_price" placeholder="请输入" />
+                        <Input v-model="formInline.goods_price" style="width: 200px" placeholder="请输入" />
                     </FormItem>
                 </Col>
             </Row>
             <Row>
                 <Col span="12">
                     <FormItem label="积分抵扣" prop="discount_point">
-                        <Input v-model="formInline.discount_point" placeholder="请输入" />
+                        <Input v-model="formInline.discount_point" style="width: 200px" placeholder="请输入" />
                     </FormItem>
                 </Col>
                 <Col span="12">
                     <FormItem label="发布者" prop="create_name">
-                        <Input v-model="formInline.create_name" placeholder="请输入" />
+                        <Input v-model="formInline.create_name" style="width: 200px" placeholder="请输入" />
                     </FormItem>
                 </Col>
             </Row>
             <Row>
                 <FormItem label="正文" prop="content">
+                   <!--  <UEtor :defaultMsg="formInline.content" :config=config  ref="uetor"></UEtor> -->
                     <editor ref="editor" v-model="formInline.content" :value = "formInline.content"/>
                 </FormItem>
             </Row>
@@ -70,10 +71,12 @@
 </template>
 <script>
 import Editor from "_c/editor";
+import UEtor from "_c/ueditor";
 import {setUpload, setFileDelete} from '_p/banner-page/api'
 export default {
     components: {
-        Editor
+        Editor,
+        UEtor
     },
     props: {
         formInline: Object,
@@ -82,7 +85,12 @@ export default {
     },
     data() {
         return {
-            fileList: []
+            fileList: [],
+            config: {
+                initialFrameWidth: 780,
+                initialFrameHeight: 300
+            },
+            id: 'container',
         }
     },
     methods: {
@@ -100,7 +108,12 @@ export default {
             this.$refs.TourCreateForm.validate(cb)
         },
         handleRichEditor() {
+            // this.$refs.uetor.handleRichEditor(this.formInline.content)
             this.$refs.editor.handleRichEditor(this.formInline.content)
+        },
+        getEdiotrContent () {
+            let content = this.$refs.uetor.getUEContent() // 调用子组件方法
+            return content
         },
         handleRemove(id) {
             this.formInline.img_list = this.formInline.img_list.filter(item=>{

@@ -1,18 +1,13 @@
 import axios from '@/libs/api.request' // 引入 请求模块
-import config from '@/config/'
+import store from '@/store'
+import qs from 'qs'
+const user = store.state.user
 
 // import { ObjectFormatFormData, ObjectFormatQueryString, ObjectEncodeBase64, getMethodRequestUrl } from '@/libs/util'
 
-export const getData = (params) => { 
+export const getData = (params, search) => { 
   return axios.request({
-    url: `/users?pageIndex=${params.index}&pageSize=${params.size}&userType=${params.character==='全部'?'':params.character}`,
-    method: 'get'
-  })
-}
-
-export const getCharacterList = () => {
-  return axios.request({
-    url: `/users/type`,
+    url: `/User/index?page=${params.index}&pageSize=${params.size}&token=${user.token}&is_member=${search.is_member}&phone=${search.phone}`,
     method: 'get'
   })
 }
@@ -25,17 +20,15 @@ export const createData = (params) => {
   })
 }
 
-export const getProjectList = (params) => {
-  return axios.request({
-    url: `/project/list`,
-    method: 'get'
+export const setPrice = (form) => {
+  const params = qs.stringify({
+    token: user.token,
+    vip_price: form.vip_price
   })
-}
-
-export const changeData = (params) => {
   return axios.request({
-    url: `/users/enable/${params.id}`,
-    method: 'put'
+    url: `/User/updateVipPrice`,
+    data: params,
+    method: 'post'
   })
 }
 
@@ -49,7 +42,7 @@ export const changeworkData = (params) => {
 export const userscolumns = [
   {
     title: 'ID',
-    key: 'id',
+    key: 'uid_number',
     tooltip: true
   },
   {
@@ -69,13 +62,14 @@ export const userscolumns = [
   },
   {
     title: '上级ID',
-    key: 'upperID',
+    key: 'recommended_uid',
     tooltip: true
   },
   {
     title: 'VIP到期时间',
     key: 'overtime',
-    tooltip: true
+    tooltip: true,
+    width: 160
   },
   {
     title: '当前身份',
@@ -87,7 +81,7 @@ export const userscolumns = [
     key: 'handle',
     fixed: 'right',
     align: 'center',
-    width: 300,
+    width: 280,
     button: [
       (h, params, vm) => {
         return h('div', [

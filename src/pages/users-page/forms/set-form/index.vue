@@ -1,10 +1,10 @@
 <template>
   <div>
-    <Form @submit.native.prevent="()=>{}" ref="SetForm" :model="formInline" :rules="ruleInline" :label-width="80">
+    <Form @submit.native.prevent="()=>{}" ref="SetForm" :model="formInline" :rules="ruleInline" :label-width="100">
       <Row>
         <Col>
-          <FormItem label="年费（元）" prop="userType">
-            <Input type='text' v-model="formInline.character" placeholder="请输入内容" />
+          <FormItem label="年费（元）" prop="vip_price">
+            <Input type='text' v-model="formInline.vip_price" placeholder="请输入" />
             <!-- <Select v-model="formInline.userType">
               <Option v-for="(item,index) of characterList"
               :key="index"
@@ -36,10 +36,10 @@ export default {
   },
   methods: {
     validate(cb) {
-      this.$refs.CreateForm.validate(cb)
+      this.$refs.SetForm.validate(cb)
     },
     resetFields() {
-      this.$refs.CreateForm.resetFields()
+      this.$refs.SetForm.resetFields()
     },
     getList(){
       getCharacterList().then(res=>{

@@ -154,7 +154,8 @@ export default {
             })
         },
         handleSubmit() {
-            const form = TourCreateModel.converter(this.createForm.formInline)
+            let form = TourCreateModel.converter(this.createForm.formInline)
+            // form.content = this.$refs.TourCreateForm.getEdiotrContent()
             if(form.img_list.length==0) {
                 this.$Message.error('请上传图片')
                 return 

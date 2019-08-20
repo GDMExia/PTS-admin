@@ -1,8 +1,6 @@
 <template>
   <div style="width:100%">
-    <!-- <Card> -->
-        <script id="editor" type="text/plain" style="width:1024px;height:500px;"></script>
-    <!-- </Card> -->
+    <script id="editor" type="text/plain" style="width:1024px;height:500px;"></script>
   </div>
 </template>
 <script>
@@ -48,6 +46,13 @@ import '../../../static/UEditor/xiumi-ue-v5.css'
       });
     },
     methods: {
+      handleRichEditor(val) {
+        const _this = this;
+        this.editor.addListener("ready", function () {
+           // 确保UE加载完成后，放入内容。
+           _this.editor.setContent(val);
+        });
+      },
       getUEContent() { // 获取内容方法
         return this.editor.getContent()
       },

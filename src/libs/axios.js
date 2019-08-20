@@ -57,6 +57,15 @@ class HttpRequest {
     instance.interceptors.response.use(res => {
       this.destroy(url)
       const { data, status } = res
+      if(data.StatusInfo&&data.StatusInfo.ErrorDetailCode=='token不合法') {
+        confirm('token过期')
+        store.commit('setToken', '')
+        store.commit('setAccess', [])
+        store.commit('setPermission', [])
+        router.replace({
+          name: 'login'
+        })
+      }
       return { data, status }
     }, error => {
       this.destroy(url)

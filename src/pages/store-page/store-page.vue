@@ -213,11 +213,11 @@ export default {
                     this.typeList = res.data.data.Classification.map(item=>{
                         item.id = item.merchants_cid
                         item.label = item.cate_name
-                        item.children = item.Classification.map(value=>{
+                        item.children = item.Classification?item.Classification.map(value=>{
                             value.id = value.merchants_cid
                             value.label = value.cate_name
                             return value
-                        })
+                        }):null
                         return item
                     })
                 } else {
