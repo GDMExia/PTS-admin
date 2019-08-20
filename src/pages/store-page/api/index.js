@@ -226,7 +226,7 @@ export const applyColumn = [
         title: '操作',
         key: 'handle',
         align: 'center',
-        width: 300,
+        width: 350,
         fixed: 'right',
         button: [(h, params, vm) => {
             return h('div', [
@@ -304,7 +304,7 @@ export const applyColumn = [
                             'i-button',
                             {
                                 props: {
-                                    type: 'error',
+                                    type: 'warning',
                                     size: 'small'
                                 },
                                 style: {
@@ -312,6 +312,37 @@ export const applyColumn = [
                                 }
                             },
                             '审核不通过'
+                        )
+                    ]
+                ),
+                h(
+                    'Poptip',
+                    {
+                        props: {
+                            confirm: true,
+                            title: '您是否确定删除?',
+                            transfer: true,
+                            size: 'small'
+                        },
+                        style: {
+                            marginRight: '5px'
+                        },
+                        on: {
+                            'on-ok': () => {
+                                vm.$emit('on-delete', params)
+                            }
+                        }
+                    },
+                    [
+                        h(
+                            'i-button',
+                            {
+                                props: {
+                                    type: 'error',
+                                    size: 'small'
+                                }
+                            },
+                            '删除'
                         )
                     ]
                 ),
@@ -345,5 +376,12 @@ export const setDisagree = id => {
     return axios.request({
         url: `/Merchants/updateMerchantsInformation?id=${id}&token=${user.token}&is_audit=2`,
         method: 'post'
+    })
+}
+
+export const deleteApply = id => {
+    return axios.request({
+        url: `/Merchants/deleteMerchantsInformation?id=${id}&token=${user.token}`,
+        method: 'get'
     })
 }

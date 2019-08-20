@@ -2,7 +2,7 @@
     <div>
         <Card>
             <tables class="self-table-wrap" ref="tables" stripe v-model="tableData" :columns="columns" @on-view="handleView"
-            @on-able="handleAble" @on-disable="handleDisable"/>
+            @on-able="handleAble" @on-disable="handleDisable" @on-delete="handleDelete"/>
             <div style="margin-top:10px;text-align:right;">
                 <Page :total="page.total" :current="page.index" :page-size="page.size" @on-change="handleOnChange" 
                 show-sizer size="small" :page-size-opts="[10,20,50,100,1000]" @on-page-size-change="handleOnChangeSize"/>
@@ -32,7 +32,8 @@ import {
     applyColumn,
     getApplyList,
     setAgree,
-    setDisagree
+    setDisagree,
+    deleteApply
 } from './api'
 import {
     setAdminReset,
@@ -91,6 +92,16 @@ export default {
         },
         handleDisable(params){
             setDisagree(params.row.id).then(res=>{
+                if(res.data.code==200){
+                    this.handleQuery()
+                    this.$Message.success('操作成功')
+                }else{
+                    this.$Message.error(res.data.message)
+                }
+            })
+        },
+        handleDelete(params){
+            deleteApply(params.row.id).then(res=>{
                 if(res.data.code==200){
                     this.handleQuery()
                     this.$Message.success('操作成功')
