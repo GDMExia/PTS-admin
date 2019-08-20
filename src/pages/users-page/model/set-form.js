@@ -7,9 +7,9 @@ class CreateForm extends FormModel {
       vip_price: [ { required: true, message: '请输入年费', trigger: 'blur' } ],
     }
   }
-  init () {
+  init (form) {
     this.formInline = {
-      'vip_price': ''
+      'vip_price': form.vip_price
     }
     return this
   }

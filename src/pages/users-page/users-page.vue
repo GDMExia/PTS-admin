@@ -65,7 +65,7 @@ import CreateForm from "./forms/create-form"
 import CreateFormModel from "./model/create-form";
 import SetForm from "./forms/set-form"
 import SetFormModel from "./model/set-form";
-import { userscolumns , getData , createData , setPrice } from "./api";
+import { userscolumns , getData , getIntegralDetail ,setIntegralInfo, setPrice } from "./api";
 export default {
   components:{
     Tables,
@@ -91,8 +91,8 @@ export default {
           name: ""
       },
       characterList:[{value:'VIP',key:1},{value:'普通用户',key:0}],
-      createForm:CreateFormModel.init(),
-      setForm:SetFormModel.init()
+      createForm:{},
+      setForm:{}
     }
   },
   methods: {
@@ -105,6 +105,16 @@ export default {
             return item
           }):[]
           this.page = pageInfo.converter({pageIndex: this.page.index, pageSize: this.page.size, pageTotal: res.data.data.PageInfo.TotalCounts,search: this.page.search})
+        } else {
+          this.$Message.error(res.data.message)
+        }
+      })
+    },
+    // 积分回显
+    handleIntegralDetail() {
+      getIntegralDetail().then(res=>{
+        if(res.data.code==200) {
+         const form = res.data.data.rulesInfo
         } else {
           this.$Message.error(res.data.message)
         }
@@ -129,7 +139,26 @@ export default {
     },
     //添加事件
     handleCreate(){
-      this.setDialogProperty(true,'获取积分规则设置','CreateForm',500)
+      getIntegralDetail().then(res=>{
+        if(res.data.code==200) {
+         const form = res.data.data.rulesInfo
+         this.createForm = CreateFormModel.init(form)
+         this.setDialogProperty(true,'获取积分规则设置','CreateForm',500)
+        } else {
+          this.$Message.error(res.data.message)
+        }
+      })
+    },
+    handleSetIntegral() {
+      const form = this.createForm.formInline
+      setIntegralInfo(form).then(res=>{
+        if(res.data.code==200) {
+          this.$Message.success('设置成功')
+          this.modelStatus.show = false
+        } else {
+          this.$Message.error(res.data.message)
+        }
+      })
     },
     //搜索
     handleSearch(){
@@ -145,7 +174,15 @@ export default {
     },
     //设置vip价格
     handlePrice(){
-      this.setDialogProperty(true,'VIP年费设置','SetForm',500)
+      getIntegralDetail().then(res=>{
+        if(res.data.code==200) {
+         const form = res.data.data.rulesInfo
+         this.setForm = SetFormModel.init(form)
+         this.setDialogProperty(true,'VIP年费设置','SetForm',500)
+        } else {
+          this.$Message.error(res.data.message)
+        }
+      })
     },
     handleSetPrice() {
       const form = this.setForm.formInline
@@ -166,7 +203,13 @@ export default {
                 this.handleSetPrice()
             }
         })
-      } 
+      } else if(name==='CreateForm') {
+        this.$refs.CreateForm.validate(valid=>{
+            if(valid) {
+                this.handleSetIntegral()
+            }
+        })
+      }
       this.modelStatus.loading = false
       this.$nextTick(() => {
           this.modelStatus.loading = true
@@ -183,12 +226,12 @@ export default {
     //查看下级
     handleShowlower(params){
       const row = params.row
-      this.$router.push({ name: 'showlower', params: { row } })
+      this.$router.push({ name: 'showlower',params: {row}, query: {uid_number: params.row.uid_number } })
     },
     //积分详情
     handleIntegral(params){
       const row = params.row
-      this.$router.push({ name: 'integral', params: { row } })
+      this.$router.push({ name: 'integral',params: {row}, query: {uid_number: params.row.uid_number }})
     }
   },
   mounted() {
