@@ -63,6 +63,7 @@ export default {
     this.editor.customConfig.uploadImgMaxSize = 5 * 1024 * 1024
     this.editor.customConfig.pasteFilterStyle = false
     this.editor.customConfig.onchange = (html) => {
+      console.log(html)
       let text = this.editor.txt.text()
       if (this.cache) localStorage.editorCache = html
       this.$emit('input', this.valueType === 'html' ? html : text)
@@ -89,7 +90,7 @@ export default {
       // insert(imgUrl)
     }
     this.editor.customConfig.onchangeTimeout = this.changeInterval
-    this.editor.customConfig.showLinkImg = false
+    this.editor.customConfig.showLinkImg = true
     this.editor.customConfig.menus = [
         'head',
         'bold',

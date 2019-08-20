@@ -20,6 +20,7 @@ const turnTo = (to, access, next) => {
 }
 
 router.beforeEach((to, from, next) => {
+  console.log(to)
   iView.LoadingBar.start()
   const token = getToken()
   if (!token && to.name !== LOGIN_PAGE_NAME) {
@@ -38,7 +39,7 @@ router.beforeEach((to, from, next) => {
   } else {
     if (store.state.user.hasGetInfo) {
       const permission = store.state.user.permission
-      console.log(permission)
+      console.log(permission,111111111)
       for (let r of router.options.routes) {
         const id = r.meta.id || 0
         const pos = store.state.user.permission.findIndex(value => {
@@ -50,6 +51,7 @@ router.beforeEach((to, from, next) => {
           r.meta.access = ['super_admin']
         }
       }
+      console.log(to.name)
       turnTo(to, store.state.user.access, next)
     } else {
       store.dispatch('getUserInfo').then(user => {

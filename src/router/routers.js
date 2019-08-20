@@ -220,7 +220,7 @@ export default [
           icon: 'ios-home-outline',
           title: '优惠券管理'
         },
-        component: () => import('_c/ueditor/index.vue')
+        component: () => import('_c/ueditor/ed.vue')
       }
     ]
   },
