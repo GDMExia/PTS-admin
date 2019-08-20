@@ -204,15 +204,6 @@ export default [
     },
     component: Main,
     children: [
-      // {
-      //   path: 'discountcoupon',
-      //   name: 'discountcoupon',
-      //   meta: {
-      //     icon: 'ios-home-outline',
-      //     title: '优惠券管理'
-      //   },
-      //   component: () => import('@/pages/discountcoupon-page/discountcoupon-page.vue')
-      // }
       {
         path: 'discountcoupon',
         name: 'discountcoupon',
@@ -220,8 +211,17 @@ export default [
           icon: 'ios-home-outline',
           title: '优惠券管理'
         },
-        component: () => import('_c/ueditor/ed.vue')
+        component: () => import('@/pages/discountcoupon-page/discountcoupon-page.vue')
       }
+      // {
+      //   path: 'discountcoupon',
+      //   name: 'discountcoupon',
+      //   meta: {
+      //     icon: 'ios-home-outline',
+      //     title: '优惠券管理'
+      //   },
+      //   component: () => import('_c/ueditor/ed.vue')
+      // }
     ]
   },
   {

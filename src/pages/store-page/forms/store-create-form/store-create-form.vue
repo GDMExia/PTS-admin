@@ -10,8 +10,22 @@
             </Row>
             <Row>
               <Col span="24">
+                <FormItem label="商家公司全称" prop="company">
+                  <Input v-model="formInline.company" placeholder="请输入" />
+                </FormItem>
+              </Col>
+            </Row>
+            <Row>
+              <Col span="24">
                 <FormItem label="商家名称" prop="real_name">
                   <Input v-model="formInline.real_name" placeholder="请输入" />
+                </FormItem>
+              </Col>
+            </Row>
+            <Row>
+              <Col span="24">
+                <FormItem label="法定代表人" prop="legal_person">
+                  <Input v-model="formInline.legal_person" placeholder="请输入" />
                 </FormItem>
               </Col>
             </Row>

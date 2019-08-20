@@ -98,6 +98,8 @@ export default {
                 real_name: '',
                 admin_name: '',
                 mid: '',
+                legal_person: '',
+                company: ''
             }
             this.setDialogProperty(600, '添加', 'StoreCreateForm')
             this.createForm = StoreCreateModel.init(form)
@@ -113,6 +115,8 @@ export default {
                 real_name: params.row.real_name,
                 admin_name: params.row.admin_name,
                 mid: params.row.mid,
+                legal_person: params.row.legal_person,
+                company: params.row.company
             }
             this.setDialogProperty(600, '编辑', 'StoreCreateForm')
             this.createForm = StoreCreateModel.init(form)

@@ -26,6 +26,16 @@ class StoreCreateModel extends FormModel {
         required: true,
         message: '请输入账号',
         trigger: 'blur'
+      }],
+      company: [{
+        required: true,
+        message: '请输入账号',
+        trigger: 'blur'
+      }],
+      legal_person: [{
+        required: true,
+        message: '请输入账号',
+        trigger: 'blur'
       }]
 
     }
@@ -38,6 +48,8 @@ class StoreCreateModel extends FormModel {
       real_name: form.real_name,
       admin_name: form.admin_name,
       mid: form.mid,
+      legal_person: form.legal_person,
+      company: form.company
     }
     return this
   }
@@ -49,6 +61,8 @@ class StoreCreateModel extends FormModel {
       real_name: form.real_name,
       admin_name: form.admin_name,
       mid: form.mid,
+      legal_person: form.legal_person,
+      company: form.company
     }
   }
 }
