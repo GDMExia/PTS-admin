@@ -45,6 +45,13 @@
             </Row>
             <Row>
               <Col span="24">
+                <FormItem label="商家折扣" prop="save">
+                  <Input v-model="formInline.save" type="number" placeholder="请输入纯数字" />
+                </FormItem>
+              </Col>
+            </Row>
+            <Row>
+              <Col span="24">
                 <FormItem label="初始密码">
                   888888
                 </FormItem>
