@@ -39,6 +39,24 @@ export const changeworkData = (params) => {
   })
 }
 
+export const getIntegralDetail = () => {
+  return axios.request({
+    url: `/User/getUserIntegralRules?token=${user.token}`,
+    method: 'get'
+  })
+}
+
+export const setIntegralInfo = form => {
+  let params = qs.stringify(Object.assign(form, {
+    token: user.token
+  }))
+  return axios.request({
+    url: `/User/updateUserIntegralRules`,
+    method: 'post',
+    data: params
+  })
+}
+
 export const userscolumns = [
   {
     title: 'ID',

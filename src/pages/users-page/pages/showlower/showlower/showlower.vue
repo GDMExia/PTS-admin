@@ -44,7 +44,7 @@ export default {
       'closeTag'
     ]),
     handleQuery(){
-      getData(this.page, this.row.uid_number).then(res=>{
+      getData(this.page, this.$route.query.uid_number).then(res=>{
         if(res.data.code==200) {
           this.tableData = res.data.data.userList?res.data.data.userList.map(item=>{
             item.sexStr = item.sex==1?'男':'女'

@@ -2,14 +2,14 @@
   <div>
     <Card>
       <top-menu @on-back="handleBack"></top-menu>
-      <div>
-        <div>
-          <p>当前积分</p>
-          <p>{{currentValue}}</p>
+      <div class="box">
+        <div class="box-item">
+          <p class="box-item-title">当前积分</p>
+          <p class="box-item-num">{{currentValue}}</p>
         </div>
-        <div>
-          <p>总获得积分</p>
-          <p>{{totalValue}}</p>
+        <div class="box-item">
+          <p class="box-item-title">总获得积分</p>
+          <p class="box-item-num">{{totalValue}}</p>
         </div>
       </div>
       <Tables
@@ -56,11 +56,11 @@ export default {
       'closeTag'
     ]),
     handleQuery(){
-      getData(this.page, this.row.uid_number).then(res=>{
+      getData(this.page, this.$route.query.uid_number).then(res=>{
         if(res.data.code==200) {
           this.tableData = res.data.data.paymentList?res.data.data.paymentList:[]
-          this.currentValue = res.data.data.accountPrice
-          this.totalValue = res.data.data.accountPriceTal
+          this.currentValue = res.data.data.accountPrice?res.data.data.accountPrice:0
+          this.totalValue = res.data.data.accountPriceTal?res.data.data.accountPriceTal:0
           this.page = pageInfo.converter({pageIndex: this.page.index, pageSize: this.page.size, pageTotal: res.data.data.PageInfo.TotalCounts,search: this.page.search})
         } else {
           this.$Message.error(res.data.message)
@@ -99,5 +99,28 @@ export default {
 <style>
 .selected{
   background-color: #2d8cf0;
+}
+.box {
+  display: flex;
+  width: 50%;
+  height: 153px;
+  margin-bottom: 20px;
+}
+.box-item {
+  flex: 1;
+  border: 1px solid rgb(238,238,238);
+  margin-right: 5px;
+}
+.box-item-title {
+  height: 47px;
+  line-height: 47px;
+  background: rgb(226,226,226);
+  padding: 0 20px;
+}
+.box-item-num {
+  padding: 0 20px;
+  font-size: 30px;
+  font-weight: bold;
+  margin-top: 15px
 }
 </style>
