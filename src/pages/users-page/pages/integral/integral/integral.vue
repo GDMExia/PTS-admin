@@ -56,7 +56,7 @@ export default {
       'closeTag'
     ]),
     handleQuery(){
-      getData(this.page, this.$route.query.uid_number).then(res=>{
+      getData(this.page, this.$route.query.uid).then(res=>{
         if(res.data.code==200) {
           this.tableData = res.data.data.paymentList?res.data.data.paymentList:[]
           this.currentValue = res.data.data.accountPrice?res.data.data.accountPrice:0

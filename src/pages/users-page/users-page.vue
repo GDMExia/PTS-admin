@@ -231,7 +231,7 @@ export default {
     //积分详情
     handleIntegral(params){
       const row = params.row
-      this.$router.push({ name: 'integral',params: {row}, query: {uid_number: params.row.uid_number }})
+      this.$router.push({ name: 'integral',params: {row}, query: {uid: params.row.uid }})
     }
   },
   mounted() {
