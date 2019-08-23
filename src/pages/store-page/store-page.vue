@@ -4,7 +4,7 @@
             <div class="clearfix" style="margin-bottom: 10px;">
                 <div class="pull-left">
                     <Button @click="handleCreate" class="search-btn" type="primary" style="margin-right:5px">
-                        <Icon type="md-add"/>&nbsp;&nbsp;添加</Button>
+                        <Icon type="md-add"/>&nbsp;&nbsp;人工添加</Button>
                 </div>
                 <div class="pull-right">
                     
@@ -80,6 +80,7 @@ export default {
                 if(res.data.code == 200) {
                     this.tableData = res.data.data.userList?res.data.data.userList.map(item=>{
                         item.status = item.is_disable=='0'?'启用':'禁用'
+                        item.sign = item.is_signing=='0'?'未签约':'已签约'
                         return item
                     }):[]
                     this.page = pageInfo.converter({pageIndex: this.page.index, pageSize: this.page.size, pageTotal: res.data.data.PageInfo.TotalCounts,search: this.page.search})

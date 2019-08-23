@@ -3,11 +3,13 @@ import qs from 'qs'
 import store from '@/store'
 const user = store.state.user
 export const storeColumn = [
-    { title: '账号', key: 'admin_name', tooltip: true },
+    // { title: '账号', key: 'admin_name', tooltip: true },
     { title: '商家名称', key: 'real_name', tooltip: true },
     { title: '联系人', key: 'contact', tooltip: true },
     { title: '联系方式', key: 'phone', tooltip: true },
-    { title: '状态', key: 'status', tooltip: true },
+    { title: '启用状态', key: 'status', tooltip: true },
+    { title: '签约状态', key: 'sign', tooltip: true },
+    { title: '上架状态', key: 'sign', tooltip: true },
     {
         title: '操作',
         key: 'handle',
