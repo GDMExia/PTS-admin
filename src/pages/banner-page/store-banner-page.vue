@@ -55,16 +55,11 @@ export default {
     },
     methods: {
         handleQuery() {
-            getBannerList(1).then(res=>{
-                if(res.data.code==200) {
-                    this.tableData = res.data.data.bannerList?res.data.data.bannerList.map(item=>{
-                        item.status = item.is_show==1?'展示':'下线'
-                        return item
-                    }):[]
-                    this.page = pageInfo.converter({pageIndex: this.page.index, pageSize: this.page.size, pageTotal: res.data.data.PageInfo.TotalCounts,search: this.page.search})
-                } else {
-                    this.$Message.error(res.data.message)
-                }
+            getBannerList().then(res=>{
+                this.tableData = res.data.data.dataInfo?res.data.data.dataInfo.map(item=>{
+                    item.enabledStr = item.enabled?'展示':'下线'
+                    return item
+                }):[]
             })
         },
         // 编辑

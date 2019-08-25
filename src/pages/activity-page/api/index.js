@@ -1,22 +1,71 @@
 import axios from '@/libs/api.request'
 import qs from 'qs'
+import store from '@/store'
+const user = store.state.user
 export const residenceColumns = [
     { title: 'ID', key: 'id', tooltip: true },
-    { title: '名称', key: 'hotelName', tooltip: true },
-    { title: '是否推荐', key: 'isrecommendStr', tooltip: true },
+    { title: '活动所属', key: 'pidStr', tooltip: true },
+    { title: '标题', key: 'goods_name', tooltip: true },
+    { title: '分类', key: 'cate_name', tooltip: true },
+    { title: '截止时间', key: 'registration_time', tooltip: true },
+    { title: '人数上限', key: 'registration_number', tooltip: true },
+    { title: '剩余数量', key: 'remaining_number', tooltip: true },
+    { title: '参与时间', key: 'join_time', tooltip: true },
+    { title: '支付金额(元)', key: 'goods_price', tooltip: true },
+    { title: '积分抵扣', key: 'discount_price', tooltip: true },
+    { title: '状态', key: 'goods_status', tooltip: true },
+    { title: '发布时间', key: 'create_time', tooltip: true },
     {
         title: '操作',
         key: 'handle',
-        align: 'center',
-        width: 120,
+        align: 'left',
+        width: 360,
         fixed: 'right',
         button: [(h, params, vm) => {
             return h('div', [
                 h(
+                    'Poptip',
+                    {
+                      props: {
+                        confirm: true,
+                        title: '请审核该活动?',
+                        transfer: true,
+                        size: 'small',
+                        okText: '通过',
+                        cancelText: '不通过'
+                      },
+                      style: {
+                        marginRight: '5px',
+                        display: params.row.goods_status == '待审核'?'inline-block':'none'
+                      },
+                      on: {
+                        'on-ok': () => {
+                          vm.$emit('on-audit', {data: params, goods_status: 1})
+                        },
+                        'on-cancel': () => {
+                            vm.$emit('on-audit', {data: params, goods_status: 4})
+                        }
+                      }
+                    },
+                    [
+                      h(
+                        'i-button',
+                        {
+                            props: {
+                                type: 'warning',
+                                icon: 'ios-ribbon',
+                                size: 'small'
+                            },
+                        },
+                        '审核'
+                      )
+                    ]
+                ),
+                h(
                     'i-button', {
                         props: {
-                            type: 'warning',
-                            icon: 'ios-ribbon',
+                            type: 'primary',
+                            icon: 'ios-create',
                             size: 'small'
                         },
                         style: {
@@ -24,12 +73,62 @@ export const residenceColumns = [
                         },
                         on: {
                             click: () => {
-                                vm.$emit('on-change', params)
+                                vm.$emit('on-edit', params)
                             }
                         }
                     },
-                    params.row.isrecommend?'不推荐':'推荐'
-                )
+                    '编辑'
+                ),
+                h(
+                    'i-button', {
+                        props: {
+                            type: 'info',
+                            icon: 'md-eye',
+                            size: 'small'
+                        },
+                        style: {
+                            marginRight: '5px'
+                        },
+                        on: {
+                            click: () => {
+                                vm.$emit('on-view', params)
+                            }
+                        }
+                    },
+                    '查看报名'
+                ),
+                h(
+                    'Poptip',
+                    {
+                      props: {
+                        confirm: true,
+                        title: '确定要删除吗?',
+                        transfer: true,
+                        size: 'small'
+                      },
+                      style: {
+                        marginRight: '5px'
+                      },
+                      on: {
+                        'on-ok': () => {
+                          vm.$emit('on-delete', params)
+                        }
+                      }
+                    },
+                    [
+                      h(
+                        'i-button',
+                        {
+                          props: {
+                            type: 'error',
+                            icon: 'ios-trash-outline',
+                            size: 'small'
+                          }
+                        },
+                        '删除'
+                      )
+                    ]
+                ),
             ])
         }]
     },
@@ -185,7 +284,7 @@ export const ticketsRecidenceColumn = [
 
 export const getResidenceList = page => {
     return axios.request({
-        url: `/pms/list?pageIndex=${page.index}&pageSize=${page.size}&key=${page.search}`,
+        url: `/Goods/goodslist?page=${page.index}&pageSize=${page.size}&goods_name=${page.search}&cid=&goods_status=&token=${user.token}`,
         headers: {
           functionId: 3
         },
@@ -193,13 +292,20 @@ export const getResidenceList = page => {
     })
 }
 
+export const getActivityTypeIndex = () => {
+
+}
+
 export const setResidenceCreate = form => {
-    let params = qs.stringify(form)
+    let params = qs.stringify(Object.assign(form, {
+        token: user.token
+    }))
     return axios.request({
-        url: `/pms/add/${form.hotelId}`,
+        url: `/Goods/createGoods`,
         headers: {
           functionId: 3
         },
+        data: params,
         method: 'post'
     })
 }

@@ -102,15 +102,15 @@ export default [
         },
         component: () => import('@/pages/store-page/store-page.vue')
       },
-      {
-        path: 'storeRecomond',
-        name: 'storeRecomond',
-        meta: {
-          icon: 'ios-pin-outline',
-          title: '商家推荐'
-        },
-        component: () => import('@/pages/store-page/store-recomond-page.vue')
-      },
+      // {
+      //   path: 'storeRecomond',
+      //   name: 'storeRecomond',
+      //   meta: {
+      //     icon: 'ios-pin-outline',
+      //     title: '商家推荐'
+      //   },
+      //   component: () => import('@/pages/store-page/store-recomond-page.vue')
+      // },
       {
         path: 'storeApply',
         name: 'storeApply',
@@ -225,55 +225,35 @@ export default [
     ]
   },
   {
-    path: '/residences',
-    name: 'residences',
+    path: '/activities',
+    name: 'activities',
     meta: {
       icon: 'ios-home-outline',
-      title: '优惠券管理',
+      title: '活动管理',
       access: ['super_admin'],
       id: 3
     },
     component: Main,
     children: [
       {
-        path: 'residence',
-        name: 'residence',
+        path: 'activity',
+        name: 'activity',
         meta: {
           icon: 'ios-home-outline',
-          title: '活动管理'
+          title: '活动列表'
         },
-        component: () => import('@/pages/residence-page/residence-page.vue')
+        component: () => import('@/pages/activity-page/activity-page.vue')
       },
       {
-        path: 'group',
-        name: 'group',
+        path: 'activityCreate',
+        name: 'activityCreate',
         meta: {
           hideInMenu: true,
           icon: 'ios-home-outline',
-          title: '分组规则'
+          title: '添加'
         },
-        component: () => import('@/pages/residence-page/group-page.vue')
+        component: () => import('@/pages/activity-page/activity-create-page.vue')
       },
-      {
-        path: 'tickets',
-        name: 'tickets',
-        meta: {
-          hideInMenu: true,
-          icon: 'ios-home-outline',
-          title: '分票规则'
-        },
-        component: () => import('@/pages/residence-page/tickets-page.vue')
-      },
-      {
-        path: 'ticketsCreate',
-        name: 'ticketsCreate',
-        meta: {
-          hideInMenu: true,
-          icon: 'ios-home-outline',
-          title: '添加分票规则'
-        },
-        component: () => import('@/pages/residence-page/tickets-create-page.vue')
-      }
     ]
   },
   {
@@ -573,9 +553,18 @@ export default [
         name: 'banner',
         meta: {
           icon: 'ios-barcode-outline',
-          title: 'Banner管理'
+          title: '首页'
         },
         component: () => import('@/pages/banner-page/banner-page.vue')
+      },
+      {
+        path: 'storeBanner',
+        name: 'storeBanner',
+        meta: {
+          icon: 'ios-barcode-outline',
+          title: '商家页'
+        },
+        component: () => import('@/pages/banner-page/store-banner-page.vue')
       }
     ]
   },

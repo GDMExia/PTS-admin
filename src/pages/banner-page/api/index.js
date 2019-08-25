@@ -1,7 +1,9 @@
 import axios from '@/libs/api.request'
-
+import store from '@/store'
+const user = store.state.user
+import qs from 'qs'
 export const bannerColumns = [
-    {title: '广告位', key: 'bannerIndex'},
+    {title: '广告位', key: 'sort'},
     {title: '标题', key: 'bannerTitle', tooltip: true},
     {title: '状态', key: 'enabledStr', tooltip: true},
     {
@@ -53,9 +55,9 @@ export const bannerColumns = [
     }
 ]
 
-export const getBannerList = () => {
+export const getBannerList = type => {
     return axios.request({
-        url: `/admin/banner/list`,
+        url: `/Advertising/getAdvertising?token=${user.token}&cid=${type}`,
         headers: {
           functionId: 8
         },

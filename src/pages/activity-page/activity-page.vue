@@ -3,17 +3,21 @@
         <Card>
             <div class="clearfix">
                 <div class="pull-left">
-                    <Button @click="handleTickets" class="search-btn" type="info" style="margin-right:5px">
-                        <Icon type="ios-filing-outline" />&nbsp;&nbsp;分票规则</Button>
-                    <Button @click="handleGroup" class="search-btn" type="success" style="margin-right:5px">
-                        <Icon type="ios-crop-outline" />&nbsp;&nbsp;分组规则</Button>
-                    <Button @click="handleReserve" class="search-btn" type="warning" style="margin-right:5px">
-                        <Icon type="ios-archive" />&nbsp;&nbsp;民宿预定限制</Button>
                     <Button @click="handleCreate" class="search-btn" type="primary" style="margin-right:5px">
                         <Icon type="md-add"/>&nbsp;&nbsp;添加</Button>
                 </div>
                 <div class="pull-right">
                     <Form ref="searchBarForm" :model="queryForm" inline @keydown.native.enter.prevent ="()=>{}">
+                        <FormItem>
+                            <Select placeholder="分类" v-model="queryForm.enterpriseType" style="width: 150px;" clearable>
+                                <Option v-for="item in typeList" :value="item.id" :key="item.id">{{item.name}}</Option>
+                            </Select>
+                        </FormItem>
+                        <FormItem>
+                            <Select placeholder="状态" v-model="queryForm.enterpriseType" style="width: 150px;" clearable>
+                                <Option v-for="item in statusList" :value="item.id" :key="item.id">{{item.name}}</Option>
+                            </Select>
+                        </FormItem>
                         <FormItem>
                             <Row>
                                 <Col span="21">
@@ -27,7 +31,7 @@
                     </Form>
                 </div>
             </div>
-            <tables class="self-table-wrap" ref="tables" stripe v-model="tableData" :columns="columns" @on-change="handleChange"/>
+            <tables class="self-table-wrap" ref="tables" stripe v-model="tableData" :columns="columns" @on-audit="handleAudit" @on-edit="handleEdit" @on-view="handlePeople" @on-delete="handleDelete"/>
             <div style="margin-top:10px;text-align:right;">
                 <Page :total="page.total" :current="page.index" :page-size="page.size" @on-change="handleOnChange" 
                 show-sizer size="small" :page-size-opts="[10,20,50,100,1000]" @on-page-size-change="handleOnChangeSize"/>
@@ -89,6 +93,8 @@ export default {
             queryForm: {
                 search: '',
             },
+            statusList: [],
+            typeList: []
         }
     },
     methods: {
@@ -99,22 +105,21 @@ export default {
         },
         handleQuery() {
             getResidenceList(this.page).then(res=>{
-                if(res.data.code == 200) {
-                    this.tableData = res.data.data.dataInfo?res.data.data.dataInfo.map(item=>{
-                        item.isrecommendStr = item.isrecommend?'是':'否'
+                if(res.data.code==200) {
+                    this.tableData = res.data.data.goodsList?res.data.data.goodsList.map(item=>{
+                        item.status = item.goods_status==1?'进行中':
+                        item.goods_status==2?'已结束':item.goods_status==3?'待审核':'审核不通过'
+                        item.pidStr = item.pid==1?'商家':'官方'
                         return item
                     }):[]
-                    this.page = pageInfo.converter({pageIndex: this.page.index, pageSize: this.page.size, pageTotal: res.data.total,search: this.page.search})
-                    // 关闭表单框
-                    this.modelStatus.show = false
+                    this.page = pageInfo.converter({pageIndex: this.page.index, pageSize: this.page.size, pageTotal: res.data.data.PageInfo.TotalCounts,search: this.page.search})
                 } else {
                     this.$Message.error(res.data.message)
                 }
             })
         },
         handleCreate() {     
-            this.createForm = ResidenceCreateModel.init() 
-            this.setDialogProperty(550, '添加', 'ResidenceCreateForm') 
+            this.$router.push({name: 'activityCreate'}) 
         },
         setCreateSubmit() {
             const form = ResidenceCreateModel.converter(this.createForm.formInline)
@@ -128,24 +133,8 @@ export default {
                 }
             })
         },
-        // 分票规则 
-        handleTickets() {
-            this.$router.push({name: 'tickets'})
-        },
-        // 分组规则 
-        handleGroup() {
-            this.$router.push({name: 'group'})
-        },
-        // 民宿预定限制
-        handleReserve() {
-            const form = {
-                enable: '0'
-            }
-            this.reserveForm = ResidenceReserveModel.init(form) 
-            this.setDialogProperty(550, '民宿预定限制', 'ResidenceReserveForm') 
-        },
-        // 推荐/不推荐
-        handleChange(params) {
+        // 审核
+        handleAudit(params) {
             const form = {
                 id: params.row.id,
                 recommendImg: params.row.recommendImg
@@ -157,6 +146,9 @@ export default {
                 this.setChangeSubmit()
             }
         },
+        handleEdit() {},
+        handlePeople() {},
+        handelDelete() {},
         setChangeSubmit() {
             const form = ResidenceGraphModel.converter(this.graphForm.formInline)
             setResidenceChange(form).then(res=>{
