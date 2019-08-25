@@ -93,15 +93,6 @@ export default [
     },
     component: Main,
     children: [
-      {
-        path: 'store',
-        name: 'store',
-        meta: {
-          icon: 'ios-pin-outline',
-          title: '商家管理'
-        },
-        component: () => import('@/pages/store-page/store-page.vue')
-      },
       // {
       //   path: 'storeRecomond',
       //   name: 'storeRecomond',
@@ -119,6 +110,15 @@ export default [
           title: '商家申请'
         },
         component: () => import('@/pages/store-page/store-apply-page.vue')
+      },
+      {
+        path: 'store',
+        name: 'store',
+        meta: {
+          icon: 'ios-pin-outline',
+          title: '商家管理'
+        },
+        component: () => import('@/pages/store-page/store-page.vue')
       }
     ]
   },
