@@ -35,7 +35,6 @@
                                 <input type="file" id="upload" @change="uploadImage" style="width:50px;height:50px;opacity:0;"/>
                             </div>
                         </div>
-                        <p style="height:0">（仅限一张图，尺寸为345*150）</p>
                     </FormItem>
                 <!-- </Col>
             </Row> -->
@@ -88,11 +87,10 @@ export default {
             var formData = new FormData();
             formData.append('file_image', file)
             setUpload(formData).then(res=>{
-                console.log(res)
                 event.target.value=''
                 if(res.data.code == 200) {
                     this.$Message.info('上传成功')
-                    this.formInline.photo = `${res.data.data.fileUrl}`
+                    this.formInline.bookcover = `${res.data.data.fileUrl}`
                 }
             })
         },

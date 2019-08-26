@@ -41,6 +41,7 @@ export const bannerColumns = [
                             type: 'success',
                             icon: 'md-arrow-up',
                             size: 'small',
+                            disabled: params.index==0?true:false
                         },
                         style: {
                             marginRight: '5px'
@@ -59,6 +60,7 @@ export const bannerColumns = [
                             type: 'error',
                             icon: 'md-arrow-round-down',
                             size: 'small',
+                            disabled: params.index==4?true:false
                         },
                         style: {
                             marginRight: '5px'
@@ -133,7 +135,6 @@ export const storeBannerColumns = [
                             type: 'success',
                             icon: 'md-arrow-up',
                             size: 'small',
-                            disabled: params.index==0?true:false
                         },
                         style: {
                             marginRight: '5px'
@@ -152,7 +153,6 @@ export const storeBannerColumns = [
                             type: 'error',
                             icon: 'md-arrow-round-down',
                             size: 'small',
-                            disabled: params.index==4?true:false
                         },
                         style: {
                             marginRight: '5px'
@@ -224,6 +224,9 @@ export const setBannerUpdate = form => {
     }))
     return axios.request({
         url: `/Advertising/createAdvertising`,
+        headers: {
+            functionId: 8
+        },
         data: params,
         method: 'post'
     })
