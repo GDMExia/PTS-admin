@@ -40,7 +40,6 @@
                 <TourArticleForm ref='TourArticleForm'
                     :formInline="articleForm.formInline"
                     :ruleInline="articleForm.ruleInline"
-                    :articleList="articleList"
                     v-if="modelStatus.name=='TourArticleForm'"/>
             </ModelDialog>
         </div>
@@ -289,7 +288,7 @@ export default {
         this.columns = tourColumn
         this.page = pageInfo.init()
         this.handleQuery()
-        this.getAllArticle()
+        // this.getAllArticle()
     }
 }
 </script>

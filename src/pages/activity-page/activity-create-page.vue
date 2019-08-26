@@ -4,14 +4,14 @@
             <div class="clearfix" style="margin-bottom: 20px">
                 <div class="pull-left">
                     <Button @click="$router.back()" class="search-btn" type="primary" style="margin-right:5px">
-                            <Icon type="md-arrow-back" />&nbsp;&nbsp;返回</Button>
+                        <Icon type="md-arrow-back" />&nbsp;&nbsp;返回</Button>
                     <Button @click="handleSave" class="search-btn" type="success" style="margin-right:5px">
                         <Icon type="md-add"/>&nbsp;&nbsp;保存</Button>
                 </div>
                 <div class="pull-right"></div>
             </div>
             <div>
-                <Form ref="ResidenceCreateForm" :model="formInline" :label-width="120" label-position="left">
+                <Form ref="ResidenceCreateForm" :model="formInline" :rules="ruleInline" :label-width="120" label-position="left">
                     <Row>
                         <Col span="12">
                             <FormItem label="标题" prop="goods_name">
@@ -101,7 +101,7 @@
                     </Row>
                     <Row>
                         <FormItem label="详情" prop="content">
-                            <editor ref="editor" v-model="formInline.content" :value = "formInline.content"/>
+                            <editor ref="editor" v-model="formInline.content" :value="formInline.content"/>
                         </FormItem>
                     </Row>
                 </Form>
@@ -141,7 +141,47 @@ export default {
             content: '',
             merchants_id: ''
         },
-        ruleInline: Object,
+        ruleInline: {
+            goods_name: [{ required: true, message: '请输入标题', trigger: 'blur' }],
+            create_name: [{ required: true, message: '请输入发布者', trigger: 'blur' }],
+            cid: [{ required: true, message: '请选择分类', trigger: 'change' }],
+            registration_number: [{ required: true, message: '请输入报名人数上限', trigger: 'blur' },
+            {validator: (rule, value, callback) => {
+                if (!/^[1-9]\d*$/.test(value)&&value!='') {
+                    callback(new Error('只能输入数字'))
+                } else {
+                    callback()
+                }
+            },
+            trigger: 'blur'}],
+            goods_price: [{ required: true, message: '请输入支付金额', trigger: 'blur' },
+                {validator: (rule, value, callback) => {
+                if (!/^[1-9]\d*(\.\d{0,2})?$/.test(value)&&value!='') {
+                callback(new Error('只能输入数字或数字后两位小数'))
+                } else {
+                callback()
+                }
+            },
+            trigger: 'blur'}],
+            discount_price: [{ required: true, message: '请输入积分抵扣', trigger: 'blur' },
+                {validator: (rule, value, callback) => {
+                if (!/^[1-9]\d*$/.test(value)&&value!='') {
+                callback(new Error('只能输入数字'))
+                } else {
+                callback()
+                }
+            },
+            trigger: 'blur'}],
+            cover: [
+                { required: true, message: '请上传首页图', trigger: 'blur' }
+            ],
+            banner: [
+                { required: true, message: '请上传封面图', trigger: 'blur' }
+            ],
+            content: [
+                { required: true, message: '请输入详情', trigger: 'blur' }
+            ]
+        },
         typeList: [],
         storeList: []
     }
@@ -158,9 +198,17 @@ export default {
     },
     handleSave() {
         const form = this.formInline
+        if(form.cover=='') {
+            this.$Message.error('请上传首页图')
+            return
+        }
+        if(form.banner=='') {
+            this.$Message.error('请上传封面图')
+            return
+        }
         setResidenceCreate(form).then(res=>{
             if(res.data.code == 200) {
-                this.$Message.success('添加成功')
+                this.$Message.success('操作成功')
                 this.$router.back()
             } else {
                 this.$Message.error(res.data.message)
@@ -216,8 +264,17 @@ export default {
     }
   },
   mounted() {
-      this.handleStoreList()
-      
+    this.handleStoreList()
+    let that = this
+    const form = localStorage.getItem('activityDetail')
+    if(form) {
+        this.formInline = JSON.parse(form)
+        this.handleRichEditor()
+    }
+  },
+  beforeDestroy() {
+    console.log('Test beforeDestroy')
+    localStorage.removeItem('activityDetail')
   }
 }
 </script>

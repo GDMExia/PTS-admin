@@ -58,7 +58,7 @@ export default [
       icon: 'ios-contacts',
       title: '权限管理',
       access: ['super_admin'],
-      id: 1
+      id: 12
     },
     component: Main,
     children: [
@@ -89,7 +89,7 @@ export default [
       icon: 'ios-pin-outline',
       title: '商家管理',
       access: ['super_admin'],
-      id: 9
+      id: 13
     },
     component: Main,
     children: [
@@ -129,7 +129,7 @@ export default [
       icon: 'ios-people',
       title: '用户管理',
       access: ['super_admin'],
-      id: 2
+      id: 14
     },
     component: Main,
     children: [
@@ -200,7 +200,7 @@ export default [
       icon: 'ios-people',
       title: '优惠券管理',
       access: ['super_admin'],
-      id: 2
+      id: 23
     },
     component: Main,
     children: [
@@ -231,7 +231,7 @@ export default [
       icon: 'ios-home-outline',
       title: '活动管理',
       access: ['super_admin'],
-      id: 3
+      id: 15
     },
     component: Main,
     children: [
@@ -254,6 +254,16 @@ export default [
         },
         component: () => import('@/pages/activity-page/activity-create-page.vue')
       },
+      {
+        path: 'activityUser',
+        name: 'activityUser',
+        meta: {
+          hideInMenu: true,
+          icon: 'ios-home-outline',
+          title: '添加'
+        },
+        component: () => import('@/pages/activity-page/activity-user-page.vue')
+      },
     ]
   },
   {
@@ -263,7 +273,7 @@ export default [
       icon: 'ios-card-outline',
       title: '活动订单管理',
       access: ['super_admin'],
-      id: 4
+      id: 16
     },
     component: Main,
     children: [
@@ -350,7 +360,7 @@ export default [
       icon: 'md-reorder',
       title: '优惠券订单管理',
       access: ['super_admin'],
-      id: 6
+      id: 24
     },
     component: Main,
     children: [
@@ -446,7 +456,7 @@ export default [
       icon: 'ios-cafe-outline',
       title: '旅游管理',
       access: ['super_admin'],
-      id: 8
+      id: 17
     },
     component: Main,
     children: [
@@ -466,9 +476,9 @@ export default [
     name: 'custom',
     meta: {
       icon: 'ios-card-outline',
-      title: '定制游管理',
+      title: '学院管理',
       access: ['super_admin'],
-      id: 5
+      id: 18
     },
     component: Main,
     children: [
@@ -500,7 +510,7 @@ export default [
       icon: 'ios-cafe-outline',
       title: '活动分享管理',
       access: ['super_admin'],
-      id: 7
+      id: 19
     },
     component: Main,
     children: [
@@ -522,7 +532,7 @@ export default [
       icon: 'ios-ice-cream-outline',
       title: '使用指南管理',
       access: ['super_admin'],
-      id: 8
+      id: 20
     },
     component: Main,
     children: [
@@ -544,7 +554,7 @@ export default [
       icon: 'ios-barcode-outline',
       title: 'Banner管理',
       access: ['super_admin'],
-      id: 10
+      id: 21
     },
     component: Main,
     children: [

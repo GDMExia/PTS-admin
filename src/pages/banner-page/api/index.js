@@ -4,15 +4,18 @@ const user = store.state.user
 import qs from 'qs'
 export const bannerColumns = [
     {title: '广告位', key: 'sort'},
-    {title: '标题', key: 'bannerTitle', tooltip: true},
-    {title: '状态', key: 'enabledStr', tooltip: true},
+    {title: '标题', key: 'content', tooltip: true},
+    {title: '跳转', key: 'linkUrl', tooltip: true},
+    {title: '发布时间', key: 'create_time', tooltip: true},
+    {title: '状态', key: 'status', tooltip: true},
     {
         title: '操作',
         key: 'handle',
         align: 'center',
-        width: 260,
+        width: 300,
         fixed: 'right',
         button: [(h, params, vm) => {
+            console.log(params, '2333')
             return h('div', [
                 h(
                     'i-button', {
@@ -35,6 +38,42 @@ export const bannerColumns = [
                 h(
                     'i-button', {
                         props: {
+                            type: 'success',
+                            icon: 'md-arrow-up',
+                            size: 'small',
+                        },
+                        style: {
+                            marginRight: '5px'
+                        },
+                        on: {
+                            click: () => {
+                                vm.$emit('on-change', {data:params, sort_type: 1})
+                            }
+                        }
+                    },
+                    '上移'
+                ),
+                h(
+                    'i-button', {
+                        props: {
+                            type: 'error',
+                            icon: 'md-arrow-round-down',
+                            size: 'small',
+                        },
+                        style: {
+                            marginRight: '5px'
+                        },
+                        on: {
+                            click: () => {
+                                vm.$emit('on-change', {data:params, sort_type: 2})
+                            }
+                        }
+                    },
+                    '下移'
+                ),
+                h(
+                    'i-button', {
+                        props: {
                             type: 'warning',
                             icon: 'md-filing',
                             size: 'small'
@@ -48,7 +87,101 @@ export const bannerColumns = [
                             }
                         }
                     },
-                    params.row.enabled?'下线':'上线'
+                    params.row.is_show==1?'下线':'上线'
+                ),
+            ])
+        }]
+    }
+]
+
+export const storeBannerColumns = [
+    {title: '广告位', key: 'sort'},
+    {title: '商家名称', key: 'content', tooltip: true},
+    {title: '跳转', key: 'linkUrl', tooltip: true},
+    {title: '上架时间', key: 'create_time', tooltip: true},
+    {title: '状态', key: 'status', tooltip: true},
+    {
+        title: '操作',
+        key: 'handle',
+        align: 'center',
+        width: 300,
+        fixed: 'right',
+        button: [(h, params, vm) => {
+            console.log(params, '2333')
+            return h('div', [
+                h(
+                    'i-button', {
+                        props: {
+                            type: 'primary',
+                            icon: 'md-create',
+                            size: 'small'
+                        },
+                        style: {
+                            marginRight: '5px'
+                        },
+                        on: {
+                            click: () => {
+                                vm.$emit('on-edit', params)
+                            }
+                        }
+                    },
+                    '编辑'
+                ),
+                h(
+                    'i-button', {
+                        props: {
+                            type: 'success',
+                            icon: 'md-arrow-up',
+                            size: 'small',
+                            disabled: params.index==0?true:false
+                        },
+                        style: {
+                            marginRight: '5px'
+                        },
+                        on: {
+                            click: () => {
+                                vm.$emit('on-change', {data:params, sort_type: 1})
+                            }
+                        }
+                    },
+                    '上移'
+                ),
+                h(
+                    'i-button', {
+                        props: {
+                            type: 'error',
+                            icon: 'md-arrow-round-down',
+                            size: 'small',
+                            disabled: params.index==4?true:false
+                        },
+                        style: {
+                            marginRight: '5px'
+                        },
+                        on: {
+                            click: () => {
+                                vm.$emit('on-change', {data:params, sort_type: 2})
+                            }
+                        }
+                    },
+                    '下移'
+                ),
+                h(
+                    'i-button', {
+                        props: {
+                            type: 'warning',
+                            icon: 'md-filing',
+                            size: 'small'
+                        },
+                        style: {
+                            marginRight: '5px'
+                        },
+                        on: {
+                            click: () => {
+                                vm.$emit('on-offline', params)
+                            }
+                        }
+                    },
+                    params.row.is_show==1?'下线':'上线'
                 ),
             ])
         }]
@@ -58,6 +191,16 @@ export const bannerColumns = [
 export const getBannerList = type => {
     return axios.request({
         url: `/Advertising/getAdvertising?token=${user.token}&cid=${type}`,
+        headers: {
+          functionId: 8
+        },
+        method: 'get'
+    })
+}
+
+export const getStoreBannerList = form => {
+    return axios.request({
+        url: `/Advertising/getAdvertising?token=${user.token}&cid=${form.cid}&cate_id=${form.cate_id}`,
         headers: {
           functionId: 8
         },
@@ -76,33 +219,34 @@ export const getBannerDetail = id => {
 }
 
 export const setBannerUpdate = form => {
+    const params = qs.stringify(Object.assign(form, {
+        token: user.token
+    }))
     return axios.request({
-        url: `/admin/user/banner/update/${form.id}`,
-        headers: {
-          functionId: 8
-        },
-        data: form,
-        method: 'put'
+        url: `/Advertising/createAdvertising`,
+        data: params,
+        method: 'post'
     })
 }
 
-export const setBannerEnable = id => {
+export const setBannerEnable = form => {
+    const params = qs.stringify(Object.assign(form, {
+        token: user.token
+    }))
     return axios.request({
-        url: `/admin/user/banner/enable/${id}`,
+        url: `/Advertising/updateShow`,
         headers: {
           functionId: 8
         },
-        method: 'put'
+        data: params,
+        method: 'post'
     })
 }
 
-export const setBannerChange = (id1, id2) => {
+export const setBannerChange = (form) => {
     return axios.request({
-        url: `/admin/user/banner/change/${id1}/${id2}`,
-        headers: {
-          functionId: 8
-        },
-        method: 'put'
+        url: `/Advertising/updateSort?token=${user.token}&id=${form.id}&sort_type=${form.sort_type}`,
+        method: 'post'
     })
 }
 // 上传图片

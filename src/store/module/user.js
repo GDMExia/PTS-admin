@@ -94,7 +94,7 @@ export default {
             access: [res.data.data.admin_name],
             token: res.data.data.token,
             avator: '',
-            permission: [1,2,3,4,5,6,7,8,9,10]
+            permission: res.data.data.menu_id!=''?res.data.data.menu_id.split(","):[12,13,14,15,16,17,18,19,20,21,23,24]
           }
           commit('setToken', data.token)
           commit('setAvator', data.avator)

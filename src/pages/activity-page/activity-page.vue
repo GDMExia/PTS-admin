@@ -41,18 +41,6 @@
             <ModelDialog :status="modelStatus"
                 @handlerModelDialogOk="handlerModelDialogOk"
                 @handlerModelDialogCancel="handlerModelDialogCancel">
-                <ResidenceCreateForm ref='ResidenceCreateForm'
-                    :formInline="createForm.formInline"
-                    :ruleInline="createForm.ruleInline"
-                    v-if="modelStatus.name=='ResidenceCreateForm'"/>
-                <ResidenceReserveForm ref='ResidenceReserveForm'
-                    :formInline="reserveForm.formInline"
-                    :ruleInline="reserveForm.ruleInline"
-                    v-if="modelStatus.name=='ResidenceReserveForm'"/>
-                <ResidenceGraphForm ref='ResidenceGraphForm'
-                    :formInline="graphForm.formInline"
-                    :ruleInline="graphForm.ruleInline"
-                    v-if="modelStatus.name=='ResidenceGraphForm'"/>
             </ModelDialog>
         </div>
     </div>
@@ -61,25 +49,18 @@
 import Tables from '_c/tables'
 import pageInfo from "@/libs/page-info"
 import ModelDialog from '_c/model-dialog'
-import ResidenceCreateForm from './forms/residence-create-form'
-import ResidenceCreateModel from './model/residence-create-model'
-import ResidenceGraphForm from './forms/residence-graph-form'
-import ResidenceGraphModel from './model/residence-graph-model'
-import ResidenceReserveForm from './forms/residence-reserve-form'
-import ResidenceReserveModel from './model/residence-reserve-model'
 import {
     residenceColumns,
     getResidenceList,
     setResidenceCreate,
-    setResidenceChange
+    setResidenceChange,
+    setActivityChange,
+    setActivityDelete
 } from './api'
 export default {
     components: {
         Tables,
         ModelDialog,
-        ResidenceCreateForm,
-        ResidenceReserveForm,
-        ResidenceGraphForm
     },
     data() {
         return {
@@ -87,9 +68,6 @@ export default {
             columns: [],
             page: {},
             modelStatus: { show: false, hide: false, loading: true, title: '', name: '' },
-            createForm: {},
-            reserveForm: {},
-            graphForm: {},
             queryForm: {
                 search: '',
             },
@@ -118,14 +96,19 @@ export default {
                 }
             })
         },
-        handleCreate() {     
+        handleCreate() {   
+            localStorage.setItem('activityDetail', '')  
             this.$router.push({name: 'activityCreate'}) 
         },
-        setCreateSubmit() {
-            const form = ResidenceCreateModel.converter(this.createForm.formInline)
-            setResidenceCreate(form).then(res=>{
+        // 审核
+        handleAudit(params) {
+            const form = {
+                goods_status: params.goods_status,
+                id: params.data.row.id
+            }
+            setActivityChange(form).then(res=>{
                 if(res.data.code == 200) {
-                    this.$Message.success('添加成功')
+                    this.$Message.success('审核成功')
                     this.modelStatus.show = false
                     this.handleQuery()
                 } else {
@@ -133,56 +116,25 @@ export default {
                 }
             })
         },
-        // 审核
-        handleAudit(params) {
-            const form = {
-                id: params.row.id,
-                recommendImg: params.row.recommendImg
-            }
-            this.graphForm = ResidenceGraphModel.init(form) 
-            if(!params.row.isrecommend) {
-                this.setDialogProperty(550, '推荐', 'ResidenceGraphForm') 
-            } else {
-                this.setChangeSubmit()
-            }
+        handleEdit(params) {
+            localStorage.setItem('activityDetail', JSON.stringify(params.row))
+            this.$router.push({name: 'activityCreate'}) 
         },
-        handleEdit() {},
-        handlePeople() {},
-        handelDelete() {},
-        setChangeSubmit() {
-            const form = ResidenceGraphModel.converter(this.graphForm.formInline)
-            setResidenceChange(form).then(res=>{
+        handlePeople(params) {
+            this.$router.push({name: 'activityUser', query: {id: params.row.id, name: params.row.goods_name}})
+        },
+        handleDelete(params) {
+            setActivityDelete(params.row.id).then(res=>{
                 if(res.data.code == 200) {
-                    this.$Message.success('操作成功')
+                    this.$Message.success('删除成功')
                     this.handleQuery()
                 } else {
                     this.$Message.error(res.data.message)
                 }
             })
         },
-        // 弹出框设置
-        setDialogProperty(width, title, name) {
-            this.modelStatus.show = true
-            this.modelStatus.loading = true
-            this.modelStatus.width = width
-            this.modelStatus.title = title
-            this.modelStatus.name = name
-        },
         /* 对话框确认 */
         handlerModelDialogOk(name) {
-            if(name === 'ResidenceCreateForm') {
-                this.$refs.ResidenceCreateForm.validate(valid=>{
-                    if(valid) {
-                        this.setCreateSubmit()
-                    }
-                })
-            } else if (name === 'ResidenceGraphForm') {
-                this.$refs.ResidenceGraphForm.validate(valid=>{
-                    if(valid) {
-                        this.setChangeSubmit()
-                    }
-                })
-            }
             this.modelStatus.loading = false
             this.$nextTick(() => {
                 this.modelStatus.loading = true

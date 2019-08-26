@@ -4,7 +4,7 @@
             <div class="clearfix">
                 
             </div>
-            <tables ref="tables" draggable stripe v-model="tableData" :columns="columns" @on-drag-drop="handleDragDrop" @on-edit="handleEdit" @on-offline="handleChange"/>
+            <tables ref="tables" draggable stripe v-model="tableData" :columns="columns" @on-change="handleDragDrop" @on-edit="handleEdit" @on-offline="handleChange"/>
             <div style="margin-top:10px;text-align:right;">
                 <Page :total="page.total" :current="page.index" :page-size="page.size" @on-change="handleOnChange" 
                 show-sizer size="small" :page-size-opts="[10,20,50,100,1000]" @on-page-size-change="handleOnChangeSize"/>
@@ -33,7 +33,6 @@ import {
     bannerColumns,
     setBannerEnable,
     setBannerChange,
-    getBannerDetail,
     setBannerUpdate,
     getBannerList,
 } from "./api";
@@ -59,6 +58,10 @@ export default {
                 if(res.data.code==200) {
                     this.tableData = res.data.data.bannerList?res.data.data.bannerList.map(item=>{
                         item.status = item.is_show==1?'展示':'下线'
+                        item.linkUrl = item.jump_type==1?`活动ID ${item.link_url}`:
+                        item.jump_type==2?`链接地址 ${item.link_url}`:
+                        item.jump_type==3?`签到`:item.jump_type==4?`旅游ID ${item.link_url}`:
+                        item.jump_type==5?`商家 ${item.link_url}`:''
                         return item
                     }):[]
                     this.page = pageInfo.converter({pageIndex: this.page.index, pageSize: this.page.size, pageTotal: res.data.data.PageInfo.TotalCounts,search: this.page.search})
@@ -69,25 +72,13 @@ export default {
         },
         // 编辑
         handleEdit(params) {
-            getBannerDetail(params.row.bannerId).then(res=>{
-                if(res.data.code==200) {
-                    const form = res.data.data.dataInfo
-                    this.setDialogProperty(900, '编辑', 'BnnerEditForm')
-                    this.editForm = BnnerEditModel.init(form)
-                    this.$nextTick(()=>{
-                        this.$refs.BnnerEditForm.handleRichEditor()
-                    })
-                } else {
-                    this.$Message.error(res.data.message)
-                }
-            })
+            const form = params.row
+            this.setDialogProperty(600, '编辑', 'BnnerEditForm')
+            this.editForm = BnnerEditModel.init(form)
         },
         handleEditSubmit() {
-            const form = BnnerEditModel.converter(this.editForm.formInline)
-            if(form.bannerContent == '<p><br></p>') {
-                this.$Message.warning('请输入详情')
-                return
-            }
+            let form = BnnerEditModel.converter(this.editForm.formInline)
+            form.cid = 1
             setBannerUpdate(form).then(res=>{
                 if(res.data.code==200) {
                     this.$Message.success('编辑成功')
@@ -129,10 +120,8 @@ export default {
         },
 
         // 上移下移
-        handleDragDrop(index1, index2) {
-            const id1 = this.tableData[index1].bannerId
-            const id2 = this.tableData[index2].bannerId
-            setBannerChange(id1, id2).then(res=>{
+        handleDragDrop(data) {
+            setBannerChange({id: data.data.row.id, sort_type: data.sort_type}).then(res=>{
                 if(res.data.code==200) {
                     this.$Message.success('操作成功')
                     this.handleQuery()
@@ -144,7 +133,11 @@ export default {
 
         // 上线下线
         handleChange(params) {
-            setBannerEnable(params.row.bannerId).then(res=>{
+            const form = {
+                is_show: params.row.is_show==1?0:1,
+                id: params.row.id
+            }
+            setBannerEnable(form).then(res=>{
                 if(res.data.code==200) {
                     this.$Message.success('操作成功')
                     this.handleQuery()

@@ -52,7 +52,7 @@ export default {
     },
     handleRichEditor (val) {
       // 如果本地有存储加载本地存储内容
-      let html = val === '' ? '' : this.value
+      let html = val === '' ? '' : val
       this.editor.txt.html(html)
     }
   },

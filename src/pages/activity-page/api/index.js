@@ -19,7 +19,7 @@ export const residenceColumns = [
         title: '操作',
         key: 'handle',
         align: 'left',
-        width: 360,
+        width: 320,
         fixed: 'right',
         button: [(h, params, vm) => {
             return h('div', [
@@ -134,75 +134,11 @@ export const residenceColumns = [
     },
 ]
 
-import expandRow from '@/mock/table-expand.vue'
-export const groupColumns = [
-    { title: '名称', key: 'name', tooltip: true },
-    { title: '分票规则', key: 'rules', tooltip: true },
-    {
-        title: '民宿',
-        key: 'residenceArray',
-        align: 'center',
-        type: 'expand',
-        render: (h, params) => {
-            return h(expandRow, {
-                props: {
-                    row: params.row.residenceArray
-                },
-            })
-        }
-    },
-    { title: '状态', key: 'enableStr', tooltip: true },
-    {
-        title: '操作',
-        key: 'handle',
-        align: 'center',
-        width: 360,
-        // fixed: 'right',
-        button: [(h, params, vm) => {
-            return h('div', [
-                h(
-                    'i-button', {
-                        props: {
-                            type: 'primary',
-                            icon: 'md-create',
-                            size: 'small'
-                        },
-                        style: {
-                            marginRight: '5px'
-                        },
-                        on: {
-                            click: () => {
-                                vm.$emit('on-edit', params)
-                            }
-                        }
-                    },
-                    '编辑'
-                ),
-                h(
-                    'i-button', {
-                        props: {
-                            type: 'warning',
-                            icon: 'md-create',
-                            size: 'small'
-                        },
-                        style: {
-                            marginRight: '5px'
-                        },
-                        on: {
-                            click: () => {
-                                vm.$emit('on-change', params)
-                            }
-                        }
-                    },
-                    params.row.enable?'禁用':'启用'
-                ),
-            ])
-        }]
-    }
-]
-
-export const residenceNameColumn = [
-    { title: '民宿名称', key: 'name', tooltip: true },
+export const usersColumns = [
+    { title: '券号', key: 'coupons_number', tooltip: true },
+    { title: '所属订单号', key: 'order_no', tooltip: true },
+    { title: '当前状态', key: 'status', tooltip: true },
+    { title: '核销时间', key: 'update_time', tooltip: true },
 ]
 
 export const ticketsColumn = [
@@ -296,6 +232,30 @@ export const getActivityTypeIndex = () => {
 
 }
 
+export const setActivityChange = form => {
+    let params = qs.stringify(Object.assign(form, {
+        token: user.token
+    }))
+    return axios.request({
+        url: `/Goods/updateAudit`,
+        headers: {
+          functionId: 3
+        },
+        data: params,
+        method: 'post'
+    })
+}
+
+export const setActivityDelete = id => {
+    return axios.request({
+        url: `/Goods/deleteGoods?token=${user.token}&id=${id}`,
+        headers: {
+          functionId: 3
+        },
+        method: 'get'
+    })
+}
+
 export const setResidenceCreate = form => {
     let params = qs.stringify(Object.assign(form, {
         token: user.token
@@ -307,6 +267,16 @@ export const setResidenceCreate = form => {
         },
         data: params,
         method: 'post'
+    })
+}
+
+export const getActivityUsers = id => {
+    return axios.request({
+        url: `/Goods/getGoodsSiginList?token=${user.token}&goods_id=${id}`,
+        headers: {
+          functionId: 3
+        },
+        method: 'get'
     })
 }
 
