@@ -45,8 +45,8 @@
             </Row>
             <Row>
               <Col span="24">
-                <FormItem label="商家折扣" prop="save">
-                  <Input v-model="formInline.save" type="number" placeholder="请输入纯数字" />
+                <FormItem label="商家折扣" prop="discount">
+                  <Input v-model="formInline.discount" type="number" placeholder="请输入纯数字" />
                 </FormItem>
               </Col>
             </Row>

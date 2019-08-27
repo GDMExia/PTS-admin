@@ -50,7 +50,7 @@ class StoreCreateModel extends FormModel {
       mid: form.mid,
       legal_person: form.legal_person,
       company: form.company,
-      save: ''
+      discount: form.discount
     }
     return this
   }
@@ -64,7 +64,7 @@ class StoreCreateModel extends FormModel {
       mid: form.mid,
       legal_person: form.legal_person,
       company: form.company,
-      save: ''
+      discount: form.discount
     }
   }
 }
