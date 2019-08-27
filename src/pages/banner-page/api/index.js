@@ -3,7 +3,7 @@ import store from '@/store'
 const user = store.state.user
 import qs from 'qs'
 export const bannerColumns = [
-    {title: '广告位', key: 'sort'},
+    {title: '广告位', key: 'id'},
     {title: '标题', key: 'content', tooltip: true},
     {title: '跳转', key: 'linkUrl', tooltip: true},
     {title: '发布时间', key: 'create_time', tooltip: true},
@@ -97,7 +97,7 @@ export const bannerColumns = [
 ]
 
 export const storeBannerColumns = [
-    {title: '广告位', key: 'sort'},
+    {title: '广告位', key: 'id'},
     {title: '标题', key: 'content', tooltip: true},
     {title: '跳转', key: 'linkUrl', tooltip: true},
     {title: '发布时间', key: 'create_time', tooltip: true},
