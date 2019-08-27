@@ -198,6 +198,9 @@ export const getBannerList = type => {
 export const getStoreBannerList = form => {
     return axios.request({
         url: `/Advertising/getAdvertising?token=${user.token}&cid=${form.cid}&cate_id=${form.cate_id}`,
+        headers: {
+            Accept: 'application/json'
+        },
         method: 'get'
     })
 }
@@ -206,7 +209,7 @@ export const getBannerDetail = id => {
     return axios.request({
         url: `/admin/banner/info/${id}`,
         headers: {
-            functionId: 8
+            
         },
         method: 'get'
     })
@@ -219,7 +222,7 @@ export const setBannerUpdate = form => {
     return axios.request({
         url: `/Advertising/createAdvertising`,
         headers: {
-            functionId: 8
+            
         },
         data: params,
         method: 'post'
