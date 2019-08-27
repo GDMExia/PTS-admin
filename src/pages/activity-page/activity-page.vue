@@ -47,6 +47,7 @@
 </template>
 <script>
 import Tables from '_c/tables'
+import moment from 'moment'
 import pageInfo from "@/libs/page-info"
 import ModelDialog from '_c/model-dialog'
 import {
@@ -88,6 +89,7 @@ export default {
                         item.status = item.goods_status==1?'进行中':
                         item.goods_status==2?'已结束':item.goods_status==3?'待审核':'审核不通过'
                         item.pidStr = item.pid==1?'商家':'官方'
+                        item.registration_time = item.registration_time?moment(item.registration_time).format("YYYY-MM-DD"):''
                         return item
                     }):[]
                     this.page = pageInfo.converter({pageIndex: this.page.index, pageSize: this.page.size, pageTotal: res.data.data.PageInfo.TotalCounts,search: this.page.search})
