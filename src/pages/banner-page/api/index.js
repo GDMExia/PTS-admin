@@ -198,8 +198,8 @@ export const getBannerList = type => {
 export const getStoreBannerList = form => {
     return axios.request({
         url: `/Advertising/getAdvertising?token=${user.token}&cid=${form.cid}&cate_id=${form.cate_id}`,
-        headers: {
-            Accept: 'application/json'
+        headers:{
+            
         },
         method: 'get'
     })
