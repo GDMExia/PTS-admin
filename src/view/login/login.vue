@@ -7,7 +7,7 @@
     <div class="login-con">
       <Card icon="log-in" title="欢迎登录" :bordered="false">
         <div class="form-con">
-          <login-form @on-success-valid="handleSubmit"></login-form>
+          <login-form ref="loginForm" @on-success-valid="handleSubmit"></login-form>
           <!-- <p class="login-tip">输入任意用户名和密码即可</p> -->
         </div>
       </Card>
@@ -34,6 +34,9 @@ export default {
             title: '错误',
             desc: res.message 
           })
+          if(res.message == '请输入正确的验证码') {
+            this.$refs.loginForm.refresh()
+          }
           return
         }
         this.getUserInfo().then(res => {

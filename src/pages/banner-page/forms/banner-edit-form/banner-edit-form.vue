@@ -1,32 +1,43 @@
 <template>
     <div>
         <Form ref="BnnerEditForm" :model="formInline" :rules="ruleInline" :label-width="80" label-position="left">
-            <Row>
-                <Col span="12">
-                    <FormItem label="标题" prop="title">
-                        <Input v-model="formInline.title" placeholder="请输入" />
+            <!-- <Row>
+                <Col span="12"> -->
+                    <FormItem label="标题" prop="content">
+                        <Input v-model="formInline.content" placeholder="请输入" />
                     </FormItem>
-                </Col>
-                <Col span="12">
-                    <FormItem label="封面图" prop="photo">
+                <!-- </Col>
+                <Col span="12"> -->
+                    <FormItem label="跳转" prop="jump_type">
+                        <Select placeholder="跳转" v-model="formInline.jump_type" style="width: 200px;">
+                            <Option v-for="item in jumpList" :value="item.value" :key="item.value">{{item.label}}</Option>
+                        </Select>
+                    </FormItem>
+                <!-- </Col>
+            </Row>
+            <Row>
+                <Col span="24"> -->
+                    <FormItem label="链接地址" prop="link_url" v-if="formInline.jump_type==2">
+                        <Input v-model="formInline.link_url" placeholder="请输入" />
+                    </FormItem>
+                    <FormItem label="跳转ID" prop="link_url" v-else>
+                        <Input v-model="formInline.link_url" placeholder="请输入" />
+                    </FormItem>
+                <!-- </Col>
+                <Col span="12"> -->
+                    <FormItem label="宣传图" prop="bookcover">
                         <div style="width: 50px;height: 50px; position: relative;cursor:pointer">
                             <div style="position:absolute;left:0;top:0;width:50px;height:50px">
-                                <Icon type="ios-person-add-outline" size="50" v-show="formInline.photo==''"/>
-                                <img :src="formInline.photo" v-show="formInline.photo!=''" style="width:50px;height:50px"/>
+                                <Icon type="ios-person-add-outline" size="50" v-show="formInline.bookcover==''"/>
+                                <img :src="formInline.bookcover" v-show="formInline.bookcover!=''" style="width:50px;height:50px"/>
                             </div>
                             <div style="position:absolute;left:0;top:0;width:50px;height:50px">
                                 <input type="file" id="upload" @change="uploadImage" style="width:50px;height:50px;opacity:0;"/>
                             </div>
                         </div>
-                        <p style="height:0">（仅限一张图，尺寸为345*150）</p>
                     </FormItem>
-                </Col>
-            </Row>
-            <Row>
-                <FormItem label="详情" prop="content">
-                    <editor ref="editor" v-model="formInline.content" :value = "formInline.content"/>
-                </FormItem>
-            </Row>
+                <!-- </Col>
+            </Row> -->
         </Form>
     </div>
 </template>
@@ -45,8 +56,13 @@ export default {
     },
     data() {
         return {
-            token: this.$store.state.user.token,
-            configurl: this.$config.configUrl
+            jumpList: [
+                {value: '1', label: '活动'},
+                {value: '2', label: '外链'},
+                {value: '3', label: '签到'},
+                {value: '4', label: '旅游'},
+                {value: '5', label: '商家'},
+            ]
         }
     },
     methods: {
@@ -71,11 +87,10 @@ export default {
             var formData = new FormData();
             formData.append('file_image', file)
             setUpload(formData).then(res=>{
-                console.log(res)
                 event.target.value=''
                 if(res.data.code == 200) {
                     this.$Message.info('上传成功')
-                    this.formInline.photo = `${res.data.data.fileUrl}`
+                    this.formInline.bookcover = `${res.data.data.fileUrl}`
                 }
             })
         },

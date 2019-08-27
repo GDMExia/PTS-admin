@@ -7,14 +7,17 @@ class BnnerEditModel extends FormModel {
     // this.init()
 
     this.ruleInline = {
-      title: [
+      content: [
         { required: true, message: '请输入标题', trigger: 'blur' }
       ],
-      photo: [
-        { required: true, message: '请上传封面图', trigger: 'blur' }
+      bookcover: [
+        { required: true, message: '请上传宣传图', trigger: 'blur' }
       ],
-      content: [
-        { required: true, message: '请输入详情', trigger: 'blur' }
+      link_url: [
+        { required: true, message: '请输入跳转ID或者跳转链接', trigger: 'blur' }
+      ],
+      jump_type: [
+        { required: true, message: '请选择跳转类型', trigger: 'change' }
       ]
     }
   }
@@ -22,9 +25,10 @@ class BnnerEditModel extends FormModel {
   init(form) {
     this.formInline = {
       id: form.id,
-      title: form.bannerTitle,
-      photo: form.bannerImage,
-      content: form.bannerContent,
+      link_url: form.link_url,
+      jump_type: form.jump_type,
+      bookcover: form.bookcover,
+      content: form.content,
     }
     return this
   }
@@ -32,9 +36,10 @@ class BnnerEditModel extends FormModel {
   converter(form) {
     return {
       id: form.id,
-      bannerTitle: form.title,
-      bannerImage: form.photo,
-      bannerContent: form.content,
+      link_url: form.link_url,
+      jump_type: form.jump_type,
+      bookcover: form.bookcover,
+      content: form.content,
     }
   }
 }

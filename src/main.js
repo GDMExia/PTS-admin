@@ -12,7 +12,7 @@ import installPlugin from '@/plugin'
 import VueJsonp from 'vue-jsonp'
 import './index.less'
 import '@/assets/icons/iconfont.css'
-
+import VueBus from 'vue-bus'
 // 实际打包时应该不引入mock
 /* eslint-disable */
 if (process.env.NODE_ENV !== 'production') require('@/mock')
@@ -22,6 +22,7 @@ Vue.use(iView, {
 })
 
 Vue.use(VueJsonp)
+Vue.use(VueBus)
 /**
  * @description 注册admin内置插件
  */

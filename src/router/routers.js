@@ -58,7 +58,7 @@ export default [
       icon: 'ios-contacts',
       title: '权限管理',
       access: ['super_admin'],
-      id: 1
+      id: 12
     },
     component: Main,
     children: [
@@ -89,7 +89,7 @@ export default [
       icon: 'ios-pin-outline',
       title: '商家管理',
       access: ['super_admin'],
-      id: 9
+      id: 13
     },
     component: Main,
     children: [
@@ -129,7 +129,7 @@ export default [
       icon: 'ios-people',
       title: '用户管理',
       access: ['super_admin'],
-      id: 2
+      id: 14
     },
     component: Main,
     children: [
@@ -200,7 +200,7 @@ export default [
       icon: 'ios-people',
       title: '优惠券管理',
       access: ['super_admin'],
-      id: 2
+      id: 23
     },
     component: Main,
     children: [
@@ -225,55 +225,45 @@ export default [
     ]
   },
   {
-    path: '/residences',
-    name: 'residences',
+    path: '/activities',
+    name: 'activities',
     meta: {
       icon: 'ios-home-outline',
-      title: '优惠券管理',
+      title: '活动管理',
       access: ['super_admin'],
-      id: 3
+      id: 15
     },
     component: Main,
     children: [
       {
-        path: 'residence',
-        name: 'residence',
+        path: 'activity',
+        name: 'activity',
         meta: {
           icon: 'ios-home-outline',
-          title: '活动管理'
+          title: '活动列表'
         },
-        component: () => import('@/pages/residence-page/residence-page.vue')
+        component: () => import('@/pages/activity-page/activity-page.vue')
       },
       {
-        path: 'group',
-        name: 'group',
+        path: 'activityCreate',
+        name: 'activityCreate',
         meta: {
           hideInMenu: true,
           icon: 'ios-home-outline',
-          title: '分组规则'
+          title: '添加'
         },
-        component: () => import('@/pages/residence-page/group-page.vue')
+        component: () => import('@/pages/activity-page/activity-create-page.vue')
       },
       {
-        path: 'tickets',
-        name: 'tickets',
+        path: 'activityUser',
+        name: 'activityUser',
         meta: {
           hideInMenu: true,
           icon: 'ios-home-outline',
-          title: '分票规则'
+          title: '添加'
         },
-        component: () => import('@/pages/residence-page/tickets-page.vue')
+        component: () => import('@/pages/activity-page/activity-user-page.vue')
       },
-      {
-        path: 'ticketsCreate',
-        name: 'ticketsCreate',
-        meta: {
-          hideInMenu: true,
-          icon: 'ios-home-outline',
-          title: '添加分票规则'
-        },
-        component: () => import('@/pages/residence-page/tickets-create-page.vue')
-      }
     ]
   },
   {
@@ -283,7 +273,7 @@ export default [
       icon: 'ios-card-outline',
       title: '活动订单管理',
       access: ['super_admin'],
-      id: 4
+      id: 16
     },
     component: Main,
     children: [
@@ -370,7 +360,7 @@ export default [
       icon: 'md-reorder',
       title: '优惠券订单管理',
       access: ['super_admin'],
-      id: 6
+      id: 24
     },
     component: Main,
     children: [
@@ -466,7 +456,7 @@ export default [
       icon: 'ios-cafe-outline',
       title: '旅游管理',
       access: ['super_admin'],
-      id: 8
+      id: 17
     },
     component: Main,
     children: [
@@ -486,9 +476,9 @@ export default [
     name: 'custom',
     meta: {
       icon: 'ios-card-outline',
-      title: '定制游管理',
+      title: '学院管理',
       access: ['super_admin'],
-      id: 5
+      id: 18
     },
     component: Main,
     children: [
@@ -520,7 +510,7 @@ export default [
       icon: 'ios-cafe-outline',
       title: '活动分享管理',
       access: ['super_admin'],
-      id: 7
+      id: 19
     },
     component: Main,
     children: [
@@ -542,7 +532,7 @@ export default [
       icon: 'ios-ice-cream-outline',
       title: '使用指南管理',
       access: ['super_admin'],
-      id: 8
+      id: 20
     },
     component: Main,
     children: [
@@ -564,7 +554,7 @@ export default [
       icon: 'ios-barcode-outline',
       title: 'Banner管理',
       access: ['super_admin'],
-      id: 10
+      id: 21
     },
     component: Main,
     children: [
@@ -573,9 +563,18 @@ export default [
         name: 'banner',
         meta: {
           icon: 'ios-barcode-outline',
-          title: 'Banner管理'
+          title: '首页'
         },
         component: () => import('@/pages/banner-page/banner-page.vue')
+      },
+      {
+        path: 'storeBanner',
+        name: 'storeBanner',
+        meta: {
+          icon: 'ios-barcode-outline',
+          title: '商家页'
+        },
+        component: () => import('@/pages/banner-page/store-banner-page.vue')
       }
     ]
   },

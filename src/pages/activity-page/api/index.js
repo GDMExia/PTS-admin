@@ -1,71 +1,71 @@
 import axios from '@/libs/api.request'
 import qs from 'qs'
+import store from '@/store'
+const user = store.state.user
 export const residenceColumns = [
     { title: 'ID', key: 'id', tooltip: true },
-    { title: '名称', key: 'hotelName', tooltip: true },
-    { title: '是否推荐', key: 'isrecommendStr', tooltip: true },
+    { title: '活动所属', key: 'pidStr', tooltip: true },
+    { title: '标题', key: 'goods_name', tooltip: true },
+    { title: '分类', key: 'cate_name', tooltip: true },
+    { title: '截止时间', key: 'registration_time', tooltip: true },
+    { title: '人数上限', key: 'registration_number', tooltip: true },
+    { title: '剩余数量', key: 'remaining_number', tooltip: true },
+    { title: '参与时间', key: 'join_time', tooltip: true },
+    { title: '支付金额(元)', key: 'goods_price', tooltip: true },
+    { title: '积分抵扣', key: 'discount_price', tooltip: true },
+    { title: '状态', key: 'goods_status', tooltip: true },
+    { title: '发布时间', key: 'create_time', tooltip: true },
     {
         title: '操作',
         key: 'handle',
-        align: 'center',
-        width: 120,
+        align: 'left',
+        width: 320,
         fixed: 'right',
         button: [(h, params, vm) => {
             return h('div', [
                 h(
-                    'i-button', {
-                        props: {
-                            type: 'warning',
-                            icon: 'ios-ribbon',
-                            size: 'small'
+                    'Poptip',
+                    {
+                      props: {
+                        confirm: true,
+                        title: '请审核该活动?',
+                        transfer: true,
+                        size: 'small',
+                        okText: '通过',
+                        cancelText: '不通过'
+                      },
+                      style: {
+                        marginRight: '5px',
+                        display: params.row.goods_status == '待审核'?'inline-block':'none'
+                      },
+                      on: {
+                        'on-ok': () => {
+                          vm.$emit('on-audit', {data: params, goods_status: 1})
                         },
-                        style: {
-                            marginRight: '5px'
-                        },
-                        on: {
-                            click: () => {
-                                vm.$emit('on-change', params)
-                            }
+                        'on-cancel': () => {
+                            vm.$emit('on-audit', {data: params, goods_status: 4})
                         }
+                      }
                     },
-                    params.row.isrecommend?'不推荐':'推荐'
-                )
-            ])
-        }]
-    },
-]
-
-import expandRow from '@/mock/table-expand.vue'
-export const groupColumns = [
-    { title: '名称', key: 'name', tooltip: true },
-    { title: '分票规则', key: 'rules', tooltip: true },
-    {
-        title: '民宿',
-        key: 'residenceArray',
-        align: 'center',
-        type: 'expand',
-        render: (h, params) => {
-            return h(expandRow, {
-                props: {
-                    row: params.row.residenceArray
-                },
-            })
-        }
-    },
-    { title: '状态', key: 'enableStr', tooltip: true },
-    {
-        title: '操作',
-        key: 'handle',
-        align: 'center',
-        width: 360,
-        // fixed: 'right',
-        button: [(h, params, vm) => {
-            return h('div', [
+                    [
+                      h(
+                        'i-button',
+                        {
+                            props: {
+                                type: 'warning',
+                                icon: 'ios-ribbon',
+                                size: 'small'
+                            },
+                        },
+                        '审核'
+                      )
+                    ]
+                ),
                 h(
                     'i-button', {
                         props: {
                             type: 'primary',
-                            icon: 'md-create',
+                            icon: 'ios-create',
                             size: 'small'
                         },
                         style: {
@@ -82,8 +82,8 @@ export const groupColumns = [
                 h(
                     'i-button', {
                         props: {
-                            type: 'warning',
-                            icon: 'md-create',
+                            type: 'info',
+                            icon: 'md-eye',
                             size: 'small'
                         },
                         style: {
@@ -91,19 +91,54 @@ export const groupColumns = [
                         },
                         on: {
                             click: () => {
-                                vm.$emit('on-change', params)
+                                vm.$emit('on-view', params)
                             }
                         }
                     },
-                    params.row.enable?'禁用':'启用'
+                    '查看报名'
+                ),
+                h(
+                    'Poptip',
+                    {
+                      props: {
+                        confirm: true,
+                        title: '确定要删除吗?',
+                        transfer: true,
+                        size: 'small'
+                      },
+                      style: {
+                        marginRight: '5px'
+                      },
+                      on: {
+                        'on-ok': () => {
+                          vm.$emit('on-delete', params)
+                        }
+                      }
+                    },
+                    [
+                      h(
+                        'i-button',
+                        {
+                          props: {
+                            type: 'error',
+                            icon: 'ios-trash-outline',
+                            size: 'small'
+                          }
+                        },
+                        '删除'
+                      )
+                    ]
                 ),
             ])
         }]
-    }
+    },
 ]
 
-export const residenceNameColumn = [
-    { title: '民宿名称', key: 'name', tooltip: true },
+export const usersColumns = [
+    { title: '券号', key: 'coupons_number', tooltip: true },
+    { title: '所属订单号', key: 'order_no', tooltip: true },
+    { title: '当前状态', key: 'status', tooltip: true },
+    { title: '核销时间', key: 'update_time', tooltip: true },
 ]
 
 export const ticketsColumn = [
@@ -185,7 +220,35 @@ export const ticketsRecidenceColumn = [
 
 export const getResidenceList = page => {
     return axios.request({
-        url: `/pms/list?pageIndex=${page.index}&pageSize=${page.size}&key=${page.search}`,
+        url: `/Goods/goodslist?page=${page.index}&pageSize=${page.size}&goods_name=${page.search}&cid=&goods_status=&token=${user.token}`,
+        headers: {
+          functionId: 3
+        },
+        method: 'get'
+    })
+}
+
+export const getActivityTypeIndex = () => {
+
+}
+
+export const setActivityChange = form => {
+    let params = qs.stringify(Object.assign(form, {
+        token: user.token
+    }))
+    return axios.request({
+        url: `/Goods/updateAudit`,
+        headers: {
+          functionId: 3
+        },
+        data: params,
+        method: 'post'
+    })
+}
+
+export const setActivityDelete = id => {
+    return axios.request({
+        url: `/Goods/deleteGoods?token=${user.token}&id=${id}`,
         headers: {
           functionId: 3
         },
@@ -194,13 +257,26 @@ export const getResidenceList = page => {
 }
 
 export const setResidenceCreate = form => {
-    let params = qs.stringify(form)
+    let params = qs.stringify(Object.assign(form, {
+        token: user.token
+    }))
     return axios.request({
-        url: `/pms/add/${form.hotelId}`,
+        url: `/Goods/createGoods`,
         headers: {
           functionId: 3
         },
+        data: params,
         method: 'post'
+    })
+}
+
+export const getActivityUsers = id => {
+    return axios.request({
+        url: `/Goods/getGoodsSiginList?token=${user.token}&goods_id=${id}`,
+        headers: {
+          functionId: 3
+        },
+        method: 'get'
     })
 }
 

@@ -7,7 +7,7 @@
 import Tables from '_c/tables'
 import {
     residenceNameColumn
-} from '_p/residence-page/api'
+} from '_p/activity-page/api'
 export default {
     components: {
         Tables

@@ -23,11 +23,11 @@
             </Row>
             <Row>
               <Col span="24">
-                <FormItem label="关联活动">
+                <!-- <FormItem label="关联活动"> -->
                   <!-- <Select v-model="formInline">
                     <Option v-for="item in activityList" :value="item.value" :key="item.value">{{ item.label }}</Option>
                   </Select> -->
-                </FormItem>
+                <!-- </FormItem> -->
               </Col>
             </Row>
             <Row>
