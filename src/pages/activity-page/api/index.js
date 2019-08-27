@@ -4,17 +4,17 @@ import store from '@/store'
 const user = store.state.user
 export const residenceColumns = [
     { title: 'ID', key: 'id', tooltip: true },
-    { title: '活动所属', key: 'pidStr', tooltip: true },
-    { title: '标题', key: 'goods_name', tooltip: true },
-    { title: '分类', key: 'cate_name', tooltip: true },
-    { title: '截止时间', key: 'registration_time', tooltip: true },
-    { title: '人数上限', key: 'registration_number', tooltip: true },
-    { title: '剩余数量', key: 'remaining_number', tooltip: true },
-    { title: '参与时间', key: 'join_time', tooltip: true },
-    { title: '支付金额(元)', key: 'goods_price', tooltip: true },
-    { title: '积分抵扣', key: 'discount_price', tooltip: true },
-    { title: '状态', key: 'goods_status', tooltip: true },
-    { title: '发布时间', key: 'create_time', tooltip: true },
+    { title: '活动所属', key: 'pidStr', tooltip: true,width: 120 },
+    { title: '标题', key: 'goods_name', tooltip: true,width: 120 },
+    { title: '分类', key: 'cate_name', tooltip: true,width: 120 },
+    { title: '截止时间', key: 'registration_time', tooltip: true,width: 120 },
+    { title: '人数上限', key: 'registration_number', tooltip: true,width: 120 },
+    { title: '剩余数量', key: 'remaining_number', tooltip: true,width: 120 },
+    { title: '参与时间', key: 'join_time', tooltip: true,width: 120 },
+    { title: '支付金额(元)', key: 'goods_price', tooltip: true,width: 120 },
+    { title: '积分抵扣', key: 'discount_price', tooltip: true,width: 120 },
+    { title: '状态', key: 'goods_status', tooltip: true,width: 120 },
+    { title: '发布时间', key: 'create_time', tooltip: true,width: 120 },
     {
         title: '操作',
         key: 'handle',
@@ -221,9 +221,7 @@ export const ticketsRecidenceColumn = [
 export const getResidenceList = page => {
     return axios.request({
         url: `/Goods/goodslist?page=${page.index}&pageSize=${page.size}&goods_name=${page.search}&cid=&goods_status=&token=${user.token}`,
-        headers: {
-          functionId: 3
-        },
+        
         method: 'get'
     })
 }
@@ -238,9 +236,7 @@ export const setActivityChange = form => {
     }))
     return axios.request({
         url: `/Goods/updateAudit`,
-        headers: {
-          functionId: 3
-        },
+        
         data: params,
         method: 'post'
     })
@@ -249,9 +245,7 @@ export const setActivityChange = form => {
 export const setActivityDelete = id => {
     return axios.request({
         url: `/Goods/deleteGoods?token=${user.token}&id=${id}`,
-        headers: {
-          functionId: 3
-        },
+        
         method: 'get'
     })
 }
@@ -262,9 +256,7 @@ export const setResidenceCreate = form => {
     }))
     return axios.request({
         url: `/Goods/createGoods`,
-        headers: {
-          functionId: 3
-        },
+        
         data: params,
         method: 'post'
     })
@@ -273,9 +265,7 @@ export const setResidenceCreate = form => {
 export const getActivityUsers = id => {
     return axios.request({
         url: `/Goods/getGoodsSiginList?token=${user.token}&goods_id=${id}`,
-        headers: {
-          functionId: 3
-        },
+        
         method: 'get'
     })
 }
@@ -283,9 +273,7 @@ export const getActivityUsers = id => {
 export const setResidenceChange = form => {
     return axios.request({
         url: `/pms/recommend/${form.id}?recommendImg=${form.recommendImg}`,
-        headers: {
-          functionId: 3
-        },
+        
         method: 'put'
     })
 }
@@ -293,9 +281,7 @@ export const setResidenceChange = form => {
 export const getTicketsList = page => {
     return axios.request({
         url: `/pms/sortTicket/list?pageIndex=${page.index}&pageSize=${page.size}`,
-        headers: {
-          functionId: 3
-        },
+        
         method: 'get'
     })
 }
@@ -303,9 +289,7 @@ export const getTicketsList = page => {
 export const getTicketsInfo = page => {
     return axios.request({
         url: `/pms/sortTicket/blank?pageIndex=${page.index}&pageSize=${page.size}`,
-        headers: {
-          functionId: 3
-        },
+        
         method: 'get'
     })
 }
@@ -313,9 +297,7 @@ export const getTicketsInfo = page => {
 export const getTicketsDetail = (id, page) => {
     return axios.request({
         url: `/pms/sortTicket/info?id=${id}&pageIndex=${page.index}&pageSize=${page.size}`,
-        headers: {
-          functionId: 3
-        },
+        
         method: 'get'
     })
 }
@@ -323,9 +305,7 @@ export const getTicketsDetail = (id, page) => {
 export const setTicketsInfo = form => {
     return axios.request({
         url: `/pms/sortTicket/add`,
-        headers: {
-          functionId: 3
-        },
+        
         data: form,
         method: 'post'
     })
@@ -334,9 +314,7 @@ export const setTicketsInfo = form => {
 export const setTicketsInfoEdit = form => {
     return axios.request({
         url: `/pms/sortTicket/editor?id=${form.id}`,
-        headers: {
-          functionId: 3
-        },
+        
         data: form,
         method: 'put'
     })

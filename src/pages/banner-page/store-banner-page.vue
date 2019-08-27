@@ -3,7 +3,7 @@
         <Card>
             <div class="clearfix" style="margin-bottom: 20px">
                 <div class="pull-left">
-                    <Button class="search-btn" type="primary" style="margin-right:5px">
+                    <Button @click="handleCreate" class="search-btn" type="primary" style="margin-right:5px">
                         <Icon type="md-add"/>&nbsp;&nbsp;添加</Button>
                 </div>
                 <div class="pull-right">
@@ -33,8 +33,8 @@
 <script>
 import Tables from '_c/tables'
 import ModelDialog from '_c/model-dialog'
-import BnnerEditForm from './forms/banner-edit-form'
-import BnnerEditModel from './model/banner-edit-model'
+import BnnerEditForm from './forms/store-banner-edit-form'
+import BnnerEditModel from './model/store-banner-edit-model'
 import pageInfo from "@/libs/page-info"
 import { 
     storeBannerColumns,
@@ -104,12 +104,28 @@ export default {
                 }
             })
         },
+        handleCreate() {
+            const form = {
+                link_url: '',
+                jump_type: '活动',
+                bookcover: '',
+                content: '',
+                sort: ''
+            }
+            this.setDialogProperty(600, '添加', 'BnnerEditForm')
+            this.editForm = BnnerEditModel.init(form)
+        },
         // 编辑
         handleEdit(params) {
-            
+            let form = params.row
+            form.jump_type = form.jump_type == '1'?'活动':form.jump_type == '5'?'商家':'外链'
+            this.setDialogProperty(600, '编辑', 'BnnerEditForm')
+            this.editForm = BnnerEditModel.init(form)
         },
         handleEditSubmit() {
-            
+            let form = BnnerEditModel.converter(this.editForm.formInline)
+            form.cid = 2
+            form.cate_id = this.mid
             setBannerUpdate(form).then(res=>{
                 if(res.data.code==200) {
                     this.$Message.success('编辑成功')

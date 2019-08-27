@@ -373,20 +373,14 @@ export const auditColumn = [
 export const getOrderList = (page, type) => {
     let search = Base64.encode(page.search)
     return axios.request({
-        url: `/orders?pageNum=${page.index}&pageSize=${page.size}&type=${type}&search=${search}`,
-        headers: {
-          functionId: 6
-        },
+        url: `/orders?pageNum=${page.index}&pageSize=${page.size}&type=${type}&search=${search}`,    
         method: 'get'
     })
 }
 
 export const getOrderDetail = id => {
     return axios.request({
-        url: `/order?orderId=${id}`,
-        headers: {
-          functionId: 6
-        },
+        url: `/order?orderId=${id}`,       
         method: 'get'
     })
 }
@@ -394,9 +388,6 @@ export const getOrderDetail = id => {
 export const setOrderCancel = id => {
     return axios.request({
         url: `/order?orderId=${id}`,
-        headers: {
-          functionId: 6
-        },
         method: 'delete'
     })
 }

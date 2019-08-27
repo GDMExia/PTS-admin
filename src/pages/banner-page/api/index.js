@@ -98,9 +98,9 @@ export const bannerColumns = [
 
 export const storeBannerColumns = [
     {title: '广告位', key: 'sort'},
-    {title: '商家名称', key: 'content', tooltip: true},
+    {title: '标题', key: 'content', tooltip: true},
     {title: '跳转', key: 'linkUrl', tooltip: true},
-    {title: '上架时间', key: 'create_time', tooltip: true},
+    {title: '发布时间', key: 'create_time', tooltip: true},
     {title: '状态', key: 'status', tooltip: true},
     {
         title: '操作',
@@ -191,9 +191,6 @@ export const storeBannerColumns = [
 export const getBannerList = type => {
     return axios.request({
         url: `/Advertising/getAdvertising?token=${user.token}&cid=${type}`,
-        headers: {
-          functionId: 8
-        },
         method: 'get'
     })
 }
@@ -201,9 +198,6 @@ export const getBannerList = type => {
 export const getStoreBannerList = form => {
     return axios.request({
         url: `/Advertising/getAdvertising?token=${user.token}&cid=${form.cid}&cate_id=${form.cate_id}`,
-        headers: {
-          functionId: 8
-        },
         method: 'get'
     })
 }
@@ -238,9 +232,7 @@ export const setBannerEnable = form => {
     }))
     return axios.request({
         url: `/Advertising/updateShow`,
-        headers: {
-          functionId: 8
-        },
+        
         data: params,
         method: 'post'
     })
