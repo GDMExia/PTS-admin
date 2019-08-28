@@ -2,6 +2,7 @@ import axios from '@/libs/api.request'
 import qs from 'qs'
 import store from '@/store'
 const user = store.state.user
+import { Base64 } from 'js-base64'
 export const residenceColumns = [
     { title: 'ID', key: 'id', tooltip: true },
     { title: '活动所属', key: 'pidStr', tooltip: true,width: 120 },
@@ -141,8 +142,8 @@ export const usersColumns = [
     { title: '核销时间', key: 'update_time', tooltip: true },
 ]
 
-export const ticketsColumn = [
-    { title: '名称', key: 'title', tooltip: true },
+export const categoryColumn = [
+    { title: '分类名称', key: 'cate_name', tooltip: true },
     {
         title: '操作',
         key: 'handle',
@@ -153,24 +154,6 @@ export const ticketsColumn = [
                     'i-button', {
                         props: {
                             type: 'primary',
-                            icon: 'md-eye',
-                            size: 'small'
-                        },
-                        style: {
-                            marginRight: '5px'
-                        },
-                        on: {
-                            click: () => {
-                                vm.$emit('on-view', params)
-                            }
-                        }
-                    },
-                    '查看'
-                ),
-                h(
-                    'i-button', {
-                        props: {
-                            type: 'warning',
                             icon: 'md-create',
                             size: 'small'
                         },
@@ -185,58 +168,64 @@ export const ticketsColumn = [
                     },
                    '编辑'
                 ),
+                h(
+                    'Poptip',
+                    {
+                      props: {
+                        confirm: true,
+                        title: '确定要删除吗?',
+                        transfer: true,
+                        size: 'small'
+                      },
+                      style: {
+                        marginRight: '5px'
+                      },
+                      on: {
+                        'on-ok': () => {
+                          vm.$emit('on-delete', params)
+                        }
+                      }
+                    },
+                    [
+                      h(
+                        'i-button',
+                        {
+                          props: {
+                            type: 'error',
+                            icon: 'ios-trash-outline',
+                            size: 'small'
+                          }
+                        },
+                        '删除'
+                      )
+                    ]
+                ),
             ])
         }]
     }
 ]
 
-export const ticketsRecidenceColumn = [
-    { title: '名称', key: 'name', tooltip: true },
-    { 
-        title: '日船票数量', 
-        key: 'handle',
-        button: [(h, params, vm) => {
-            if (params.row.isEdit) {
-                return h('Input', {
-                    props: {
-                        type: 'text',
-                        value: params.row.shipNum, // 此处如何让数据双向绑定
-                        placeholder: '请输入'
-                    },
-                    on: {
-                        'on-blur': (event) => {
-                            params.row.shipNum = event.target.value
-                            vm.$emit('on-blur', params)
-                        }
-                    }
-                })
-            } else {
-                return h('div', {
-                }, params.row.shipNum)
-            }
-        }]
-    },
-]
-
 export const getResidenceList = page => {
+    let search = page.search.replace(/\_/g, "/").replace(/\-/g, "+")
+    search = search!=''?JSON.parse(Base64.decode(search)):{search: '',cid:'',goods_status: ''}
     return axios.request({
-        url: `/Goods/goodslist?page=${page.index}&pageSize=${page.size}&goods_name=${page.search}&cid=&goods_status=&token=${user.token}`,
-        
+        url: `/Goods/goodslist?page=${page.index}&pageSize=${page.size}&goods_name=${search.search}&cid=${search.cid}&goods_status=${search.goods_status}&token=${user.token}`,       
         method: 'get'
     })
 }
 
-export const getActivityTypeIndex = () => {
-
+export const getResidenceSearchList = page => {
+    return axios.request({
+        url: `/Goods/goodslist?page=${page.index}&pageSize=${page.size}&goods_name=${page.search}&cid=&goods_status=&token=${user.token}`,       
+        method: 'get'
+    })
 }
-
 export const setActivityChange = form => {
     let params = qs.stringify(Object.assign(form, {
         token: user.token
     }))
     return axios.request({
-        url: `/Goods/updateAudit`,
-        
+        url: `/Goods/updateAudit`,       
         data: params,
         method: 'post'
     })
@@ -244,8 +233,7 @@ export const setActivityChange = form => {
 
 export const setActivityDelete = id => {
     return axios.request({
-        url: `/Goods/deleteGoods?token=${user.token}&id=${id}`,
-        
+        url: `/Goods/deleteGoods?token=${user.token}&id=${id}`,       
         method: 'get'
     })
 }
@@ -255,8 +243,7 @@ export const setResidenceCreate = form => {
         token: user.token
     }))
     return axios.request({
-        url: `/Goods/createGoods`,
-        
+        url: `/Goods/createGoods`,       
         data: params,
         method: 'post'
     })
@@ -270,52 +257,34 @@ export const getActivityUsers = id => {
     })
 }
 
-export const setResidenceChange = form => {
+export const getCategoryList = () => {
     return axios.request({
-        url: `/pms/recommend/${form.id}?recommendImg=${form.recommendImg}`,
-        
-        method: 'put'
-    })
-}
-
-export const getTicketsList = page => {
-    return axios.request({
-        url: `/pms/sortTicket/list?pageIndex=${page.index}&pageSize=${page.size}`,
-        
+        url: `/Goods/getGoodsCategory?token=${user.token}`,       
         method: 'get'
     })
 }
 
-export const getTicketsInfo = page => {
+export const setCategoryDelete = id => {
     return axios.request({
-        url: `/pms/sortTicket/blank?pageIndex=${page.index}&pageSize=${page.size}`,
-        
+        url: `/Goods/deleteGoodsCategory?id=${id}&token=${user.token}`,       
         method: 'get'
     })
 }
 
-export const getTicketsDetail = (id, page) => {
+export const setCategoryUpdate = form => {
+    const params = qs.stringify(Object.assign(form, {
+        token: user.token
+    }))
     return axios.request({
-        url: `/pms/sortTicket/info?id=${id}&pageIndex=${page.index}&pageSize=${page.size}`,
-        
-        method: 'get'
-    })
-}
-
-export const setTicketsInfo = form => {
-    return axios.request({
-        url: `/pms/sortTicket/add`,
-        
-        data: form,
+        url: `/Goods/createGoodsCategory`,
+        data: params,
         method: 'post'
     })
 }
 
-export const setTicketsInfoEdit = form => {
+export const setTimeInfo = form => {
     return axios.request({
-        url: `/pms/sortTicket/editor?id=${form.id}`,
-        
-        data: form,
-        method: 'put'
+        url: `/Goods/updateDateTime?date_time=${form.date}&token=${user.token}`,
+        method: 'post'
     })
 }

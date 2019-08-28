@@ -260,9 +260,27 @@ export default [
         meta: {
           hideInMenu: true,
           icon: 'ios-home-outline',
-          title: '添加'
+          title: '查看报名'
         },
         component: () => import('@/pages/activity-page/activity-user-page.vue')
+      },
+      {
+        path: 'category',
+        name: 'category',
+        meta: {
+          icon: 'ios-home-outline',
+          title: '分类管理'
+        },
+        component: () => import('@/pages/activity-page/category-page.vue')
+      },
+      {
+        path: 'activitySet',
+        name: 'activitySet',
+        meta: {
+          icon: 'ios-home-outline',
+          title: '相关设置'
+        },
+        component: () => import('@/pages/activity-page/activity-set-page.vue')
       },
     ]
   },

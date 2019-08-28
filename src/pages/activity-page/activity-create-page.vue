@@ -20,8 +20,8 @@
                         </Col>
                         <Col span="12">
                             <FormItem label="分类" prop="cid">
-                            <Select placeholder="分类" v-model="formInline.cid" style="width: 150px;" clearable>
-                                <Option v-for="item in typeList" :value="item.id" :key="item.id">{{item.name}}</Option>
+                            <Select placeholder="分类" v-model="formInline.cid" style="width: 150px;" >
+                                <Option v-for="item in typeList" :value="item.id" :key="item.id">{{item.cate_name}}</Option>
                             </Select>
                             </FormItem>
                         </Col>
@@ -94,7 +94,7 @@
                     </Row>
                     <Row>
                         <FormItem label="商家" prop="merchants_id">
-                            <Select placeholder="商家" v-model="formInline.merchants_id" style="width: 150px;" clearable>
+                            <Select placeholder="商家" v-model="formInline.merchants_id" style="width: 150px;" >
                                 <Option v-for="item in storeList" :value="item.mid" :key="item.mid">{{item.real_name}}</Option>
                             </Select>
                         </FormItem>
@@ -112,8 +112,10 @@
 </template>
 <script>
 import Editor from "_c/editor";
+import moment from 'moment'
 import {
-    setResidenceCreate
+    setResidenceCreate,
+    getCategoryList
 } from './api'
 import {
     getStoreList
@@ -206,13 +208,17 @@ export default {
             this.$Message.error('请上传封面图')
             return
         }
-        setResidenceCreate(form).then(res=>{
-            if(res.data.code == 200) {
-                this.$Message.success('操作成功')
-                this.$router.back()
-            } else {
-                this.$Message.error(res.data.message)
-            }
+        this.$refs.ResidenceCreateForm.validate((valid) => {
+            if (valid) {
+                setResidenceCreate(form).then(res=>{
+                    if(res.data.code == 200) {
+                        this.$Message.success('操作成功')
+                        this.$router.back()
+                    } else {
+                        this.$Message.error(res.data.message)
+                    }
+                })
+            } 
         })
     },
     uploadImageBanner(event) {
@@ -261,10 +267,20 @@ export default {
         getStoreList({index: 1, size: 1000}).then(res=>{
             this.storeList = res.data.data.userList
         })
-    }
+    },
+    handleCategory() {
+        getCategoryList().then(res=>{
+            if(res.data.code==200) {
+                this.typeList = res.data.data.cateTree?res.data.data.cateTree:[]
+            } else {
+                this.$Message.error(res.data.message)
+            }
+        })
+    },
   },
   mounted() {
     this.handleStoreList()
+    this.handleCategory()
     let that = this
     const form = localStorage.getItem('activityDetail')
     if(form) {
@@ -273,7 +289,6 @@ export default {
     }
   },
   beforeDestroy() {
-    console.log('Test beforeDestroy')
     localStorage.removeItem('activityDetail')
   }
 }

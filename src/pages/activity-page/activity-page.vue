@@ -9,13 +9,13 @@
                 <div class="pull-right">
                     <Form ref="searchBarForm" :model="queryForm" inline @keydown.native.enter.prevent ="()=>{}">
                         <FormItem>
-                            <Select placeholder="分类" v-model="queryForm.enterpriseType" style="width: 150px;" clearable>
-                                <Option v-for="item in typeList" :value="item.id" :key="item.id">{{item.name}}</Option>
+                            <Select placeholder="分类" v-model="queryForm.cid" style="width: 150px;" clearable>
+                                <Option v-for="item in typeList" :value="item.id" :key="item.id">{{item.cate_name}}</Option>
                             </Select>
                         </FormItem>
                         <FormItem>
-                            <Select placeholder="状态" v-model="queryForm.enterpriseType" style="width: 150px;" clearable>
-                                <Option v-for="item in statusList" :value="item.id" :key="item.id">{{item.name}}</Option>
+                            <Select placeholder="状态" v-model="queryForm.goods_status" style="width: 150px;" clearable>
+                                <Option v-for="item in statusList" :value="item.value" :key="item.value">{{item.name}}</Option>
                             </Select>
                         </FormItem>
                         <FormItem>
@@ -41,6 +41,7 @@
             <ModelDialog :status="modelStatus"
                 @handlerModelDialogOk="handlerModelDialogOk"
                 @handlerModelDialogCancel="handlerModelDialogCancel">
+
             </ModelDialog>
         </div>
     </div>
@@ -51,10 +52,9 @@ import moment from 'moment'
 import pageInfo from "@/libs/page-info"
 import ModelDialog from '_c/model-dialog'
 import {
+    getCategoryList,
     residenceColumns,
     getResidenceList,
-    setResidenceCreate,
-    setResidenceChange,
     setActivityChange,
     setActivityDelete
 } from './api'
@@ -71,15 +71,27 @@ export default {
             modelStatus: { show: false, hide: false, loading: true, title: '', name: '' },
             queryForm: {
                 search: '',
+                goods_status: '',
+                cid: ''
             },
-            statusList: [],
+            statusList: [
+                {value: '3', name: '待审核'},
+                {value: '4', name: '审核不通过'},
+                {value: '1', name: '进行中'},
+                {value: '2', name: '已结束'},
+            ],
             typeList: []
         }
     },
     methods: {
         handleSearch() {
             this.page.index = 1
-            this.page.search = this.queryForm.search
+            this.page.search = {
+                search: this.queryForm.search,
+                goods_status: this.queryForm.goods_status?this.queryForm.goods_status:'',
+                cid: this.queryForm.cid?this.queryForm.cid:''
+            }
+            this.page = pageInfo.transfer()
             this.handleQuery()
         },
         handleQuery() {
@@ -89,10 +101,19 @@ export default {
                         item.status = item.goods_status==1?'进行中':
                         item.goods_status==2?'已结束':item.goods_status==3?'待审核':'审核不通过'
                         item.pidStr = item.pid==1?'商家':'官方'
-                        item.registration_time = item.registration_time?moment(item.registration_time).format("YYYY-MM-DD"):''
+                        item.registration_time = item.registration_time?moment(item.registration_time).format("YYYY-MM-DD HH:mm:ss"):''
                         return item
                     }):[]
                     this.page = pageInfo.converter({pageIndex: this.page.index, pageSize: this.page.size, pageTotal: res.data.data.PageInfo.TotalCounts,search: this.page.search})
+                } else {
+                    this.$Message.error(res.data.message)
+                }
+            })
+        },
+        handleCategory() {
+            getCategoryList().then(res=>{
+                if(res.data.code==200) {
+                    this.typeList = res.data.data.cateTree?res.data.data.cateTree:[]
                 } else {
                     this.$Message.error(res.data.message)
                 }
@@ -164,6 +185,7 @@ export default {
         this.columns = residenceColumns
         this.page = pageInfo.init()
         this.handleQuery()
+        this.handleCategory()
     }
 }
 </script>
