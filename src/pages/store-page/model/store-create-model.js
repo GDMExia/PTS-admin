@@ -36,8 +36,13 @@ class StoreCreateModel extends FormModel {
         required: true,
         message: '请输入账号',
         trigger: 'blur'
+      }],
+      discount: [{
+        required: true,
+        message: '请输入商家折扣',
+        pattern: /^[0-9]{1}\.?[0-9]{0,2}$/,
+        trigger: 'blur'
       }]
-
     }
   }
 

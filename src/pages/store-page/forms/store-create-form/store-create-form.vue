@@ -46,7 +46,7 @@
             <Row>
               <Col span="24">
                 <FormItem label="商家折扣" prop="discount">
-                  <Input v-model="formInline.discount" type="number" placeholder="请输入纯数字" />
+                  <Input v-model="formInline.discount" type="number" placeholder="请输入纯数字" @on-keyup="Toint"/>
                 </FormItem>
               </Col>
             </Row>
@@ -84,8 +84,12 @@ export default {
     },
     resetFields() {
       this.$refs.StoreCreateForm.resetFields()
+    },
+    Toint(){
+      if(this.formInline.discount>=10||this.formInline.discount<=0){
+        this.formInline.discount=''
+      }
     }
-
   }
 }
 </script>
