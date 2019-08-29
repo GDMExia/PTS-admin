@@ -26,7 +26,7 @@
 import Tables from '_c/tables'
 import pageInfo from "@/libs/page-info"
 import {
-    customColumn
+    schoolmenuColumn
 } from './api'
 export default {
     components: {
@@ -62,7 +62,7 @@ export default {
         },
     },
     mounted() {
-        this.columns = customColumn
+        this.columns = schoolmenuColumn
         this.page = pageInfo.init()
         this.handleQuery()
     }

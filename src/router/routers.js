@@ -501,24 +501,33 @@ export default [
     component: Main,
     children: [
       {
-        path: 'customTour',
-        name: 'customTour',
+        path: 'schoolArticle',
+        name: 'schoolArticle',
         meta: {
           icon: 'ios-car',
-          title: '学院管理'
+          title: '文章列表'
         },
-        component: () => import('@/pages/custom-tour-page/custom-tour-page.vue')
+        component: () => import('@/pages/school-page/school-article-page.vue')
       },
       {
-        path: 'price',
-        name: 'price',
+        path: 'schoolMenu',
+        name: 'schoolMenu',
         meta: {
-          hideInMenu: true,
           icon: 'ios-car',
-          title: '价格设置'
+          title: '分类管理'
         },
-        component: () => import('@/pages/custom-tour-page/set-price-page.vue')
-      },
+        component: () => import('@/pages/school-page/school-menu-page.vue')
+      }
+      // {
+      //   path: 'price',
+      //   name: 'price',
+      //   meta: {
+      //     hideInMenu: true,
+      //     icon: 'ios-car',
+      //     title: '价格设置'
+      //   },
+      //   component: () => import('@/pages/custom-tour-page/set-price-page.vue')
+      // },
     ]
   },
   {

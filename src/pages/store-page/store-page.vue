@@ -284,6 +284,30 @@ export default {
             this.page.size = size
             this.handleQuery()
         },
+        // 弹出框设置
+        setDialogProperty(width, title, name) {
+            this.modelStatus.show = true
+            this.modelStatus.loading = true
+            this.modelStatus.width = width
+            this.modelStatus.title = title
+            this.modelStatus.name = name
+        },
+        /* 对话框确认 */
+        handlerModelDialogOk(name) {
+            // 确保关闭对话框
+            this.modelStatus.show = false
+            // 对话框显示footer恢复
+            this.modelStatus.hide = false
+        },
+        /* 对话框取消 */
+        handlerModelDialogCancel() {
+            this.id=''
+            this.$refs['ApplyViewForm'].data={}
+            // 确保关闭对话框
+            this.modelStatus.show = false
+            // 对话框显示footer恢复
+            this.modelStatus.hide = false
+        }
     },
     mounted() {
         this.columns = storeColumn
