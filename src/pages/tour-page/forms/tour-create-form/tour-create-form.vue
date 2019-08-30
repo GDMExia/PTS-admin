@@ -71,12 +71,12 @@
 </template>
 <script>
 import Editor from "_c/editor";
-import UEtor from "_c/ueditor";
+// import UEtor from "_c/ueditor";
 import {setUpload, setFileDelete} from '_p/banner-page/api'
 export default {
     components: {
         Editor,
-        UEtor
+        
     },
     props: {
         formInline: Object,
