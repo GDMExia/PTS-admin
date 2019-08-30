@@ -21,6 +21,9 @@ class PriceCreateModel extends FormModel {
       ],
       discount: [
         { required: true, message: '请输入单房价差', trigger: 'blur' }
+      ],
+      commond: [
+        { required: true, message: '请输入单房价差', trigger: 'blur' }
       ]
     }
   }

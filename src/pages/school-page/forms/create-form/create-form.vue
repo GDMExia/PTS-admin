@@ -22,7 +22,22 @@
                 </Col>
                 <Col span="12">
                     <FormItem label="视频" prop="child">
-                        <Input v-model="formInline.child" placeholder="请输入" />
+                        <Upload
+                            multiple
+                            type="drag"
+                            action
+                            :before-upload="handleBeforeUpload"
+                            :on-progress="handleProgress"
+                            :on-success="handleProgress"
+                            :on-error="handleProgress"
+                            :on-preview="handleProgress"
+                            >
+                            <div style="padding: 20px 0">
+                                <Icon type="ios-cloud-upload" size="52" style="color: #3399ff"></Icon>
+                                <p>Click or drag files here to upload</p>
+                            </div>
+                        </Upload>
+                        <!-- <oss /> -->
                     </FormItem>
                 </Col>
             </Row>
@@ -34,17 +49,23 @@
                 </Col>
             </Row>
             <FormItem label="是否推荐" prop="commond">
-                <Switch v-model="formInline.commond" />
+                <i-Switch v-model="formInline.commond" @on-change="change" />
             </FormItem>
         </Form>
     </div>
 </template>
 <script>
 import Editor from "_c/editor";
+import { Upload } from "../../api"
+
+import oss from '@/libs/oss.js'
+// import oss from '_c/oss/oss.vue'
+
 export default {
     name: 'CreateForm',
     components: {
-        Editor
+        Editor,
+        
     },
     props: {
         formInline: Object,
@@ -53,7 +74,24 @@ export default {
     },
     data() {
         return {
-            category:''
+            category:'',
+            defaultSrc: './static/img/img.jpg',
+            fileList: [],
+            imgSrc: '',
+            cropImg: '',
+            cropDialogVisible: false,
+            textMap: {
+            update: '编辑视频',
+            create: '新增视频'
+            },
+            form: {
+            title: '',
+            sub_title: '',
+            category_id: '',
+            description: '',
+            status: true
+            }
+
         }
     },
     methods: {
@@ -66,13 +104,18 @@ export default {
         handleRichEditor() {
             this.$refs.editor.handleRichEditor(this.formInline.content)
         },
+        async handleBeforeUpload(file){
+            oss.ossUploadFile(file)
+        },
+        handleProgress(event, file, fileList){
+            console.log(file)
+        },
+        change(){},
         handleChange(event){
             console.log(event)
             console.log(this.category)
             this.category=event[event.length-1]
             console.log(this.category)
-
-            this.handleQuery()
         },
     },
     mounted() {
