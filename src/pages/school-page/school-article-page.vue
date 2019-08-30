@@ -22,19 +22,35 @@
                 show-sizer size="small" :page-size-opts="[10,20,50,100,1000]" @on-page-size-change="handleOnChangeSize"/>
             </div>
         </Card>
+        <div>
+            <ModelDialog :status="modelStatus"
+                @handlerModelDialogOk="handlerModelDialogOk"
+                @handlerModelDialogCancel="handlerModelDialogCancel">
+                <CreateForm ref='CreateForm'
+                    :formInline="createForm.formInline"
+                    :ruleInline="createForm.ruleInline"
+                    :casdata="casdata"
+                    v-if="modelStatus.name=='CreateForm'"/>
+            </ModelDialog>
+        </div>
     </div>
 </template>
 <script>
 import Tables from '_c/tables'
 import pageInfo from "@/libs/page-info"
+import ModelDialog from '_c/model-dialog'
 import {
     schoolarticleColumn,
     getarticleData,
     getCategoryTree
 } from './api'
+import CreateForm from './forms/create-form'
+import CreateFormModel from './model/create-model'
 export default {
     components: {
         Tables,
+        ModelDialog,
+        CreateForm
     },
     data() {
         return {
@@ -93,11 +109,20 @@ export default {
         },
         // 添加
         handleCreate() {
-            this.$router.push({name: 'price'})
+            let form={
+                id: '',
+                type: '',
+                price: '',
+                discount: '',
+                child: '',
+                limit: '',
+            }
+            this.createForm=CreateFormModel.init(form)
+            this.setDialogProperty(1000,'添加','CreateForm')
         },
         // 基本信息设置
         handleInfo() {},
-        handleCreate() {},
+        // handleCreate() {},
         /* 分页查询 */
         handleOnChange(index) {
             this.page.index = index
@@ -107,6 +132,28 @@ export default {
         handleOnChangeSize(size) {
             this.page.size = size
             this.handleQuery()
+        },
+        // 弹出框设置
+        setDialogProperty(width, title, name) {
+            this.modelStatus.show = true
+            this.modelStatus.loading = true
+            this.modelStatus.width = width
+            this.modelStatus.title = title
+            this.modelStatus.name = name
+        },
+        /* 对话框确认 */
+        handlerModelDialogOk(name) {
+            // 确保关闭对话框
+            this.modelStatus.show = false
+            // 对话框显示footer恢复
+            this.modelStatus.hide = false
+        },
+        /* 对话框取消 */
+        handlerModelDialogCancel() {
+            // 确保关闭对话框
+            this.modelStatus.show = false
+            // 对话框显示footer恢复
+            this.modelStatus.hide = false
         },
     },
     mounted() {

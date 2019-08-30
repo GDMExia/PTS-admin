@@ -33,6 +33,7 @@ class PriceCreateModel extends FormModel {
       discount: form.discount,
       child: form.child,
       limit: form.limit,
+      commond: false
     }
     return this
   }
