@@ -9,7 +9,7 @@ export const storeColumn = [
     { title: '联系方式', key: 'phone', tooltip: true },
     { title: '启用状态', key: 'status', tooltip: true },
     { title: '签约状态', key: 'sign', tooltip: true },
-    { title: '上架状态', key: 'sign', tooltip: true },
+    { title: '上架状态', key: 'show', tooltip: true },
     {
         title: '操作',
         key: 'handle',

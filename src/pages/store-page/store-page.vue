@@ -81,6 +81,7 @@ export default {
                     this.tableData = res.data.data.userList?res.data.data.userList.map(item=>{
                         item.status = item.is_disable=='0'?'启用':'禁用'
                         item.sign = item.is_signing=='0'?'未签约':'已签约'
+                        item.show = item.is_show=='1'?'上架':item.is_show=='2'?'未知':'下架'
                         return item
                     }):[]
                     this.page = pageInfo.converter({pageIndex: this.page.index, pageSize: this.page.size, pageTotal: res.data.data.PageInfo.TotalCounts,search: this.page.search})
