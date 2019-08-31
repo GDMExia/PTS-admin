@@ -11,7 +11,7 @@
                 </div>
             </div>
             <tables class="self-table-wrap" ref="tables" stripe v-model="tableData" :columns="columns" @on-edit="handleEdit"
-            @on-info="handleInfo" @on-delete="handleDelete" @on-forbid="handleForbid" @on-reset="handleReset" />
+            @on-info="handleInfo" @on-delete="handleDelete" @on-forbid="handleForbid" @on-reset="handleReset" @on-change="handleChange" />
             <div style="margin-top:10px;text-align:right;">
                 <Page :total="page.total" :current="page.index" :page-size="page.size" @on-change="handleOnChange" 
                 show-sizer size="small" :page-size-opts="[10,20,50,100,1000]" @on-page-size-change="handleOnChangeSize"/>
@@ -50,7 +50,8 @@ import {
     setStoreDelete,
     getStoreInfo,
     getType,
-    setStoreInfo
+    setStoreInfo,
+    setStoreChange
 } from './api'
 import {
     setAdminReset,
@@ -202,6 +203,21 @@ export default {
         /* 重置密码 */
         handleReset(params) {
             setAdminReset(params.row.uid).then(res => {
+                if(res.data.code==200) {
+                    this.$Message.success('操作成功')
+                    this.handleQuery()
+                } else {
+                    this.$Message.error(res.data.message)
+                }
+            })
+        }, 
+        // 上下架
+        handleChange(params) {
+            const form = {
+                is_show: params.row.is_show ==1?0:1,
+                id: params.row.mid
+            }
+            setStoreChange(form).then(res => {
                 if(res.data.code==200) {
                     this.$Message.success('操作成功')
                     this.handleQuery()

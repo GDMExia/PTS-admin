@@ -262,9 +262,6 @@ export const setAdminForbit = form => {
   let params = qs.stringify(Object.assign(form, {token: user.token}))
   return axios.request({
     url: `/Permissions/stopUser?${params}`,
-    headers: {
-      functionId: 1
-    },
     method: 'put'
   })
 }
@@ -276,9 +273,6 @@ export const setAdminReset = id => {
   })
   return axios.request({
     url: `/Permissions/restPassUser?${params}`,
-    headers: {
-      functionId: 1
-    },
     method: 'put'
   })
 }
