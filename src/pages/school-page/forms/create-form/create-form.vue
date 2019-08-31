@@ -1,56 +1,71 @@
 <template>
     <div>
-        <Form ref="CreateForm" :model="formInline" :rules="ruleInline" :label-width="110" label-position="left">
+        <Form ref="CreateForm" :model="formInline" :rules="ruleInline" :label-width="80" label-position="left">
             <Row>
                 <Col span="12">
-                    <FormItem label="标题" prop="type">
-                        <Input v-model="formInline.type" placeholder="请输入" />
+                    <FormItem label="标题" prop="title">
+                        <Input v-model="formInline.title" placeholder="请输入" />
                     </FormItem>
                 </Col>
                 <Col span="12">
-                    <FormItem label="选择分类" prop="price">
-                        <Cascader :data="casdata" @on-change="handleChange" change-on-select @on-clear="handleChange">
+                    <FormItem label="选择分类" prop="cid">
+                        <Cascader :data="casdata" @on-change="handleChange" change-on-select @on-clear="handleChange" v-model="formInline.cid">
                         </Cascader>
                     </FormItem>
                 </Col>
             </Row>
             <Row>
                 <Col span="12">
-                    <FormItem label="发布者" prop="discount">
-                        <Input v-model="formInline.discount" placeholder="请输入" />
+                    <FormItem label="发布者" prop="create_name">
+                        <Input v-model="formInline.create_name" placeholder="请输入" />
                     </FormItem>
                 </Col>
-                <Col span="12">
-                    <FormItem label="视频" prop="child">
-                        <!-- <Upload
+                <Col span="6">
+                    <FormItem label="图片" prop="cover">
+                        <Upload
                             multiple
                             type="drag"
                             action
                             :before-upload="handleBeforeUpload"
-                            :on-progress="handleProgress"
-                            :on-success="handleProgress"
-                            :on-error="handleProgress"
-                            :on-preview="handleProgress"
+                            v-model="formInline.cover"
                             >
                             <div style="padding: 20px 0">
-                                <Icon type="ios-cloud-upload" size="52" style="color: #3399ff"></Icon>
-                                <p>Click or drag files here to upload</p>
+                                <Icon type="ios-cloud-upload" size="52" style="color: #3399ff" v-if="formInline.cover==''"></Icon>
+                                <img :src="formInline.cover" alt="" v-else style="height:52px"/>
+                                <p>拖动或点击上传</p>
                             </div>
-                        </Upload> -->
-                        <input type="file" @change="handleUpload"/>
-                        <!-- <oss /> -->
+                        </Upload>
                     </FormItem>
                 </Col>
             </Row>
+                <FormItem label="视频" prop="vedio_url">
+                    <!-- <Upload
+                        multiple
+                        type="drag"
+                        action
+                        :before-upload="handleBeforeUpload"
+                        :on-progress="handleProgress"
+                        :on-success="handleProgress"
+                        :on-error="handleProgress"
+                        :on-preview="handleProgress"
+                        >
+                        <div style="padding: 20px 0">
+                            <Icon type="ios-cloud-upload" size="52" style="color: #3399ff"></Icon>
+                            <p>Click or drag files here to upload</p>
+                        </div>
+                    </Upload> -->
+                    <input type="file" @change="handleUpload"/>
+                    <!-- <oss /> -->
+                </FormItem>
             <Row>
                 <Col span="24">
-                    <FormItem label="详情" prop="limit">
+                    <FormItem label="详情" prop="content">
                         <editor ref="editor" v-model="formInline.content" :value="formInline.content"/>
                     </FormItem>
                 </Col>
             </Row>
-            <FormItem label="是否推荐" prop="commond">
-                <i-Switch v-model="formInline.commond" @on-change="change" />
+            <FormItem label="是否推荐" prop="is_top">
+                <i-Switch v-model="formInline.is_top" :true-value="'1'" :false-value="'0'" @on-change="change" />
             </FormItem>
         </Form>
     </div>
@@ -76,15 +91,7 @@ export default {
     data() {
         return {
             category:'',
-            defaultSrc: './static/img/img.jpg',
-            fileList: [],
-            imgSrc: '',
-            cropImg: '',
-            cropDialogVisible: false,
-            textMap: {
-            update: '编辑视频',
-            create: '新增视频'
-            },
+            caslist:[],
             form: {
             title: '',
             sub_title: '',
@@ -105,10 +112,17 @@ export default {
         handleRichEditor() {
             this.$refs.editor.handleRichEditor(this.formInline.content)
         },
-        async handleBeforeUpload(file){
+        handleBeforeUpload(file){
             console.log(file)
-            // oss.ossUploadFile(file)
-            // return false
+            Upload(file).then(res=>{
+                console.log(res)
+                if(res.data.code=="200"){
+                    this.formInline.cover=res.data.data.fileUrl
+                }else{
+                    this.$Notice.error({desc:'上传失败'})
+                }
+            })
+            return false
         },
         async handleUpload(event){
             console.log(event.target.files[0])
@@ -127,6 +141,7 @@ export default {
     },
     mounted() {
         this.handleRichEditor()
+        this.caslist=this.casdata.shift()
     }
 }
 </script>
