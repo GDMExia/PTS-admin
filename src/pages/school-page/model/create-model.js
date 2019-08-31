@@ -7,22 +7,22 @@ class PriceCreateModel extends FormModel {
     // this.init()
 
     this.ruleInline = {
-      type: [
+      title: [
         { required: true, message: '请输入类型名称', trigger: 'blur' }
       ],
-      price: [
-        { required: true, message: '请输入价格', trigger: 'blur' }
+      cid: [
+        { required: true, type: 'array', message: '请输入价格', trigger: 'blur' }
       ],
-      child: [
+      create_name: [
         { required: true, message: '请输入儿童价', trigger: 'blur' }
       ],
-      limit: [
+      content: [
         { required: true, message: '请输入每日上限', trigger: 'blur' }
       ],
-      discount: [
+      cover: [
         { required: true, message: '请输入单房价差', trigger: 'blur' }
       ],
-      commond: [
+      is_top: [
         { required: true, message: '请输入单房价差', trigger: 'blur' }
       ]
     }
@@ -31,12 +31,13 @@ class PriceCreateModel extends FormModel {
   init(form) {
     this.formInline = {
       id: form.id,
-      type: form.type,
-      price: form.price,
-      discount: form.discount,
-      child: form.child,
-      limit: form.limit,
-      commond: false
+      title: form.title,
+      cid: form.cid,
+      create_name: form.create_name,
+      vedio_url: form.vedio_url,
+      content: form.content,
+      is_top: form.is_top,
+      cover: form.cover
     }
     return this
   }
@@ -44,9 +45,13 @@ class PriceCreateModel extends FormModel {
   converter(form) {
     return {
       id: form.id,
-      bannerTitle: form.title,
-      bannerImage: form.photo,
-      bannerContent: form.content,
+      title: form.title,
+      cid: form.cid,
+      create_name: form.create_name,
+      vedio_url: form.vedio_url,
+      content: form.content,
+      is_top: form.is_top,
+      cover: form.cover
     }
   }
 }

@@ -24,7 +24,7 @@ export const schoolarticleColumn = [
         render: (h, params) => {
             return h('div', {
                 domProps: {
-                    innerHTML: params.row.is_show == 0 ? '下线' : '上线'
+                    innerHTML: params.row.is_show == 0 ? '下线' : '展示'
                 }
             })
         },
@@ -42,7 +42,6 @@ export const schoolarticleColumn = [
                     'i-button', {
                         props: {
                             type: 'primary',
-                            icon: 'md-eye',
                             size: 'small'
                         },
                         style: {
@@ -50,17 +49,16 @@ export const schoolarticleColumn = [
                         },
                         on: {
                             click: () => {
-                                vm.$emit('on-view', params)
+                                vm.$emit('on-edit', params)
                             }
                         }
                     },
-                    '查看'
+                    '编辑'
                 ),
                 h(
                     'i-button', {
                         props: {
-                            type: 'primary',
-                            icon: 'md-eye',
+                            type: params.row.is_show == 0 ? 'success' : 'warning',
                             size: 'small'
                         },
                         style: {
@@ -68,30 +66,44 @@ export const schoolarticleColumn = [
                         },
                         on: {
                             click: () => {
-                                vm.$emit('on-view', params)
+                                vm.$emit('on-change', params)
                             }
                         }
                     },
-                    '查看'
+                    params.row.is_show == 0 ? '上线' : '下线'
                 ),
-                h(
-                    'i-button', {
-                        props: {
-                            type: 'primary',
-                            icon: 'md-eye',
-                            size: 'small'
-                        },
-                        style: {
-                            marginRight: '5px'
-                        },
-                        on: {
-                            click: () => {
-                                vm.$emit('on-view', params)
-                            }
-                        }
+                h('Poptip', {
+                    props: {
+                      confirm: true,
+                      title: '你确定要删除吗?',
+                      transfer: true
                     },
-                    '查看'
-                )
+                    on: {
+                      'on-ok': () => {
+                        vm.$emit('on-delete', params)
+                        // vm.$emit('input', params.tableData.filter((item, index) => index !== params.row.initRowIndex))
+                      }
+                    }
+                  }, [
+                    h(
+                        'i-button', {
+                            props: {
+                                type: 'error',
+                                size: 'small'
+                            },
+                            style: {
+                                marginRight: '5px'
+                            }
+                            // ,
+                            // on: {
+                            //     click: () => {
+                            //         vm.$emit('on-delete', params)
+                            //     }
+                            // }
+                        },
+                        '删除'
+                    )
+                  ]),
             ])
         }]
     }
@@ -107,6 +119,39 @@ export const getarticleData = (params) => {
 export const getCategoryTree = (params) => {
     return axios.request({
         url: `/Category/getArticleCategoryTree?token=${params}`,
+        method: 'get'
+    })
+}
+
+export const Upload = (file) => {
+    let data = new FormData()
+    data.append('file_image', file)
+    return axios.request({
+        url: `/File/uploadsImage`,
+        data: data,
+        method: 'post'
+    })
+}
+
+export const createschoolArticle = (params) => {
+    return axios.request({
+        url: `/News/createArticle`,
+        params: params,
+        method: 'post'
+    })
+}
+
+export const changeschoolArticle = (params) => {
+    return axios.request({
+        url: `/News/updateArticleSate`,
+        params: params,
+        method: 'post'
+    })
+}
+
+export const deleteschoolArticle = (params) => {
+    return axios.request({
+        url: `/News/deleteArticle?token=${params.token}&id=${params.id}`,
         method: 'get'
     })
 }
