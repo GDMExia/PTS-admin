@@ -216,7 +216,7 @@ export const getResidenceList = page => {
 
 export const getResidenceSearchList = page => {
     return axios.request({
-        url: `/Goods/goodslist?page=${page.index}&pageSize=${page.size}&goods_name=${page.search}&cid=&goods_status=&token=${user.token}`,       
+        url: `/Goods/goodslist?page=${page.index}&pageSize=${page.size}&goods_name=${page.search}&cid=&goods_status=1&token=${user.token}`,       
         method: 'get'
     })
 }

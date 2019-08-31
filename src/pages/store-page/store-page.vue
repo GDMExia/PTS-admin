@@ -14,7 +14,7 @@
             @on-info="handleInfo" @on-delete="handleDelete" @on-forbid="handleForbid" @on-reset="handleReset" @on-change="handleChange" />
             <div style="margin-top:10px;text-align:right;">
                 <Page :total="page.total" :current="page.index" :page-size="page.size" @on-change="handleOnChange" 
-                show-sizer size="small" :page-size-opts="[10,20,50,100,1000]" @on-page-size-change="handleOnChangeSize"/>
+                show-sizer size="small" :page-size-opts="[10,20,50,100,]" @on-page-size-change="handleOnChangeSize"/>
             </div>
         </Card>
         <div>
@@ -309,22 +309,6 @@ export default {
             this.modelStatus.title = title
             this.modelStatus.name = name
         },
-        /* 对话框确认 */
-        handlerModelDialogOk(name) {
-            // 确保关闭对话框
-            this.modelStatus.show = false
-            // 对话框显示footer恢复
-            this.modelStatus.hide = false
-        },
-        /* 对话框取消 */
-        handlerModelDialogCancel() {
-            this.id=''
-            this.$refs['ApplyViewForm'].data={}
-            // 确保关闭对话框
-            this.modelStatus.show = false
-            // 对话框显示footer恢复
-            this.modelStatus.hide = false
-        }
     },
     mounted() {
         this.columns = storeColumn
