@@ -490,8 +490,8 @@ export default [
     ]
   },
   {
-    path: '/custom',
-    name: 'custom',
+    path: '/school',
+    name: 'school',
     meta: {
       icon: 'ios-card-outline',
       title: '学院管理',
@@ -517,17 +517,17 @@ export default [
           title: '分类管理'
         },
         component: () => import('@/pages/school-page/school-menu-page.vue')
-      }
-      // {
-      //   path: 'price',
-      //   name: 'price',
-      //   meta: {
-      //     hideInMenu: true,
-      //     icon: 'ios-car',
-      //     title: '价格设置'
-      //   },
-      //   component: () => import('@/pages/custom-tour-page/set-price-page.vue')
-      // },
+      },
+      {
+        path: 'schoolmore',
+        name: 'schoolmore',
+        meta: {
+          hideInMenu: true,
+          icon: 'ios-car',
+          title: '二级分类'
+        },
+        component: () => import('@/pages/school-page/more.vue')
+      },
     ]
   },
   {
