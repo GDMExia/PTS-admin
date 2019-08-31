@@ -4,7 +4,7 @@ import store from '@/store'
 const user = store.state.user
 import { Base64 } from 'js-base64'
 export const residenceColumns = [
-    { title: 'ID', key: 'id', tooltip: true },
+    { title: 'ID', key: 'id', tooltip: true,width: 80 },
     { title: '活动所属', key: 'pidStr', tooltip: true,width: 120 },
     { title: '标题', key: 'goods_name', tooltip: true,width: 120 },
     { title: '分类', key: 'cate_name', tooltip: true,width: 120 },
@@ -14,7 +14,7 @@ export const residenceColumns = [
     { title: '参与时间', key: 'join_time', tooltip: true,width: 120 },
     { title: '支付金额(元)', key: 'goods_price', tooltip: true,width: 120 },
     { title: '积分抵扣', key: 'discount_price', tooltip: true,width: 120 },
-    { title: '状态', key: 'goods_status', tooltip: true,width: 120 },
+    { title: '状态', key: 'status', tooltip: true,width: 120 },
     { title: '发布时间', key: 'create_time', tooltip: true,width: 120 },
     {
         title: '操作',
@@ -37,7 +37,7 @@ export const residenceColumns = [
                       },
                       style: {
                         marginRight: '5px',
-                        display: params.row.goods_status == '待审核'?'inline-block':'none'
+                        display: params.row.goods_status == 3?'inline-block':'none'
                       },
                       on: {
                         'on-ok': () => {

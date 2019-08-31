@@ -4,6 +4,7 @@ import store from '@/store'
 const user = store.state.user
 export const storeColumn = [
     // { title: '账号', key: 'admin_name', tooltip: true },
+    { title: '商家ID', key: 'm_number', tooltip: true,width: 120 },
     { title: '商家名称', key: 'real_name', tooltip: true,width: 120, },
     { title: '联系人', key: 'contact', tooltip: true,width: 120 },
     { title: '联系方式', key: 'phone', tooltip: true,width: 120 },
@@ -35,7 +36,7 @@ export const storeColumn = [
         title: '操作',
         key: 'handle',
         align: 'center',
-        width: 500,
+        width: 460,
         fixed: 'right',
         button: [(h, params, vm) => {
             return h('div', [
