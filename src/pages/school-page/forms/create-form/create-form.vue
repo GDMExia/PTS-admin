@@ -22,7 +22,7 @@
                 </Col>
                 <Col span="12">
                     <FormItem label="视频" prop="child">
-                        <Upload
+                        <!-- <Upload
                             multiple
                             type="drag"
                             action
@@ -36,7 +36,8 @@
                                 <Icon type="ios-cloud-upload" size="52" style="color: #3399ff"></Icon>
                                 <p>Click or drag files here to upload</p>
                             </div>
-                        </Upload>
+                        </Upload> -->
+                        <input type="file" @change="handleUpload"/>
                         <!-- <oss /> -->
                     </FormItem>
                 </Col>
@@ -105,7 +106,13 @@ export default {
             this.$refs.editor.handleRichEditor(this.formInline.content)
         },
         async handleBeforeUpload(file){
-            oss.ossUploadFile(file)
+            console.log(file)
+            // oss.ossUploadFile(file)
+            // return false
+        },
+        async handleUpload(event){
+            console.log(event.target.files[0])
+            oss.ossUploadFile(event.target.files[0])
         },
         handleProgress(event, file, fileList){
             console.log(file)

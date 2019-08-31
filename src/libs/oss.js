@@ -42,6 +42,7 @@ export default {
    * @param option 参考csdn: https://blog.csdn.net/qq_27626333/article/details/81463139
    */
   ossUploadFile(option) {
+    console.log(option)
     const file = option
     const self = this
     return new Promise((resolve, reject) => {
