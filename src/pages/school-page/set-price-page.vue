@@ -1,8 +1,10 @@
 <template>
     <div>
         <Card>
-            <div class="clearfix">
-                <div class="pull-left" style="margin-bottom: 10px;">
+            <div class="clearfix" style="margin-bottom: 10px;">
+                <div class="pull-left">
+                    <Button @click="$router.back()" class="search-btn" type="primary" style="margin-right:5px">
+                        <Icon type="md-arrow-back" />&nbsp;&nbsp;返回</Button>
                     <Button @click="handleCreate" class="search-btn" type="success" style="margin-right:5px">
                         <Icon type="md-add"/>&nbsp;&nbsp;添加</Button>
                 </div>
@@ -10,20 +12,20 @@
                     
                 </div>
             </div>
-            <tables class="self-table-wrap" ref="tables" stripe v-model="tableData" :columns="columns" @on-edit="handleEdit" @on-delete="handleDelete"/>
-            <!-- <div style="margin-top:10px;text-align:right;">
+            <tables class="self-table-wrap" ref="tables" stripe v-model="tableData" :columns="columns"/>
+            <div style="margin-top:10px;text-align:right;">
                 <Page :total="page.total" :current="page.index" :page-size="page.size" @on-change="handleOnChange" 
                 show-sizer size="small" :page-size-opts="[10,20,50,100,]" @on-page-size-change="handleOnChangeSize"/>
-            </div> -->
+            </div>
         </Card>
         <div>
             <ModelDialog :status="modelStatus"
                 @handlerModelDialogOk="handlerModelDialogOk"
                 @handlerModelDialogCancel="handlerModelDialogCancel">
-                <CategoryCreateForm ref="CategoryCreateForm"
+                <PriceCreateForm ref='PriceCreateForm'
                     :formInline="createForm.formInline"
                     :ruleInline="createForm.ruleInline"
-                    v-if="modelStatus.name=='CategoryCreateForm'"/>
+                    v-if="modelStatus.name=='PriceCreateForm'"/>
             </ModelDialog>
         </div>
     </div>
@@ -32,19 +34,16 @@
 import Tables from '_c/tables'
 import pageInfo from "@/libs/page-info"
 import ModelDialog from '_c/model-dialog'
-import CategoryCreateForm from './forms/category-create-form'
-import CategoryCreateModel from './model/category-create-model'
+import PriceCreateForm from './forms/price-create-form'
+import PriceCreateModel from './model/price-create-model'
 import {
-    categoryColumn,
-    getCategoryList,
-    setCategoryUpdate,
-    setCategoryDelete
+    priceColumn
 } from './api'
 export default {
     components: {
         Tables,
         ModelDialog,
-        CategoryCreateForm
+        PriceCreateForm
     },
     data() {
         return {
@@ -52,56 +51,24 @@ export default {
             columns: [],
             page: {},
             modelStatus: { show: false, hide: false, loading: true, title: '', name: '' },
-            createForm: {}
+            createForm: {},
         }
     },
     methods: {
-        handleSearch() {},
-        handleQuery() {
-            getCategoryList().then(res=>{
-                if(res.data.code==200) {
-                    this.tableData = res.data.data.cateTree?res.data.data.cateTree:[]
-                } else {
-                    this.$Message.error(res.data.message)
-                }
-            })
-        },
-        handleCreate() {   
+        handleQuery() {},
+        handleCreate() {
             const form = {
-                cate_name: ''
+                id: '',
+                type: '',
+                price: '',
+                discount: '',
+                child: '',
+                limit: '',
             }
-            this.setDialogProperty(600, '添加', 'CategoryCreateForm')
-            this.createForm = CategoryCreateModel.init(form)
+            this.setDialogProperty(600, '添加', 'PriceCreateForm')
+            this.createForm = PriceCreateModel.init(form)
         },
-        handleEdit(params) {
-            const form = params.row
-            this.setDialogProperty(600, '编辑', 'CategoryCreateForm')
-            this.createForm = CategoryCreateModel.init(form)
-        },
-        handleCreateSubmit() {
-            const form = CategoryCreateModel.converter(this.createForm.formInline)
-            setCategoryUpdate(form).then(res=>{
-                if(res.data.code == 200) {
-                    this.$Message.success('设置成功')
-                    this.modelStatus.show = false
-                    this.handleQuery()
-                } else {
-                    this.$Message.error(res.data.message)
-                }
-           })
-
-        },
-        handleDelete(params) {
-            setCategoryDelete(params.row.id).then(res=>{
-                if(res.data.code == 200) {
-                    this.$Message.success('删除成功')
-                    this.modelStatus.show = false
-                    this.handleQuery()
-                } else {
-                    this.$Message.error(res.data.message)
-                }
-            })
-        },
+        handleCreateSubmit() {},
         // 弹出框设置
         setDialogProperty(width, title, name) {
             this.modelStatus.show = true
@@ -112,9 +79,9 @@ export default {
         },
         /* 对话框确认 */
         handlerModelDialogOk(name) {
-            if(name == 'CategoryCreateForm') {
-                this.$refs.CategoryCreateForm.validate(valid=>{
-                    if(valid) {
+            if (name === 'PriceCreateForm') {
+                this.$refs.PriceCreateForm.validate(valid => {
+                    if (valid) {
                         this.handleCreateSubmit()
                     }
                 })
@@ -143,7 +110,7 @@ export default {
         },
     },
     mounted() {
-        this.columns = categoryColumn
+        this.columns = priceColumn
         this.page = pageInfo.init()
         this.handleQuery()
     }

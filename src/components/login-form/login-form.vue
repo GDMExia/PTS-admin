@@ -17,7 +17,7 @@
     <FormItem label="验证码">
       <div class="flx flx_m" style="display: flex;">
         <Input v-model="form.ucode" placeholder="请输入" style=""></Input>
-        <img :src="stickyImg" alt="" width="80" height="32" style="margin-left: 15px;" @click="refresh">
+        <img :src="stickyImg" alt="" width="80" height="32" @click="refresh">
       </div>
     </FormItem>
     <!-- <FormItem>

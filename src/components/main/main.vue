@@ -132,7 +132,6 @@ export default {
     handleChangePasswordSubmit(){
       const form = AdminChangeModel.converter(this.changeForm.formInline)
       setChangePassword(form).then(res => {
-        console.log(res.data)
         if (res.data.code == 200) {
           this.$Message.success('修改密码成功')
           this.modelStatus.show = false

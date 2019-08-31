@@ -19,7 +19,7 @@
             <tables class="self-table-wrap" ref="tables" stripe v-model="tableData" :columns="columns" @on-edit="handleEdit" @on-change="handleChangestatus" @on-delete="handleDelete"/>
             <div style="margin-top:10px;text-align:right;">
                 <Page :total="page.total" :current="page.index" :page-size="page.size" @on-change="handleOnChange" 
-                show-sizer size="small" :page-size-opts="[10,20,50,100,1000]" @on-page-size-change="handleOnChangeSize"/>
+                show-sizer size="small" :page-size-opts="[10,20,50,100,]" @on-page-size-change="handleOnChangeSize"/>
             </div>
         </Card>
         <div>

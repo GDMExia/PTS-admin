@@ -68,8 +68,8 @@ class AdminChangeModel extends FormModel {
 
   converter(form) {
     return {
-      oldPassword: form.oldpass,
-      newPassword: form.newpass
+      oldpassword: form.oldpass,
+      password: form.newpass
     }
   }
 }

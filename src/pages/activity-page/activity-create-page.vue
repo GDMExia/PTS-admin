@@ -94,7 +94,7 @@
                     </Row>
                     <Row>
                         <FormItem label="商家" prop="merchants_id">
-                            <Select placeholder="商家" v-model="formInline.merchants_id" style="width: 150px;" >
+                            <Select placeholder="商家" v-model="formInline.merchants_id" style="width: 150px;" clearable>
                                 <Option v-for="item in storeList" :value="item.mid" :key="item.mid">{{item.real_name}}</Option>
                             </Select>
                         </FormItem>
@@ -208,6 +208,7 @@ export default {
             this.$Message.error('请上传封面图')
             return
         }
+        form.merchants_id = form.merchants_id?form.merchants_id:''
         this.$refs.ResidenceCreateForm.validate((valid) => {
             if (valid) {
                 setResidenceCreate(form).then(res=>{
