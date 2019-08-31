@@ -4,17 +4,38 @@ import store from '@/store'
 const user = store.state.user
 export const storeColumn = [
     // { title: '账号', key: 'admin_name', tooltip: true },
-    { title: '商家名称', key: 'real_name', tooltip: true },
-    { title: '联系人', key: 'contact', tooltip: true },
-    { title: '联系方式', key: 'phone', tooltip: true },
-    { title: '启用状态', key: 'status', tooltip: true },
-    { title: '签约状态', key: 'sign', tooltip: true },
-    { title: '上架状态', key: 'show', tooltip: true },
+    { title: '商家名称', key: 'real_name', tooltip: true,width: 120, },
+    { title: '联系人', key: 'contact', tooltip: true,width: 120 },
+    { title: '联系方式', key: 'phone', tooltip: true,width: 120 },
+    { title: '启用状态', key: 'status', tooltip: true,width: 120 },
+    { title: '签约状态', key: 'sign', tooltip: true,width: 120 },
+    { 
+        title: '是否上架',
+        key: 'handle',
+        align: 'center',
+        width: 90,
+        button: [(h, params, vm) => {
+            return h('div', [
+                h(
+                    'i-switch', {
+                        props: {
+                            value:params.row.is_show=='1'?true:false,
+                        },
+                        on: {
+                            'on-change': () => {
+                                vm.$emit('on-change',params)
+                            }  
+                        }
+                    }
+                )
+            ])
+        }]
+    },
     {
         title: '操作',
         key: 'handle',
         align: 'center',
-        width: 460,
+        width: 500,
         fixed: 'right',
         button: [(h, params, vm) => {
             return h('div', [
@@ -385,5 +406,12 @@ export const deleteApply = id => {
     return axios.request({
         url: `/Merchants/deleteMerchantsInformation?id=${id}&token=${user.token}`,
         method: 'get'
+    })
+}
+
+export const setStoreChange = form => {
+    return axios.request({
+        url: `/Merchants/updateShow?id=${form.id}&is_show=${form.is_show}&token=${user.token}`,
+        method: 'post'
     })
 }
