@@ -3,9 +3,9 @@
         <Card>
             <div class="clearfix" style="margin-bottom: 10px;">
                 <div class="pull-left">
-                    <!-- <Button @click="handlePrice" class="search-btn" type="info" style="margin-right:5px">
-                        <Icon type="ios-filing-outline" />&nbsp;&nbsp;价格设置</Button>
-                    <Button @click="handleInfo" class="search-btn" type="success" style="margin-right:5px">
+                    <Button @click="handleBack" class="search-btn" type="primary" style="margin-right:5px">
+                        <Icon type="" />返回</Button>
+                    <!-- <Button @click="handleInfo" class="search-btn" type="success" style="margin-right:5px">
                         <Icon type="ios-crop-outline" />&nbsp;&nbsp;基本信息设置</Button>
                     <Button @click="handleCreate" class="search-btn" type="primary" style="margin-right:5px">
                         <Icon type="md-add"/>&nbsp;&nbsp;生成</Button> -->
@@ -14,7 +14,7 @@
                     
                 </div>
             </div>
-            <tables class="self-table-wrap" ref="tables" stripe v-model="tableData" :columns="columns" @on-edit="handleEdit" @on-more="handleMore"/>
+            <tables class="self-table-wrap" ref="tables" stripe v-model="tableData" :columns="columns" @on-edit="handleEdit"/>
             <div style="margin-top:10px;text-align:right;">
                 <Page :total="page.total" :current="page.index" :page-size="page.size" @on-change="handleOnChange" 
                 show-sizer size="small" :page-size-opts="[10,20,50,100,1000]" @on-page-size-change="handleOnChangeSize"/>
@@ -35,12 +35,12 @@ import Tables from '_c/tables'
 import pageInfo from "@/libs/page-info"
 import ModelDialog from '_c/model-dialog'
 import {
-    schoolmenuColumn,
+    schoolmoreColumn,
     getcategoryData,
     setcategoryData
 } from './api'
-import EditForm from './forms/edit-form'
-import EditFormModel from './model/edit-model'
+import EditForm from './forms/edit-more-form'
+import EditFormModel from './model/edit-more-model'
 export default {
     components: {
         Tables,
@@ -54,11 +54,12 @@ export default {
             page: {},
             modelStatus: { show: false, hide: false, loading: true, title: '', name: '' },
             editForm: {},
+            pid: this.$route.query.pid
         }
     },
     methods: {
         handleQuery() {
-            getcategoryData({token:this.$store.state.user.token,pid:''}).then(res=>{
+            getcategoryData({token:this.$store.state.user.token,pid:this.pid}).then(res=>{
                 console.log(res)
                 if(res.data.code=="200"){
                     this.tableData=res.data.data.cateTree
@@ -68,13 +69,16 @@ export default {
         handleEdit(params){
             let form={
                 id: params.row.id,
-                cate_name: params.row.cate_name
+                cate_name: params.row.cate_name,
+                code_name:params.row.code_name,
+                is_code:params.row.is_code,
+                pid:params.row.pid
             }
             this.editForm=EditFormModel.init(form)
             this.setDialogProperty(600,'编辑','EditForm')
         },
-        handleMore(params){
-            this.$router.push({path:'/school/schoolmore',query:{pid:params.row.id}})
+        handleBack(){
+            this.$router.go(-1)
         },
         /* 分页查询 */
         handleOnChange(index) {
@@ -124,10 +128,10 @@ export default {
             let data={
                 token: this.$store.state.user.token,
                 id: this.editForm.formInline.id,
-                pid: 0,
+                pid: this.editForm.formInline.pid,
                 cate_name: this.editForm.formInline.cate_name,
-                is_code: 0,
-                code_name: ''
+                is_code: this.editForm.formInline.is_code,
+                code_name: this.editForm.formInline.code_name
             }
             let dat=new FormData()
             for(let i in data){
@@ -150,7 +154,7 @@ export default {
         }
     },
     mounted() {
-        this.columns = schoolmenuColumn
+        this.columns = schoolmoreColumn
         this.page = pageInfo.init()
         this.handleQuery()
     }

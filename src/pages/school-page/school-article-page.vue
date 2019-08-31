@@ -131,7 +131,7 @@ export default {
                     this.handleQuery()
                     this.$Notice.success({desc:'操作成功'})
                 }else{
-                    this.$Notice.success({desc:'操作失败'})
+                    this.$Notice.error({desc:'操作失败'})
                 }
             })
         },
@@ -192,7 +192,7 @@ export default {
                     this.handleQuery()
                     this.$Notice.success({desc:'操作成功'})
                 }else{
-                    this.$Notice.success({desc:'操作失败'})
+                    this.$Notice.error({desc:'操作失败'})
                 }
             })
         },
@@ -236,7 +236,8 @@ export default {
             })
         },
         /* 对话框取消 */
-        handlerModelDialogCancel() {
+        handlerModelDialogCancel(name) {
+            this.$refs[name].resetFields()            
             // 确保关闭对话框
             this.modelStatus.show = false
             // 对话框显示footer恢复

@@ -156,12 +156,18 @@ export const deleteschoolArticle = (params) => {
     })
 }
 
-export const schoolmenuColumn = [
-    {title: '类型名称', key: 'bannerIndex'},
-    {title: '价格(元/人)', key: 'enabledStr', tooltip: true},
-    {title: '单房价差(元)', key: 'enabledStr', tooltip: true},
-    {title: '携带儿童(元/人)', key: 'enabledStr', tooltip: true},
-    {title: '每日上限', key: 'enabledStr', tooltip: true},
+export const schoolmoreColumn = [
+    {title: '二级分类名称', key: 'cate_name'},
+    {
+        title:'是否开启验证',
+        render:(h, params)=>{
+            return h('div',{
+                domProps:{
+                    innerHTML: params.row.is_code==1?'是':'否'
+                }
+            })
+        }
+    },
     {
         title: '操作',
         key: 'handle',
@@ -187,6 +193,72 @@ export const schoolmenuColumn = [
                         }
                     },
                     '编辑'
+                )
+            ])
+        }]
+    }
+]
+
+export const getcategoryData = (params) => {
+    return axios.request({
+        url: `/Category/getArticleCategory?token=${params.token}&pid=${params.pid}`,
+        method: 'get'
+    })
+}
+
+export const setcategoryData = (params) => {
+    return axios.request({
+        url: `/Category/createArticleCategory`,
+        data: params,
+        method: 'post'
+    })
+}
+
+export const schoolmenuColumn = [
+    {title: '一级分类名称', key: 'cate_name'},
+    {
+        title: '操作',
+        key: 'handle',
+        align: 'center',
+        width: 260,
+        fixed: 'right',
+        button: [(h, params, vm) => {
+            return h('div', [
+                h(
+                    'i-button', {
+                        props: {
+                            type: 'primary',
+                            icon: 'md-create',
+                            size: 'small'
+                        },
+                        style: {
+                            marginRight: '5px'
+                        },
+                        on: {
+                            click: () => {
+                                vm.$emit('on-edit', params)
+                            }
+                        }
+                    },
+                    '编辑'
+                ),
+                h(
+                    'i-button', {
+                        props: {
+                            type: 'primary',
+                            icon: 'md-create',
+                            size: 'small'
+                        },
+                        style: {
+                            marginRight: '5px'
+                        },
+                        on: {
+                            click: () => {
+                                vm.$emit('on-more', params)
+                            }
+                        }
+                    },
+                    '二级分类'
                 )
             ])
         }]
