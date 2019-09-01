@@ -14,7 +14,7 @@ class PageInfo {
 
   init () {
     this.index = 1
-    this.size = 10
+    this.size = 20
     this.total = 1
     this.search = ''
     return this
