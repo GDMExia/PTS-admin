@@ -373,8 +373,11 @@ export default {
       };
       this.createForm = EditFormModel.init(form);
       this.setDialogProperty(1000, "添加", "CreateForm");
+      // this.$refs.CreateForm.handleRichEditor()
+      this.$nextTick(()=>{
+        this.$refs.CreateForm.handleRichEditor();
+      })
       this.$refs.CreateForm.init()
-      this.$refs.CreateForm.handleRichEditor()
     },
     getPid(id) {
       let pid = "";
@@ -402,13 +405,19 @@ export default {
         title: params.row.title,
         cid: [pid, params.row.cid],
         create_name: params.row.create_name,
-        vedio_url: params.row.vedio_url,
+        vedio_url: params.row.videoList?params.row.videoList.map(el=>{
+          return el.vedio_url
+        }):[],
         content: params.row.content,
         is_top: params.row.is_top,
         cover: params.row.cover
       };
       this.editForm = CreateFormModel.init(form);
-      this.setDialogProperty(1000, "添加", "EditForm");
+      this.setDialogProperty(1000, "编辑", "EditForm");
+      // this.$refs.EditForm.handleRichEditor()
+      this.$nextTick(()=>{
+        this.$refs.EditForm.handleRichEditor();
+      })
       this.$refs.EditForm.init()
     },
     // 基本信息设置
@@ -468,6 +477,11 @@ export default {
     /* 对话框取消 */
     handlerModelDialogCancel(name) {
       this.$refs[name].resetFields();
+      this.$refs[name].handleRichEditor();
+      this.$refs[name].init();
+      this.$nextTick(()=>{
+        this.$refs[name].handleRichEditor();
+      })
       // 确保关闭对话框
       this.modelStatus.show = false;
       // 对话框显示footer恢复
@@ -485,7 +499,7 @@ export default {
         title: this.createForm.formInline.title,
         cid: cid,
         create_name: this.createForm.formInline.create_name,
-        vedio_url: this.createForm.formInline.vedio_url,
+        vedio_url: this.createForm.formInline.vedio_url.join(','),
         content: this.createForm.formInline.content,
         is_top: this.createForm.formInline.is_top,
         cover: this.createForm.formInline.cover
@@ -505,6 +519,7 @@ export default {
           this.modelStatus.show = false;
           // 对话框显示footer恢复
           this.modelStatus.hide = false;
+          this.resetFields('CreateForm')
         }
       });
     },
@@ -520,11 +535,20 @@ export default {
         title: this.editForm.formInline.title,
         cid: cid,
         create_name: this.editForm.formInline.create_name,
-        vedio_url: this.editForm.formInline.vedio_url,
+        vedio_url: this.editForm.formInline.vedio_url.join(','),
         content: this.editForm.formInline.content,
         is_top: this.editForm.formInline.is_top,
         cover: this.editForm.formInline.cover
       };
+      // let vediolist=[]
+      // data.vedio_url.forEach(el=>{
+      //   if(el.vedio_url!=''||el.vedio_url!=undefined){
+      //     vediolist.push[el.vedio_url]
+      //   }else{
+      //     vediolist.push[el]
+      //   }
+      // })
+      // data.vedio_url=vediolist.join(',')
       let dat=new FormData()
       for(let i in data){
           console.log(i)
@@ -539,6 +563,7 @@ export default {
           this.modelStatus.show = false;
           // 对话框显示footer恢复
           this.modelStatus.hide = false;
+          this.resetFields('EditForm')
         }
       });
     }

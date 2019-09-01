@@ -44,6 +44,7 @@
                         <a id="selectfiles" href="javascript:void(0);" class="btn">选择文件</a>
                         <a id="postfiles" href="javascript:void(0);" class='btn'>开始上传</a>
                     </div>
+                    <div v-for="(item,index) of formInline.vedio_url" :key="index">{{(item.vedio_url==undefined||item.vedio_url=='')?item:item.vedio_url}}<video :src="(item.vedio_url==undefined||item.vedio_url=='')?item:item.vedio_url" style="display:inline-block;width:375px;height:211px"></video><Button type="error" size="small" @click="deleteitem(index)">删除</Button></div>
                     <!-- <input type="file" @change="handleUpload"/> -->
                 </FormItem>
             <Row>
@@ -228,11 +229,11 @@ export default {
             }
 
             function geturl(url){
-                if(_this.formInline.vedio_url==undefined&&_this.formInline.vedio_url==''){
+                if(_this.formInline.vedio_url==undefined||_this.formInline.vedio_url==''){
                     url=url
-                    _this.formInline.vedio_url=url
+                    _this.formInline.vedio_url=[url]
                 }else{
-                    _this.formInline.vedio_url+=','+url
+                    _this.formInline.vedio_url.push(url)
                 }
             }
 
@@ -295,7 +296,7 @@ export default {
                 },
                 Error: function(up, err) {
                     
-                }
+                },
                 }
             });
             uploader.init();
@@ -337,7 +338,11 @@ export default {
         },
         init(){
             document.getElementById('ossfile').innerHTML = '';
-        }
+        },
+        deleteitem(e){
+            console.log(e)
+            this.formInline.vedio_url.splice(e,1)
+        },
     },
     mounted() {
         this.initPlUploader();
