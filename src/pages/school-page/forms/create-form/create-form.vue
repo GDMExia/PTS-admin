@@ -228,13 +228,11 @@ export default {
             }
 
             function geturl(url){
-                console.log(_this.formInline.vedio_url)
-                debugger;
                 if(_this.formInline.vedio_url==undefined){
                     url=url
-                    _this.formInline.vedio_url=[url]
+                    _this.formInline.vedio_url=url
                 }else{
-                    _this.formInline.vedio_url.push(url)
+                    _this.formInline.vedio_url+=','+url
                 }
             }
 
@@ -292,7 +290,7 @@ export default {
                     progBar.setAttribute('aria-valuenow', file.percent);
                 },
                 FileUploaded: function(up, file, info) {
-                    let url='https://pts2019.oss-cn-beijing.aliyuncs.com/'+file.name
+                    let url='https://pts2019.oss-cn-beijing.aliyuncs.com/video/'+file.name
                     geturl(url)
                 },
                 Error: function(up, err) {
@@ -337,6 +335,9 @@ export default {
             this.category=event[event.length-1]
             console.log(this.category)
         },
+        init(){
+            document.getElementById('ossfile').innerHTML = '';
+        }
     },
     mounted() {
         this.initPlUploader();

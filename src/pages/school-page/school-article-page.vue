@@ -366,13 +366,14 @@ export default {
         title: "",
         cid: [],
         create_name: "",
-        vedio_url: [],
+        vedio_url: '',
         content: "",
         is_top: "0",
         cover: ""
       };
       this.createForm = EditFormModel.init(form);
       this.setDialogProperty(1000, "添加", "CreateForm");
+      this.$refs.CreateForm.init()
     },
     getPid(id) {
       let pid = "";
@@ -407,6 +408,7 @@ export default {
       };
       this.editForm = CreateFormModel.init(form);
       this.setDialogProperty(1000, "添加", "EditForm");
+      this.$refs.EditForm.init()
     },
     // 基本信息设置
     handleInfo() {},
@@ -520,6 +522,12 @@ export default {
         is_top: this.editForm.formInline.is_top,
         cover: this.editForm.formInline.cover
       };
+      let dat=new FormData()
+      for(let i in data){
+          console.log(i)
+          dat.append(`${i}`,data[i])
+      }
+      console.log
       // console.log(cid)
       createschoolArticle(data).then(res => {
         console.log(res);
