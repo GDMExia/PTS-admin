@@ -16,7 +16,7 @@
       </Tables>
       <div style="margin-top:10px;text-align:right;">
         <Page :total="page.total" :current="page.index" :page-size="page.size" @on-change="handleChangePage" 
-        show-sizer size="small" :page-size-opts="[10,20,50,100,]" @on-page-size-change="handleChangePageSize"/>
+        show-sizer size="small" :page-size-opts="[20,50,100]" @on-page-size-change="handleChangePageSize"/>
       </div>
       <ModelDialog
         :status="modelStatus"

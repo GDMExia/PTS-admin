@@ -1,4 +1,5 @@
 <template>
+<<<<<<< HEAD
   <div>
     <div id="container">
       <a id="selectfiles" href="javascript:void(0);" class="btn">测试上传</a>
@@ -24,6 +25,46 @@
           >
             <!-- <a href="javascript:void(0)">选择</a> -->
           </Cascader>
+=======
+    <div>
+        <Card>
+            <div class="clearfix" style="margin-bottom: 10px;">
+                <div class="pull-left">
+                    <Button @click="handleCreate" class="search-btn" type="primary" style="margin-right:5px">
+                        <Icon type="md-add" />&nbsp;&nbsp;添加</Button>
+                    <!-- <Button @click="handleInfo" class="search-btn" type="success" style="margin-right:5px">
+                        <Icon type="ios-crop-outline" />&nbsp;&nbsp;相关文章设置</Button> -->
+                    <!-- <Button @click="handleCreate" class="search-btn" type="primary" style="margin-right:5px">
+                        <Icon type="md-add"/>&nbsp;&nbsp;生成</Button> -->
+                </div>
+                <div class="pull-right">
+                    <Cascader :data="casdata" @on-change="handleChange" change-on-select @on-clear="handleChange">
+                        <!-- <a href="javascript:void(0)">选择</a> -->
+                    </Cascader>
+                </div>
+            </div>
+            <tables class="self-table-wrap" ref="tables" stripe v-model="tableData" :columns="columns" @on-edit="handleEdit" @on-change="handleChangestatus" @on-delete="handleDelete"/>
+            <div style="margin-top:10px;text-align:right;">
+                <Page :total="page.total" :current="page.index" :page-size="page.size" @on-change="handleOnChange" 
+                show-sizer size="small" :page-size-opts="[20,50,100]" @on-page-size-change="handleOnChangeSize"/>
+            </div>
+        </Card>
+        <div>
+            <ModelDialog :status="modelStatus"
+                @handlerModelDialogOk="handlerModelDialogOk"
+                @handlerModelDialogCancel="handlerModelDialogCancel">
+                <CreateForm ref='CreateForm'
+                    :formInline="createForm.formInline"
+                    :ruleInline="createForm.ruleInline"
+                    :casdata="casdata"
+                    v-if="modelStatus.name=='CreateForm'"/>
+                <EditForm ref='EditForm'
+                    :formInline="editForm.formInline"
+                    :ruleInline="editForm.ruleInline"
+                    :casdata="casdata"
+                    v-if="modelStatus.name=='EditForm'"/>
+            </ModelDialog>
+>>>>>>> fe3aaafe03a526ad90ab9c1b5f53c8ca0029c632
         </div>
       </div>
       <tables

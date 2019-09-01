@@ -180,17 +180,17 @@ export default [
           hideInMenu: true
         },
         component: () => import('@/pages/users-page/pages/showlower/showlower/showlower.vue')
-      }
-      // {
-      //   path: 'travelmanage',
-      //   name: 'travelmanage',
-      //   meta: {
-      //     icon: 'ios-barcode-outline',
-      //     title: '出行管理',
-      //     hideInMenu: true
-      //   },
-      //   component: () => import('@/pages/users-page/pages/staff/travelmanagement/travelmanagement.vue')
-      // }
+      },
+      {
+        path: 'daysign',
+        name: 'daysign',
+        meta: {
+          icon: 'ios-barcode-outline',
+          title: '日签设置',
+          hideInMenu: true
+        },
+        component: () => import('@/pages/users-page/pages/daysign/daysign/daysign.vue')
+      },
     ]
   },
   {

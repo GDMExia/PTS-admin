@@ -30,7 +30,7 @@
       </Tables>
       <div style="margin-top:10px;text-align:right;">
         <Page :total="page.total" :current="page.index" :page-size="page.size" @on-change="handleChangePage" 
-        size="small" :page-size-opts="[10,20,50,100,]" @on-page-size-change="handleChangePageSize"/>
+        size="small" :page-size-opts="[20,50,100]" @on-page-size-change="handleChangePageSize"/>
       </div>
       <ModelDialog
         :status="modelStatus"
@@ -221,7 +221,7 @@ export default {
     },
     //日签
     handleSign(){
-
+      this.$router.push({name: 'daysign'})
     },
     //查看下级
     handleShowlower(params){
