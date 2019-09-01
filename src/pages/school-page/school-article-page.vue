@@ -487,8 +487,12 @@ export default {
         is_top: this.createForm.formInline.is_top,
         cover: this.createForm.formInline.cover
       };
+      let dat=new FormData()
+      for(let i in data){
+          dat.append(`${i}`,data[i])
+      }
       // console.log(cid)
-      createschoolArticle(data).then(res => {
+      createschoolArticle(dat).then(res => {
         console.log(res);
         if (res.data.code == "200") {
           this.handleQuery();

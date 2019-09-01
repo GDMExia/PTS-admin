@@ -94,6 +94,8 @@ export default {
     },
     methods: {
         initPlUploader() {
+            var url=''
+            var _this=this
             var accessid = "";
             var accesskey = "";
             var host = "";
@@ -224,7 +226,18 @@ export default {
 
                 up.start();
             }
-            let _this=this
+
+            function geturl(url){
+                console.log(_this.formInline.vedio_url)
+                debugger;
+                if(_this.formInline.vedio_url==undefined){
+                    url=url
+                    _this.formInline.vedio_url=[url]
+                }else{
+                    _this.formInline.vedio_url.push(url)
+                }
+            }
+
             var uploader = new plupload.Uploader({
                 runtimes: "html5,flash,silverlight,html4",
                 browse_button: "selectfiles",
@@ -280,7 +293,7 @@ export default {
                 },
                 FileUploaded: function(up, file, info) {
                     let url='https://pts2019.oss-cn-beijing.aliyuncs.com/'+file.name
-                    _this.formInline.vedio_url.push(url)
+                    geturl(url)
                 },
                 Error: function(up, err) {
                     
