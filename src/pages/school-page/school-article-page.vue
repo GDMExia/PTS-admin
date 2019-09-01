@@ -491,9 +491,11 @@ export default {
       };
       let dat=new FormData()
       for(let i in data){
-          dat.append(`${i}`,data[i])
+        console.log(i)
+        dat.append(`${i}`,data[i])
       }
-      // console.log(cid)
+      // dat.get(cover)
+      // console.log(dat.get(cover))
       createschoolArticle(dat).then(res => {
         console.log(res);
         if (res.data.code == "200") {
@@ -527,9 +529,8 @@ export default {
           console.log(i)
           dat.append(`${i}`,data[i])
       }
-      console.log
       // console.log(cid)
-      createschoolArticle(data).then(res => {
+      createschoolArticle(dat).then(res => {
         console.log(res);
         if (res.data.code == "200") {
           this.handleQuery();
