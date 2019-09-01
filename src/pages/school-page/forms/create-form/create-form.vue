@@ -39,8 +39,9 @@
                 </Col>
             </Row>
                 <FormItem label="视频" prop="vedio_url">
+                    <div id="ossfile">你的浏览器不支持flash,Silverlight或者HTML5！</div>
                     <div id="container">
-                        <a id="selectfiles" href="javascript:void(0);" class="btn">测试上传</a>
+                        <a id="selectfiles" href="javascript:void(0);" class="btn">选择文件</a>
                         <a id="postfiles" href="javascript:void(0);" class='btn'>开始上传</a>
                     </div>
                     <!-- <input type="file" @change="handleUpload"/> -->
@@ -61,6 +62,7 @@
 <script>
 import Editor from "_c/editor";
 import { Upload } from "../../api"
+import plupload from "plupload";
 
 import oss from '@/libs/oss.js'
 // import oss from '_c/oss/oss.vue'
@@ -222,7 +224,7 @@ export default {
 
                 up.start();
             }
-
+            let _this=this
             var uploader = new plupload.Uploader({
                 runtimes: "html5,flash,silverlight,html4",
                 browse_button: "selectfiles",
@@ -245,7 +247,7 @@ export default {
                 },
                 init: {
                 PostInit: function() {
-                    
+                    document.getElementById('ossfile').innerHTML = '';
                     document.getElementById('postfiles').onclick = function() {
                         set_upload_param(uploader, '', false);
                         return false;
@@ -258,16 +260,27 @@ export default {
                     alert("只允许添加1个文件");
                     return false;
                     }
+                    plupload.each(files, function(file) {
+                        document.getElementById('ossfile').innerHTML += '<div id="' + file.id + '">' + file.name + ' (' + plupload.formatSize(file.size) + ')<b></b>'
+                        +'<div class="progress"><div class="progress-bar" style="width: 0%"></div></div>'
+                        +'</div>';
+                    });
                 },
                 BeforeUpload: function(up, file) {
                     check_object_radio();
                     set_upload_param(up, file.name, true);
                 },
                 UploadProgress: function(up, file) {
-                    
+                    var d = document.getElementById(file.id);
+                    d.getElementsByTagName('b')[0].innerHTML = '<span>' + file.percent + "%</span>";
+                    var prog = d.getElementsByTagName('div')[0];
+                    var progBar = prog.getElementsByTagName('div')[0]
+                    progBar.style.width= 2*file.percent+'px';
+                    progBar.setAttribute('aria-valuenow', file.percent);
                 },
                 FileUploaded: function(up, file, info) {
-                    
+                    let url='https://pts2019.oss-cn-beijing.aliyuncs.com/'+file.name
+                    _this.formInline.vedio_url.push(url)
                 },
                 Error: function(up, err) {
                     
@@ -313,9 +326,9 @@ export default {
         },
     },
     mounted() {
+        this.initPlUploader();
         this.handleRichEditor()
         this.caslist=this.casdata.shift()
-        this.initPlUploader();
     }
 }
 </script>
