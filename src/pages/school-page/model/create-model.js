@@ -8,22 +8,22 @@ class PriceCreateModel extends FormModel {
 
     this.ruleInline = {
       title: [
-        { required: true, message: '请输入类型名称', trigger: 'blur' }
+        { required: true, message: '请输入标题', trigger: 'blur' }
       ],
       cid: [
-        { required: true, type: 'array', message: '请输入价格', trigger: 'blur' }
+        { required: true, type: 'array', message: '请选择分类', trigger: 'blur' }
       ],
       create_name: [
-        { required: true, message: '请输入儿童价', trigger: 'blur' }
+        { required: true, message: '请输入发布人名称', trigger: 'blur' }
       ],
       content: [
-        { required: true, message: '请输入每日上限', trigger: 'blur' }
+        { required: true, message: '请输入详情', trigger: 'blur' }
       ],
       cover: [
-        { required: true, message: '请输入单房价差', trigger: 'blur' }
+        { required: true, message: '请上传图片', trigger: 'blur' }
       ],
       is_top: [
-        { required: true, message: '请输入单房价差', trigger: 'blur' }
+        { required: true, message: '请选择', trigger: 'blur' }
       ]
     }
   }
