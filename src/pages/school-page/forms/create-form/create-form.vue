@@ -228,7 +228,7 @@ export default {
             }
 
             function geturl(url){
-                if(_this.formInline.vedio_url==undefined){
+                if(_this.formInline.vedio_url==undefined&&_this.formInline.vedio_url==''){
                     url=url
                     _this.formInline.vedio_url=url
                 }else{

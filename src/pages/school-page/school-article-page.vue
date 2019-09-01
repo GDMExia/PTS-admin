@@ -374,6 +374,7 @@ export default {
       this.createForm = EditFormModel.init(form);
       this.setDialogProperty(1000, "添加", "CreateForm");
       this.$refs.CreateForm.init()
+      this.$refs.CreateForm.handleRichEditor()
     },
     getPid(id) {
       let pid = "";
