@@ -221,7 +221,7 @@ export default {
     },
     //日签
     handleSign(){
-
+      this.$router.push({name: 'daysign'})
     },
     //查看下级
     handleShowlower(params){

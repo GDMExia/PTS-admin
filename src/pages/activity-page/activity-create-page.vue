@@ -71,7 +71,7 @@
                     <Row>
                     <Col span="12">
                         <FormItem label="参与时间" prop="join_time">
-                            <TimePicker type="time" v-model="formInline.join_time" placeholder="请选择时间" style="width: 168px"></TimePicker>
+                            <DatePicker v-model="formInline.join_time" type="datetime" placeholder="请选择日期+时间" style="width: 200px"></DatePicker>
                         </FormItem>
                     </Col>
                     <Col span="12">
@@ -210,6 +210,7 @@ export default {
         }
         form.merchants_id = form.merchants_id?form.merchants_id:''
         form.registration_time = form.registration_time?moment(form.registration_time).format('YYYY-MM-DD HH:mm:ss'):''
+        form.join_time = form.join_time?moment(form.join_time).format('YYYY-MM-DD HH:mm:ss'):''
         this.$refs.ResidenceCreateForm.validate((valid) => {
             if (valid) {
                 setResidenceCreate(form).then(res=>{
