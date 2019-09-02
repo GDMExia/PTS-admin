@@ -32,7 +32,7 @@
       <Row>
         <Col span="8">
           <FormItem label="连续签到" prop="signin_time_number">
-            <Input type='text' v-model="formInline.signin_time_number" placeholder="请输入" />
+            <Input type='text' v-model="formInline.signin_time_number" placeholder="请输入" disabled/>
           </FormItem>
         </Col>
         <Col span="8">

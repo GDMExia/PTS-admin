@@ -43,7 +43,9 @@
                     <div id="container">
                         <a id="selectfiles" href="javascript:void(0);" class="btn">选择文件</a>
                         <a id="postfiles" href="javascript:void(0);" class='btn'>开始上传</a>
+                        请上传英文命名的视频文件
                     </div>
+                    <div v-for="(item,index) of formInline.vedio_url" :key="index">{{(item.vedio_url==undefined||item.vedio_url=='')?item.split('/')[item.split('/').length-1]:item.vedio_url.split('/')[item.vedio_url.split('/').length-1]}}<img :src="(item.vedio_url==undefined||item.vedio_url=='')?(item+'?spm=a2c4g.11186623.2.9.35013c10HjCUHe&x-oss-process=video/snapshot,t_3000,f_png,w_375,h_211'):(item.vedio_url+'?spm=a2c4g.11186623.2.9.35013c10HjCUHe&x-oss-process=video/snapshot,t_3000,f_png,w_375,h_211')" style="display:inline-block;width:375px;height:211px" /><Button type="error" size="small" @click="deleteitem(index)">删除</Button></div>
                     <!-- <input type="file" @change="handleUpload"/> -->
                 </FormItem>
             <Row>
@@ -228,11 +230,11 @@ export default {
             }
 
             function geturl(url){
-                if(_this.formInline.vedio_url==undefined){
+                if(_this.formInline.vedio_url==undefined||_this.formInline.vedio_url==''){
                     url=url
-                    _this.formInline.vedio_url=url
+                    _this.formInline.vedio_url=[url]
                 }else{
-                    _this.formInline.vedio_url+=','+url
+                    _this.formInline.vedio_url.push(url)
                 }
             }
 
@@ -295,7 +297,7 @@ export default {
                 },
                 Error: function(up, err) {
                     
-                }
+                },
                 }
             });
             uploader.init();
@@ -337,7 +339,11 @@ export default {
         },
         init(){
             document.getElementById('ossfile').innerHTML = '';
-        }
+        },
+        deleteitem(e){
+            console.log(e)
+            this.formInline.vedio_url.splice(e,1)
+        },
     },
     mounted() {
         this.initPlUploader();

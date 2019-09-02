@@ -136,7 +136,7 @@ export const Upload = (file) => {
 export const createschoolArticle = (params) => {
     return axios.request({
         url: `/News/createArticle`,
-        params: params,
+        data: params,
         method: 'post'
     })
 }
