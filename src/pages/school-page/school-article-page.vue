@@ -312,6 +312,8 @@ export default {
         if (res.data.code == "200") {
           if (res.data.data.newsList) {
             this.tableData = res.data.data.newsList;
+            this.page.size=res.data.data.pageInfo.PageSize,
+            this.page.total=res.data.data.pageInfo.TotalPages*res.data.data.pageInfo.PageSize
           } else {
             this.tableData = [];
           }
