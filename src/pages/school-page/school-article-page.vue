@@ -501,7 +501,7 @@ export default {
         title: this.createForm.formInline.title,
         cid: cid,
         create_name: this.createForm.formInline.create_name,
-        vedio_url: this.createForm.formInline.vedio_url.join(','),
+        vedio_url: this.createForm.formInline.vedio_url?this.createForm.formInline.vedio_url.join(','):'',
         content: this.createForm.formInline.content,
         is_top: this.createForm.formInline.is_top,
         cover: this.createForm.formInline.cover
@@ -537,7 +537,7 @@ export default {
         title: this.editForm.formInline.title,
         cid: cid,
         create_name: this.editForm.formInline.create_name,
-        vedio_url: this.editForm.formInline.vedio_url.join(','),
+        vedio_url: this.editForm.formInline.vedio_url?this.editForm.formInline.vedio_url.join(','):'',
         content: this.editForm.formInline.content,
         is_top: this.editForm.formInline.is_top,
         cover: this.editForm.formInline.cover
