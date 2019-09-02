@@ -288,3 +288,10 @@ export const setTimeInfo = form => {
         method: 'post'
     })
 }
+
+export const getTimeInfo = () => {
+    return axios.request({
+        url: `/Goods/getDateTime?token=${user.token}`,
+        method: 'get'
+    })
+}

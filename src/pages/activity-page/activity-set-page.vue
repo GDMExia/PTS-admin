@@ -29,7 +29,8 @@ import TimeSetModel from './model/time-set-model'
 import RecommendSetForm from './forms/recommend-set-form'
 import RecommendSetModel from './model/recommend-set-model'
 import {
-    setTimeInfo
+    setTimeInfo,
+    getTimeInfo
 } from './api'
 import {
     getArticleInfo,
@@ -76,11 +77,17 @@ export default {
             })
         },
         setTime() {
-            const form = {
-                date: ''
-            }
-            this.setDialogProperty(600, '设置退订时长', 'TimeSetForm')
-            this.timeForm = TimeSetModel.init(form)
+            getTimeInfo().then(res=>{
+                if(res.data.code == 200) {
+                    const form = {
+                        date: res.data.data.dataTime.date_time
+                    }
+                    this.setDialogProperty(600, '设置退订时长', 'TimeSetForm')
+                    this.timeForm = TimeSetModel.init(form)
+                } else {
+                    this.$Message.error(res.data.message)
+                }
+            })
         },
         handleTimeSubmit() {
             setTimeInfo(this.timeForm.formInline).then(res=>{

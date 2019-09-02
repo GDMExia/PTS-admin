@@ -26,6 +26,7 @@
                 <!-- </Col>
                 <Col span="12"> -->
                     <FormItem label="宣传图" prop="bookcover">
+                        <p>建议上传图片尺寸【710×320】</p>
                         <div style="width: 50px;height: 50px; position: relative;cursor:pointer">
                             <div style="position:absolute;left:0;top:0;width:50px;height:50px">
                                 <Icon type="ios-person-add-outline" size="50" v-show="formInline.bookcover==''"/>

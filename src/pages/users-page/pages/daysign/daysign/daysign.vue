@@ -23,6 +23,7 @@
       <ModelDialog :status="modelStatus"
         @handlerModelDialogOk="handlerModelDialogOk"
         @handlerModelDialogCancel="handlerModelDialogCancel">
+
         <div v-if="modelStatus.name==='avatar'" style="text-align:center">
           <img :src="avatar" style="max-width:100%" />
         </div>
@@ -49,7 +50,9 @@ export default {
       columns:[],
       page: {},
       modelStatus: { show: false, hide: false, loading: true, title: '', name: '' },
-      avatar: ''
+      avatar: '',
+      editForm: {},
+      createForm: {}
     }
   },
   methods:{
@@ -71,7 +74,14 @@ export default {
       this.modelStatus.name = 'avatar'
       this.modelStatus.hide = true
     },
-    handleEdit(params) {},
+    handleEdit(params) {
+      this.avatar = params.row.pic
+      this.modelStatus.show = true
+      this.modelStatus.loading = true
+      this.modelStatus.title = '更改'
+      this.modelStatus.name = 'uploadEdit'
+      this.modelStatus.hide = false
+    },
     handleBack(){
       this.$router.back()
     },

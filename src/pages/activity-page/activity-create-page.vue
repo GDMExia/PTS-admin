@@ -28,8 +28,8 @@
                     </Row>
                     <Row>
                     <Col span="12">
-                        <FormItem label="首页图" prop="photo">
-                        <p>在首页-本地生活中展示时，取该图</p>
+                        <FormItem label="首页图" prop="cover" class="ivu-form-item-required">
+                        <p>在首页-本地生活中展示时，取该图，建议上传图片尺寸【690×300】</p>
                         <div style="width: 50px;height: 50px; position: relative;cursor:pointer">
                             <div style="position:absolute;left:0;top:0;width:50px;height:50px">
                             <Icon type="ios-person-add-outline" size="50" v-show="formInline.cover==''"/>
@@ -42,8 +42,8 @@
                         </FormItem>
                     </Col>
                     <Col span="12">
-                        <FormItem label="封面图" prop="photo">
-                        <p>首页-精选推荐/封面图/内页图，取该图</p>
+                        <FormItem label="封面图" prop="banner" class="ivu-form-item-required">
+                        <p>首页-精选推荐/封面图/内页图，取该图，建议上传图片尺寸【200×200】</p>
                         <div style="width: 50px;height: 50px; position: relative;cursor:pointer">
                             <div style="position:absolute;left:0;top:0;width:50px;height:50px">
                             <Icon type="ios-person-add-outline" size="50" v-show="formInline.banner==''"/>
@@ -58,7 +58,7 @@
                     </Row>
                     <Row>
                     <Col span="12">
-                        <FormItem label="报名截止时间" prop="registration_time">
+                        <FormItem label="报名截止时间" prop="registration_time" class="ivu-form-item-required">
                             <DatePicker v-model="formInline.registration_time" type="datetime" placeholder="请选择日期+时间" style="width: 200px"></DatePicker>
                         </FormItem>
                     </Col>
@@ -70,7 +70,7 @@
                     </Row>
                     <Row>
                     <Col span="12">
-                        <FormItem label="参与时间" prop="join_time">
+                        <FormItem label="参与时间" prop="join_time" class="ivu-form-item-required">
                             <DatePicker v-model="formInline.join_time" type="datetime" placeholder="请选择日期+时间" style="width: 200px"></DatePicker>
                         </FormItem>
                     </Col>
@@ -158,8 +158,8 @@ export default {
             trigger: 'blur'}],
             goods_price: [{ required: true, message: '请输入支付金额', trigger: 'blur' },
                 {validator: (rule, value, callback) => {
-                if (!/^[1-9]\d*(\.\d{0,2})?$/.test(value)&&value!='') {
-                callback(new Error('只能输入数字或数字后两位小数'))
+                if (!/^[￥|$]\d*(\.\d{0,2})?$/.test(value)&&value!='') {
+                callback(new Error('请输入带有￥或者$单位的最多包含两位小数的金额'))
                 } else {
                 callback()
                 }
@@ -206,6 +206,14 @@ export default {
         }
         if(form.banner=='') {
             this.$Message.error('请上传封面图')
+            return
+        }
+        if(!form.registration_time) {
+            this.$Message.error('请选择报名截止时间')
+            return
+        }
+        if(!form.join_time) {
+            this.$Message.error('请选择参与时间')
             return
         }
         form.merchants_id = form.merchants_id?form.merchants_id:''
