@@ -116,6 +116,7 @@ export default {
             setShareCreate(form).then(res=>{
                 if(res.data.code == 200) {
                     this.$Message.success('添加成功')
+                    this.modelStatus.loading = false
                     this.modelStatus.show = false
                     this.handleQuery()
                 } else {
@@ -127,6 +128,7 @@ export default {
             setShareCreate(form).then(res=>{
                 if(res.data.code == 200) {
                     this.$Message.success('编辑成功')
+                    this.modelStatus.loading = false
                     this.modelStatus.show = false
                     this.handleQuery()
                 } else {
@@ -175,11 +177,11 @@ export default {
             if(name==='ShareCreateForm') {
                 this.$refs.ShareCreateForm.validate(valid=>{
                     if(valid) {
+                        this.modelStatus.loading = true
                         this.handleSubmit()
                     }
                 })
             } 
-            this.modelStatus.loading = false
             this.$nextTick(() => {
                 this.modelStatus.loading = true
             })

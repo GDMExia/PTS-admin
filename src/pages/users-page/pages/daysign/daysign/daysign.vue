@@ -27,6 +27,10 @@
         :formInline="editForm.formInline"
         :ruleInline="editForm.ruleInline"
          v-if="modelStatus.name==='UploadEditForm'"/>
+        <UploadCreateForm ref="UploadCreateForm" 
+        :formInline="createForm.formInline"
+        :ruleInline="createForm.ruleInline"
+         v-if="modelStatus.name==='UploadCreateForm'"/>
         <div v-if="modelStatus.name==='avatar'" style="text-align:center">
           <img :src="avatar" style="max-width:100%" />
         </div>
@@ -42,13 +46,16 @@ import pageInfo from "@/libs/page-info";
 import ModelDialog from "_c/model-dialog";
 import UploadEditForm from './forms/upload-edit-form'
 import UploadEditModel from './model/upload-edit-model'
+import UploadCreateForm from './forms/upload-create-form'
+import UploadCreateModel from './model/upload-create-model'
 import { columns , getData, setCreat } from "./api";
 export default {
   components:{
     Tables,
     TopMenu,
     ModelDialog,
-    UploadEditForm
+    UploadEditForm,
+    UploadCreateForm
   },
   data(){
     return{
@@ -104,16 +111,41 @@ export default {
         }
       })
     },
+    handleCreateSubmit() {
+      const form = UploadCreateModel.converter(this.createForm.formInline)
+      setCreat(form).then(res=>{
+        if(res.data.code==200) {
+          this.$Message.success('设置成功') 
+          this.modelStatus.show = false
+          this.handleQuery() 
+        } else {
+          this.$Message.error(res.data.message)
+        }
+      })
+    },
     handleBack(){
       this.$router.back()
     },
-    handleUpload(){},
+    handleUpload(){
+      this.createForm = UploadCreateModel.init()
+      this.modelStatus.show = true
+      this.modelStatus.loading = true
+      this.modelStatus.title = '上传'
+      this.modelStatus.name = 'UploadCreateForm'
+      this.modelStatus.hide = false
+    },
     /* 对话框确认 */
     handlerModelDialogOk(name) {
       if(name==='UploadEditForm') {
         this.$refs.UploadEditForm.validate(valid=>{
           if(valid) {
             this.handleEditSubmit()
+          }
+        })
+      } else if (name==='UploadCreateForm') {
+        this.$refs.UploadCreateForm.validate(valid=>{
+          if(valid) {
+            this.handleCreateSubmit()
           }
         })
       }
