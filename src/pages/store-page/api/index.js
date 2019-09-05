@@ -10,27 +10,37 @@ export const storeColumn = [
     { title: '联系方式', key: 'phone', tooltip: true,width: 120 },
     { title: '启用状态', key: 'status', tooltip: true,width: 120 },
     { title: '签约状态', key: 'sign', tooltip: true,width: 120 },
-    { 
+    {
         title: '是否上架',
         key: 'handle',
         align: 'center',
         width: 90,
         button: [(h, params, vm) => {
-            return h('div', [
-                h(
-                    'i-switch', {
-                        props: {
-                            value:params.row.is_show=='1'?true:false,
+            return h('Poptip', {
+                    props: {
+                        title: `确认${params.row.is_show == '1' ? '下' : '上'}架吗？`,
+                        confirm: true,
+                        transfer: true
+                    },
+                    on: {
+                        'on-ok': () => {
+                            vm.$emit('on-change', params)
                         },
-                        on: {
-                            'on-change': () => {
-                                vm.$emit('on-change',params)
-                            }  
+                        'on-cancel': () => {
+                            vm.$emit('on-cancelchange', params)
                         }
                     }
+                },[
+                    h('i-switch', {
+                        props: {
+                            value:params.row.is_show=='1'?true:false,
+                        }
+                    }
+                    )
+                ]
                 )
-            ])
-        }]
+            
+        }],
     },
     {
         title: '操作',

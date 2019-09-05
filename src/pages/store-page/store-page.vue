@@ -11,7 +11,7 @@
                 </div>
             </div>
             <tables class="self-table-wrap" ref="tables" stripe v-model="tableData" :columns="columns" @on-edit="handleEdit"
-            @on-info="handleInfo" @on-delete="handleDelete" @on-forbid="handleForbid" @on-reset="handleReset" @on-change="handleChange" />
+            @on-info="handleInfo" @on-delete="handleDelete" @on-forbid="handleForbid" @on-reset="handleReset" @on-change="handleChange" @on-cancelchange="handleCancelChange"/>
             <div style="margin-top:10px;text-align:right;">
                 <Page :total="page.total" :current="page.index" :page-size="page.size" @on-change="handleOnChange" 
                 show-sizer size="small" :page-size-opts="[20,50,100]" @on-page-size-change="handleOnChangeSize"/>
@@ -226,6 +226,19 @@ export default {
                 }
             })
         }, 
+        handleCancelChange(params){
+            console.log(params)
+            this.handleQuery()
+            if(params.row.is_show==1){
+                this.$nextTick(()=>{
+                    params.row.is_show=0
+                })
+            }else{
+                this.$nextTick(()=>{
+                    params.row.is_show=1
+                })
+            }
+        },
         handleType() {
             getType().then(res=>{
                 if(res.data.code==200) {
