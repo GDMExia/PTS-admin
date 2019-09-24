@@ -190,40 +190,40 @@ export default [
           hideInMenu: true
         },
         component: () => import('@/pages/users-page/pages/daysign/daysign/daysign.vue')
-      },
-    ]
-  },
-  {
-    path: '/discountcoupon',
-    name: 'discountcoupon',
-    meta: {
-      icon: 'ios-people',
-      title: '优惠券管理',
-      access: ['super_admin'],
-      id: 23
-    },
-    component: Main,
-    children: [
-      {
-        path: 'discountcoupon',
-        name: 'discountcoupon',
-        meta: {
-          icon: 'ios-home-outline',
-          title: '优惠券管理'
-        },
-        component: () => import('@/pages/discountcoupon-page/discountcoupon-page.vue')
       }
-      // {
-      //   path: 'discountcoupon',
-      //   name: 'discountcoupon',
-      //   meta: {
-      //     icon: 'ios-home-outline',
-      //     title: '优惠券管理'
-      //   },
-      //   component: () => import('_c/ueditor/ed.vue')
-      // }
     ]
   },
+  // {
+  //   path: '/discountcoupon',
+  //   name: 'discountcoupon',
+  //   meta: {
+  //     icon: 'ios-people',
+  //     title: '优惠券管理',
+  //     access: ['super_admin'],
+  //     id: 23
+  //   },
+  //   component: Main,
+  //   children: [
+  //     {
+  //       path: 'discountcoupon',
+  //       name: 'discountcoupon',
+  //       meta: {
+  //         icon: 'ios-home-outline',
+  //         title: '优惠券管理'
+  //       },
+  //       component: () => import('@/pages/discountcoupon-page/discountcoupon-page.vue')
+  //     }
+  //     // {
+  //     //   path: 'discountcoupon',
+  //     //   name: 'discountcoupon',
+  //     //   meta: {
+  //     //     icon: 'ios-home-outline',
+  //     //     title: '优惠券管理'
+  //     //   },
+  //     //   component: () => import('_c/ueditor/ed.vue')
+  //     // }
+  //   ]
+  // },
   {
     path: '/activities',
     name: 'activities',
