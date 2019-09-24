@@ -2,7 +2,7 @@
     <div>
         <Form ref="UploadCreateForm" :model="formInline" :rules="ruleInline" :label-width="80" label-position="left">
             <FormItem label="图片" prop="pic">
-                <div class="demo-upload-list" v-for="(item, index) in formInline.pic" :key="index">
+                <!-- <div class="demo-upload-list" v-for="(item, index) in formInline.pic" :key="index">
                     <template>
                         <img :src="item">
                         <div class="demo-upload-list-cover">
@@ -14,15 +14,22 @@
                     ref="upload"
                     :show-upload-list="false"
                     :default-file-list="formInline.pic"
-                    :format="['jpg', 'png', 'jpeg']"
                     :before-upload="beforeUpload"
-                    multiple
                     action
                     style="display: inline-block;width:58px;">
                     <div style="width: 58px;height:58px;line-height: 58px;">
                         <Icon type="ios-camera" size="20"></Icon>
                     </div>
-                </Upload>
+                </Upload> -->
+                <div style="width: 50px;height: 50px; position: relative;cursor:pointer">
+                    <div style="position:absolute;left:0;top:0;width:50px;height:50px">
+                        <Icon type="ios-person-add-outline" size="50" v-show="formInline.pic==''"/>
+                        <img :src="formInline.pic" v-show="formInline.pic!=''" style="width:50px;height:50px"/>
+                    </div>
+                    <div style="position:absolute;left:0;top:0;width:50px;height:50px">
+                        <input type="file" id="upload" @change="beforeUpload" style="width:50px;height:50px;opacity:0;"/>
+                    </div>
+                </div>
             </FormItem>
         </Form>
     </div>
@@ -51,8 +58,8 @@ export default {
             this.formInline.pic.splice(index, 1)
         },
         // 上传图片
-        uploadImage(file) {
-            var file = file
+        beforeUpload(event) {
+            var file = event.target.files[0]
             if(file.size > 5*1024*1024) {
                 this.$Message.warning('上传图片不得大于5兆，请重新上传')
                 return
@@ -67,7 +74,7 @@ export default {
             setUpload(formData).then(res=>{
                 if(res.data.code == 200) {
                     this.$Message.info('上传成功')
-                    this.formInline.pic.push(`${res.data.data.fileUrl}`)
+                    this.formInline.pic = `${res.data.data.fileUrl}`
                 }
             })
         },

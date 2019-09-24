@@ -10,22 +10,21 @@ class UploadCreateModel extends FormModel {
       pic: [{
         required: true,
         message: '请上传图片',
-        trigger: 'blur',
-        type: 'array'
+        trigger: 'blur'
       }],
     }
   }
 
   init() {
     this.formInline = {
-      pic: [],
+      pic: '',
     }
     return this
   }
 
   converter(form) {
     return {
-        pic: form.pic.join(","),
+        pic: form.pic,
     }
   }
 }

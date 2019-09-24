@@ -371,102 +371,102 @@ export default [
       }
     ]
   },
-  {
-    path: '/discountcouponorder',
-    name: 'discountcouponorder',
-    meta: {
-      icon: 'md-reorder',
-      title: '优惠券订单管理',
-      access: ['super_admin'],
-      id: 24
-    },
-    component: Main,
-    children: [
-      {
-        path: 'waitingtouse',
-        name: 'waitingtouse',
-        meta: {
-          icon: 'md-reorder',
-          title: '待使用'
-        },
-        component: () => import('@/pages/discountcoupon-order-page/waiting-page.vue')
-      },
-      {
-        path: 'waitingunchecked',
-        name: 'waitingunchecked',
-        meta: {
-          icon: 'md-reorder',
-          title: '退订待审核'
-        },
-        component: () => import('@/pages/discountcoupon-order-page/waitingunchecked-page.vue')
-      },
-      {
-        path: 'unchecked',
-        name: 'unchecked',
-        meta: {
-          icon: 'md-reorder',
-          title: '已退订'
-        },
-        component: () => import('@/pages/discountcoupon-order-page/unchecked-page.vue')
-      },
-      {
-        path: 'allorder',
-        name: 'allorder',
-        meta: {
-          icon: 'md-reorder',
-          title: '全部'
-        },
-        component: () => import('@/pages/discountcoupon-order-page/allorder-page.vue')
-      }
-      // {
-      //   path: 'evaluated',
-      //   name: 'evaluated',
-      //   meta: {
-      //     icon: 'md-reorder',
-      //     title: '已评价'
-      //   },
-      //   component: () => import('@/pages/order-page/evaluated-page.vue')
-      // },
-      // {
-      //   path: 'cancel',
-      //   name: 'cancel',
-      //   meta: {
-      //     icon: 'md-reorder',
-      //     title: '已取消'
-      //   },
-      //   component: () => import('@/pages/order-page/cancel-page.vue')
-      // },
-      // {
-      //   path: 'all',
-      //   name: 'all',
-      //   meta: {
-      //     icon: 'md-reorder',
-      //     title: '全部'
-      //   },
-      //   component: () => import('@/pages/order-page/all-order-page.vue')
-      // },
-      // {
-      //   path: 'detail',
-      //   name: 'detail',
-      //   meta: {
-      //     hideInMenu: true,
-      //     icon: 'md-reorder',
-      //     title: '订单详情'
-      //   },
-      //   component: () => import('@/pages/order-page/order-detail-page.vue')
-      // },
-      // {
-      //   path: 'audit',
-      //   name: 'audit',
-      //   meta: {
-      //     hideInMenu: true,
-      //     icon: 'md-reorder',
-      //     title: '统一审核评价'
-      //   },
-      //   component: () => import('@/pages/order-page/order-audit-page.vue')
-      // }
-    ]
-  },
+  // {
+  //   path: '/discountcouponorder',
+  //   name: 'discountcouponorder',
+  //   meta: {
+  //     icon: 'md-reorder',
+  //     title: '优惠券订单管理',
+  //     access: ['super_admin'],
+  //     id: 24
+  //   },
+  //   component: Main,
+  //   children: [
+  //     {
+  //       path: 'waitingtouse',
+  //       name: 'waitingtouse',
+  //       meta: {
+  //         icon: 'md-reorder',
+  //         title: '待使用'
+  //       },
+  //       component: () => import('@/pages/discountcoupon-order-page/waiting-page.vue')
+  //     },
+  //     {
+  //       path: 'waitingunchecked',
+  //       name: 'waitingunchecked',
+  //       meta: {
+  //         icon: 'md-reorder',
+  //         title: '退订待审核'
+  //       },
+  //       component: () => import('@/pages/discountcoupon-order-page/waitingunchecked-page.vue')
+  //     },
+  //     {
+  //       path: 'unchecked',
+  //       name: 'unchecked',
+  //       meta: {
+  //         icon: 'md-reorder',
+  //         title: '已退订'
+  //       },
+  //       component: () => import('@/pages/discountcoupon-order-page/unchecked-page.vue')
+  //     },
+  //     {
+  //       path: 'allorder',
+  //       name: 'allorder',
+  //       meta: {
+  //         icon: 'md-reorder',
+  //         title: '全部'
+  //       },
+  //       component: () => import('@/pages/discountcoupon-order-page/allorder-page.vue')
+  //     }
+  //     // {
+  //     //   path: 'evaluated',
+  //     //   name: 'evaluated',
+  //     //   meta: {
+  //     //     icon: 'md-reorder',
+  //     //     title: '已评价'
+  //     //   },
+  //     //   component: () => import('@/pages/order-page/evaluated-page.vue')
+  //     // },
+  //     // {
+  //     //   path: 'cancel',
+  //     //   name: 'cancel',
+  //     //   meta: {
+  //     //     icon: 'md-reorder',
+  //     //     title: '已取消'
+  //     //   },
+  //     //   component: () => import('@/pages/order-page/cancel-page.vue')
+  //     // },
+  //     // {
+  //     //   path: 'all',
+  //     //   name: 'all',
+  //     //   meta: {
+  //     //     icon: 'md-reorder',
+  //     //     title: '全部'
+  //     //   },
+  //     //   component: () => import('@/pages/order-page/all-order-page.vue')
+  //     // },
+  //     // {
+  //     //   path: 'detail',
+  //     //   name: 'detail',
+  //     //   meta: {
+  //     //     hideInMenu: true,
+  //     //     icon: 'md-reorder',
+  //     //     title: '订单详情'
+  //     //   },
+  //     //   component: () => import('@/pages/order-page/order-detail-page.vue')
+  //     // },
+  //     // {
+  //     //   path: 'audit',
+  //     //   name: 'audit',
+  //     //   meta: {
+  //     //     hideInMenu: true,
+  //     //     icon: 'md-reorder',
+  //     //     title: '统一审核评价'
+  //     //   },
+  //     //   component: () => import('@/pages/order-page/order-audit-page.vue')
+  //     // }
+  //   ]
+  // },
   {
     path: '/tours',
     name: 'tours',
