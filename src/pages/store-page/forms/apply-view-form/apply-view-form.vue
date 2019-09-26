@@ -15,6 +15,9 @@
                 <FormItem label="联系方式" prop="merchant_applicant_phone">
                   {{data.merchant_applicant_phone}}
                 </FormItem>
+                <FormItem label="微信号" prop="merchant_applicant_phone">
+                  {{data.merchant_applicant_wechat}}
+                </FormItem>
                 <FormItem label="地址" prop="address">
                   {{data.address}}
                 </FormItem>
@@ -106,7 +109,7 @@ export default {
         // this.data.goods_pic=this.data.goods_pic.pop()
         })
         // console.log(this.data.goods_pic.pop())
-        
+
         console.log(this.data,111)
       })
     },
