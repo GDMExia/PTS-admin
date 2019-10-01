@@ -7,13 +7,13 @@
                         <Icon type="md-add"/>&nbsp;&nbsp;人工添加</Button>
                 </div>
                 <div class="pull-right">
-                    
+
                 </div>
             </div>
             <tables class="self-table-wrap" ref="tables" stripe v-model="tableData" :columns="columns" @on-edit="handleEdit"
             @on-info="handleInfo" @on-delete="handleDelete" @on-forbid="handleForbid" @on-reset="handleReset" @on-change="handleChange" @on-cancelchange="handleCancelChange"/>
             <div style="margin-top:10px;text-align:right;">
-                <Page :total="page.total" :current="page.index" :page-size="page.size" @on-change="handleOnChange" 
+                <Page :total="page.total" :current="page.index" :page-size="page.size" @on-change="handleOnChange"
                 show-sizer size="small" :page-size-opts="[20,50,100]" @on-page-size-change="handleOnChangeSize"/>
             </div>
         </Card>
@@ -102,12 +102,13 @@ export default {
                 admin_name: '',
                 mid: '',
                 legal_person: '',
-                company: ''
+                company: '',
+                merchant_applicant_wechat: ''
             }
             this.setDialogProperty(600, '添加', 'StoreCreateForm')
             this.createForm = StoreCreateModel.init(form)
             this.$nextTick(()=>{
-                
+
             })
         },
         // 编辑
@@ -120,7 +121,8 @@ export default {
                 mid: params.row.mid,
                 legal_person: params.row.legal_person,
                 company: params.row.company,
-                discount:params.row.discount
+                discount: params.row.discount,
+                merchant_applicant_wechat: params.row.merchant_applicant_wechat
             }
             this.setDialogProperty(600, '编辑', 'StoreCreateForm')
             this.createForm = StoreCreateModel.init(form)
@@ -210,7 +212,7 @@ export default {
                     this.$Message.error(res.data.message)
                 }
             })
-        }, 
+        },
         // 上下架
         handleChange(params) {
             const form = {
@@ -225,7 +227,7 @@ export default {
                     this.$Message.error(res.data.message)
                 }
             })
-        }, 
+        },
         handleCancelChange(params){
             console.log(params)
             this.handleQuery()

@@ -43,6 +43,13 @@
                 </FormItem>
               </Col>
             </Row>
+          <Row>
+            <Col span="24">
+              <FormItem label="微信号" prop="merchant_applicant_wechat">
+                <Input v-model="formInline.merchant_applicant_wechat" placeholder="请输入微信号" />
+              </FormItem>
+            </Col>
+          </Row>
             <Row>
               <Col span="24">
                 <FormItem label="商家折扣" prop="discount">

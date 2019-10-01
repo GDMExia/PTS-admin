@@ -28,14 +28,19 @@ class StoreCreateModel extends FormModel {
         message: '请输入账号',
         trigger: 'blur'
       }],
-      company: [{
+      // company: [{
+      //   required: true,
+      //   message: '请输入商家公司全称',
+      //   trigger: 'blur'
+      // }],
+      // legal_person: [{
+      //   required: true,
+      //   message: '请输入法定代表人',
+      //   trigger: 'blur'
+      // }],
+      merchant_applicant_wechat: [{
         required: true,
-        message: '请输入账号',
-        trigger: 'blur'
-      }],
-      legal_person: [{
-        required: true,
-        message: '请输入账号',
+        message: '请输入微信号',
         trigger: 'blur'
       }],
       discount: [{
@@ -56,7 +61,8 @@ class StoreCreateModel extends FormModel {
       mid: form.mid,
       legal_person: form.legal_person,
       company: form.company,
-      discount: form.discount
+      discount: form.discount,
+      merchant_applicant_wechat: form.merchant_applicant_wechat
     }
     return this
   }
@@ -70,7 +76,8 @@ class StoreCreateModel extends FormModel {
       mid: form.mid,
       legal_person: form.legal_person,
       company: form.company,
-      discount: form.discount
+      discount: form.discount,
+      merchant_applicant_wechat: form.merchant_applicant_wechat
     }
   }
 }
