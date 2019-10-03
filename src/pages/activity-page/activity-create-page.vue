@@ -59,7 +59,7 @@
                     <Row>
                     <Col span="12">
                         <FormItem label="报名截止时间" prop="registration_time" class="ivu-form-item-required">
-                            <DatePicker v-model="formInline.registration_time" type="datetime" placeholder="请选择日期+时间" style="width: 200px"></DatePicker>
+                            <DatePicker v-model="formInline.registration_time" type="datetime" :format="'yyyy-MM-dd HH:mm'" placeholder="请选择日期+时间" style="width: 200px"></DatePicker>
                         </FormItem>
                     </Col>
                     <Col span="12">
@@ -71,7 +71,7 @@
                     <Row>
                     <Col span="12">
                         <FormItem label="参与时间" prop="join_time" class="ivu-form-item-required">
-                            <DatePicker v-model="formInline.join_time" type="datetime" placeholder="请选择日期+时间" style="width: 200px"></DatePicker>
+                            <DatePicker v-model="formInline.join_time" type="datetime" placeholder="请选择日期+时间" :format="'yyyy-MM-dd HH:mm'" style="width: 200px"></DatePicker>
                         </FormItem>
                     </Col>
                     <Col span="12">
@@ -88,16 +88,23 @@
                     </Col>
                     <Col span="12">
                         <FormItem label="发布者" prop="create_name">
-                            <Input v-model="formInline.create_name" style="width: 200px" placeholder="请输入" />                        
+                            <Input v-model="formInline.create_name" style="width: 200px" placeholder="请输入" />
                         </FormItem>
                     </Col>
                     </Row>
                     <Row>
+                      <Col span="12">
                         <FormItem label="商家" prop="merchants_id">
                             <Select placeholder="商家" v-model="formInline.merchants_id" style="width: 150px;" clearable>
                                 <Option v-for="item in storeList" :value="item.mid" :key="item.mid">{{item.real_name}}</Option>
                             </Select>
                         </FormItem>
+                      </Col>
+                      <Col span="12">
+                      <FormItem label="活动地址" prop="address">
+                        <Input v-model="formInline.address" style="width: 200px" placeholder="请输入" />
+                      </FormItem>
+                      </Col>
                     </Row>
                     <Row>
                         <FormItem label="详情" prop="content">
@@ -107,7 +114,7 @@
                 </Form>
             </div>
         </Card>
-        
+
     </div>
 </template>
 <script>
@@ -141,7 +148,8 @@ export default {
             discount_price: '',
             create_name: '',
             content: '',
-            merchants_id: ''
+            merchants_id: '',
+            address: ''
         },
         ruleInline: {
             goods_name: [{ required: true, message: '请输入标题', trigger: 'blur' }],
@@ -156,15 +164,18 @@ export default {
                 }
             },
             trigger: 'blur'}],
-            goods_price: [{ required: true, message: '请输入支付金额', trigger: 'blur' },
-                {validator: (rule, value, callback) => {
-                if (!/^[￥|$]\d*(\.\d{0,2})?$/.test(value)&&value!='') {
-                callback(new Error('请输入带有￥或者$单位的最多包含两位小数的金额'))
-                } else {
-                callback()
-                }
-            },
-            trigger: 'blur'}],
+            goods_price: { required: true, message: '请输入支付金额', trigger: 'blur' },
+                // {validator: (rule, value, callback) => {
+                // if (!/^[￥|$]\d*(\.\d{0,2})?$/.test(value)&&value!='') {
+                // callback(new Error('请输入带有￥或者$单位的最多包含两位小数的金额'))
+                // } else {
+                // callback()
+                // }
+            // },
+            // trigger: 'blur'}],
+            address: [
+              { required: true, message: '请填写地址', trigger: 'blur' }
+            ],
             discount_price: [{ required: true, message: '请输入积分抵扣', trigger: 'blur' },
                 {validator: (rule, value, callback) => {
                 if (!/^[1-9]\d*$/.test(value)&&value!='') {
@@ -229,7 +240,7 @@ export default {
                         this.$Message.error(res.data.message)
                     }
                 })
-            } 
+            }
         })
     },
     uploadImageBanner(event) {
@@ -242,7 +253,7 @@ export default {
       if(!imgStr.test(file.name)) {
           alert("文件不是图片类型");
           return
-      } 
+      }
       var formData = new FormData();
       formData.append('file_image', file)
       setUpload(formData).then(res=>{
@@ -263,7 +274,7 @@ export default {
       if(!imgStr.test(file.name)) {
           alert("文件不是图片类型");
           return
-      } 
+      }
       var formData = new FormData();
       formData.append('file_image', file)
       setUpload(formData).then(res=>{

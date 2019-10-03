@@ -30,7 +30,9 @@
                     </FormItem>
                 </Col>
                 <Col span="12">
-                    
+                  <FormItem label="商户公告" prop="announcement">
+                    <Input v-model="formInline.announcement"/>
+                  </FormItem>
                 </Col>
             </Row>
             <Row>
@@ -100,7 +102,7 @@ export default {
             if(!imgStr.test(file.name)) {
                 alert("文件不是图片类型");
                 return
-            } 
+            }
             var formData = new FormData();
             formData.append('file_image', file)
             setUpload(formData).then(res=>{

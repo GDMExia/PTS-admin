@@ -37,6 +37,11 @@ class StoreInfoModel extends FormModel {
         message: '请上传图片',
         trigger: 'blur'
       }],
+      announcement: [{
+        required: true,
+        message: '请填写商户公告',
+        trigger: 'blur'
+      }]
     }
   }
 
@@ -50,6 +55,7 @@ class StoreInfoModel extends FormModel {
       real_name: form.real_name,
       merchants_cid: form.merchants_cid,
       contact: form.contact,
+      announcement: form.announcement
     }
     return this
   }
@@ -64,6 +70,7 @@ class StoreInfoModel extends FormModel {
       real_name: form.real_name,
       merchants_cid: form.merchants_cid,
       contact: form.contact,
+      announcement: form.announcement
     }
   }
 }
