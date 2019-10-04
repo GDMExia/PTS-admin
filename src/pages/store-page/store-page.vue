@@ -162,8 +162,30 @@ export default {
             this.handleType()
             getStoreInfo(params.row.mid).then(res=>{
                 if(res.data.code == 200) {
-                    let form = res.data.data.merchantsInfo
-                    form.mid = params.row.mid
+                  let form = res.data.data.merchantsInfo
+                  form.mid = params.row.mid
+                  let workerphones=form.work_phone?form.work_phone.split(','):[]
+                  let workernames=form.work_real_name?form.work_real_name.split(','):[]
+                  let length=0
+                  if(workerphones.length&&workernames.length) {
+                    if (workerphones.length >= workernames.length) {
+                      length = workerphones.length
+                    } else {
+                      length = workernames.length
+                    }
+                  }
+                  form.workers=[{work_phone:'',work_real_name:''}]
+                  if(length!=0) {
+                    for (let i = 0; i < length; i++) {
+                      form.workers.push({work_phone:'',work_real_name:''})
+                      form.workers[i].work_phone = workerphones[i]
+                      form.workers[i].work_real_name = workernames[i]
+                    }
+                  }
+                  if(length==0){
+                    form.workers=[{work_phone:'',work_real_name:''}]
+                  }
+                  console.log(form.workers)
                     this.setDialogProperty(900, '编辑商家信息', 'StoreInfoForm')
                     this.infoForm = StoreInfoModel.init(form)
                     this.$nextTick(()=>{
@@ -260,7 +282,15 @@ export default {
             })
         },
         handleInfoSubmit() {
-            const form = StoreInfoModel.converter(this.infoForm.formInline)
+          const form = StoreInfoModel.converter(this.infoForm.formInline)
+          let workerphones=[]
+          let workernames=[]
+          form.workers.map(el=>{
+            workerphones.push(el.work_phone)
+            workernames.push(el.work_real_name)
+          })
+          form.work_phone=workerphones.join(',')
+          form.work_real_name=workernames.join(',')
             setStoreInfo(form).then(res=>{
                 if(res.data.code == 200) {
                     this.$Message.success('编辑成功')

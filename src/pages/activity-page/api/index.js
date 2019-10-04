@@ -136,10 +136,18 @@ export const residenceColumns = [
 ]
 
 export const usersColumns = [
-    { title: '券号', key: 'coupons_number', tooltip: true },
-    { title: '所属订单号', key: 'order_no', tooltip: true },
-    { title: '当前状态', key: 'status', tooltip: true },
-    { title: '核销时间', key: 'update_time', tooltip: true },
+    { title: '订单号', key: 'order_no', tooltip: true },
+    { title: '联系人', key: 'order_real_name', tooltip: true },
+    { title: '手机号码', key: 'phone', tooltip: true },
+    { title: '报名人数', key: 'goods_number', tooltip: true },
+    { title: '订单金额', key: 'order_price', tooltip: true },
+    { title: '核销状态', key: 'is_cancel',render:(h,params)=>{
+      return h('div', params.row.is_cancel==0?'未核销':'已核销')
+    }, tooltip: true },
+    { title: '核销时间', key: 'create_time', tooltip: true },
+    { title: '实到人数', key: 'actual_number', tooltip: true },
+    { title: '实销金额', key: 'actual_price', tooltip: true },
+    { title: '实抵积分', key: 'discount_price', tooltip: true },
 ]
 
 export const categoryColumn = [
@@ -209,14 +217,14 @@ export const getResidenceList = page => {
     let search = page.search.replace(/\_/g, "/").replace(/\-/g, "+")
     search = search!=''?JSON.parse(Base64.decode(search)):{search: '',cid:'',goods_status: ''}
     return axios.request({
-        url: `/Goods/goodslist?page=${page.index}&pageSize=${page.size}&goods_name=${search.search}&cid=${search.cid}&goods_status=${search.goods_status}&token=${user.token}`,       
+        url: `/Goods/goodslist?page=${page.index}&pageSize=${page.size}&goods_name=${search.search}&cid=${search.cid}&goods_status=${search.goods_status}&token=${user.token}`,
         method: 'get'
     })
 }
 
 export const getResidenceSearchList = page => {
     return axios.request({
-        url: `/Goods/goodslist?page=${page.index}&pageSize=${page.size}&goods_name=${page.search}&cid=&goods_status=1&token=${user.token}`,       
+        url: `/Goods/goodslist?page=${page.index}&pageSize=${page.size}&goods_name=${page.search}&cid=&goods_status=1&token=${user.token}`,
         method: 'get'
     })
 }
@@ -225,7 +233,7 @@ export const setActivityChange = form => {
         token: user.token
     }))
     return axios.request({
-        url: `/Goods/updateAudit`,       
+        url: `/Goods/updateAudit`,
         data: params,
         method: 'post'
     })
@@ -233,7 +241,7 @@ export const setActivityChange = form => {
 
 export const setActivityDelete = id => {
     return axios.request({
-        url: `/Goods/deleteGoods?token=${user.token}&id=${id}`,       
+        url: `/Goods/deleteGoods?token=${user.token}&id=${id}`,
         method: 'get'
     })
 }
@@ -243,7 +251,7 @@ export const setResidenceCreate = form => {
         token: user.token
     }))
     return axios.request({
-        url: `/Goods/createGoods`,       
+        url: `/Goods/createGoods`,
         data: params,
         method: 'post'
     })
@@ -252,21 +260,21 @@ export const setResidenceCreate = form => {
 export const getActivityUsers = id => {
     return axios.request({
         url: `/Goods/getGoodsSiginList?token=${user.token}&goods_id=${id}`,
-        
+
         method: 'get'
     })
 }
 
 export const getCategoryList = () => {
     return axios.request({
-        url: `/Goods/getGoodsCategory?token=${user.token}`,       
+        url: `/Goods/getGoodsCategory?token=${user.token}`,
         method: 'get'
     })
 }
 
 export const setCategoryDelete = id => {
     return axios.request({
-        url: `/Goods/deleteGoodsCategory?id=${id}&token=${user.token}`,       
+        url: `/Goods/deleteGoodsCategory?id=${id}&token=${user.token}`,
         method: 'get'
     })
 }

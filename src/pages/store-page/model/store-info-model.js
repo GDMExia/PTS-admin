@@ -55,7 +55,8 @@ class StoreInfoModel extends FormModel {
       real_name: form.real_name,
       merchants_cid: form.merchants_cid,
       contact: form.contact,
-      announcement: form.announcement
+      announcement: form.announcement,
+      workers: form.workers
     }
     return this
   }
@@ -70,7 +71,8 @@ class StoreInfoModel extends FormModel {
       real_name: form.real_name,
       merchants_cid: form.merchants_cid,
       contact: form.contact,
-      announcement: form.announcement
+      announcement: form.announcement,
+      workers: form.workers,
     }
   }
 }

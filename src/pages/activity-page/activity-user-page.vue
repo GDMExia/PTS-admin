@@ -9,17 +9,17 @@
                         <Icon type="ios-cloud-download" />&nbsp;&nbsp;导出</Button>
                 </div>
                 <div class="pull-right">
-                    <p>本次活动标题是{{$route.query.name}}</p>
+                    <p>{{$route.query.name}}</p>
                 </div>
             </div>
             <tables class="self-table-wrap" ref="tables" stripe v-model="tableData" :columns="columns"/>
             <div style="margin-top:10px;text-align:right;">
-                <!-- <Page :total="page.total" :current="page.index" :page-size="page.size" @on-change="handleOnChange" 
+                <!-- <Page :total="page.total" :current="page.index" :page-size="page.size" @on-change="handleOnChange"
                 show-sizer size="small" :page-size-opts="[20,50,100]" @on-page-size-change="handleOnChangeSize"/> -->
             </div>
         </Card>
         <div>
-            
+
         </div>
     </div>
 </template>

@@ -47,6 +47,30 @@
                     </FormItem>
                 </Col>
             </Row>
+            <FormItem
+              v-for="(item, index) in formInline.workers"
+              :key="index"
+              :label="'工作人员' + (index+1)"
+              :prop="'workers.' + index + '.work_phone'">
+              <Row>
+                <Col span="9">
+                  手机号：<Input type="text" v-model="item.work_phone" placeholder="请输入" style="width: 200px"></Input>
+                </Col>
+                <Col span="9">
+                  姓名：<Input type="text" v-model="item.work_real_name" placeholder="请输入" style="width: 200px"></Input>
+                </Col>
+                <Col span="4" offset="1">
+                  <Button @click="handleRemove(index)" v-if="index!=0">删除</Button>
+                </Col>
+              </Row>
+            </FormItem>
+            <FormItem>
+              <Row>
+                <Col span="12">
+                  <Button type="dashed" long @click="handleAdd" icon="md-add">添加（最多6人）</Button>
+                </Col>
+              </Row>
+            </FormItem>
             <Row>
                 <FormItem label="简介" prop="content">
                     <editor ref="editor" v-model="formInline.content" :value = "formInline.content"/>
@@ -112,7 +136,20 @@ export default {
                     this.formInline.pic = `${res.data.data.fileUrl}`
                 }
             })
-        }
+        },
+      handleAdd(){
+          if(this.formInline.workers.length>5){
+            return false
+          }
+          this.formInline.workers.push({work_phone:'',work_real_name:''})
+      },
+      handleRemove(index){
+          if(index==0){
+            return false
+          }else{
+            this.formInline.workers.splice(index,1)
+          }
+      }
     }
 }
 </script>
