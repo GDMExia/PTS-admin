@@ -228,8 +228,8 @@ export default {
             return
         }
         form.merchants_id = form.merchants_id?form.merchants_id:''
-        form.registration_time = form.registration_time?moment(form.registration_time).format('YYYY-MM-DD HH:mm:ss'):''
-        form.join_time = form.join_time?moment(form.join_time).format('YYYY-MM-DD HH:mm:ss'):''
+        form.registration_time = form.registration_time?moment(form.registration_time).format('YYYY-MM-DD HH:mm'):''
+        form.join_time = form.join_time?moment(form.join_time).format('YYYY-MM-DD HH:mm'):''
         this.$refs.ResidenceCreateForm.validate((valid) => {
             if (valid) {
                 setResidenceCreate(form).then(res=>{

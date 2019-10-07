@@ -553,6 +553,28 @@ export default [
     ]
   },
   {
+    path: '/offlines',
+    name: 'offlines',
+    meta: {
+      icon: 'ios-ice-cream-outline',
+      title: '线下消费核销',
+      access: ['super_admin'],
+      id: 20
+    },
+    component: Main,
+    children: [
+      {
+        path: 'offline',
+        name: 'offline',
+        meta: {
+          icon: 'ios-ice-cream-outline',
+          title: '线下消费核销'
+        },
+        component: () => import('@/pages/offline-page/offline-page.vue')
+      }
+    ]
+  },
+  {
     path: '/guides',
     name: 'guides',
     meta: {

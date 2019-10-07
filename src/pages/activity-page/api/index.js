@@ -141,12 +141,17 @@ export const usersColumns = [
     { title: '手机号码', key: 'phone', tooltip: true },
     { title: '报名人数', key: 'goods_number', tooltip: true },
     { title: '订单金额', key: 'order_price', tooltip: true },
+    { title: '支付状态', key: 'order_status',render:(h,params)=>{
+      return h('div', params.row.order_status==1||params.row.order_status==2||params.row.order_status==5?'已支付':'未支付')
+    }, tooltip: true },
     { title: '核销状态', key: 'is_cancel',render:(h,params)=>{
       return h('div', params.row.is_cancel==0?'未核销':'已核销')
     }, tooltip: true },
     { title: '核销时间', key: 'create_time', tooltip: true },
     { title: '实到人数', key: 'actual_number', tooltip: true },
-    { title: '实销金额', key: 'actual_price', tooltip: true },
+    { title: '实销金额', key: 'actual_price',render:(h,params)=>{
+        return h('div', params.row.order_price/params.row.goods_number*params.row.actual_number)
+      }, tooltip: true },
     { title: '实抵积分', key: 'discount_price', tooltip: true },
 ]
 
