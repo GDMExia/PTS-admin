@@ -32,7 +32,7 @@
                             <div style="padding: 20px 0">
                                 <Icon type="ios-cloud-upload" size="52" style="color: #3399ff" v-if="formInline.cover==''"></Icon>
                                 <img :src="formInline.cover" alt="" v-else style="height:52px"/>
-                                <p>拖动或点击上传</p>
+                                <p>拖动或点击上传，尺寸：355x177</p>
                             </div>
                         </Upload>
                     </FormItem>
@@ -73,7 +73,7 @@ export default {
     name: 'CreateForm',
     components: {
         Editor,
-        
+
     },
     props: {
         formInline: Object,
@@ -296,7 +296,7 @@ export default {
                     geturl(url)
                 },
                 Error: function(up, err) {
-                    
+
                 },
                 }
             });

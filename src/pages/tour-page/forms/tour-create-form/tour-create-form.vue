@@ -11,7 +11,8 @@
             <Row>
                 <Col span="24">
                     <FormItem label="图片" prop="img_list" class="ivu-form-item-required">
-                        <p>（默认第一张为封面图，且当被放置在首页展示，默认展示该封面图）</p>
+                        <p>（默认第一张为封面图，尺寸：355x177）</p>
+<!--                      且当被放置在首页展示，默认展示该封面图，-->
                         <div class="demo-upload-list" v-for="(item, index) in formInline.img_list" :key="index">
                             <template>
                                 <img :src="item.file_url">
@@ -76,7 +77,7 @@ import {setUpload, setFileDelete} from '_p/banner-page/api'
 export default {
     components: {
         Editor,
-        
+
     },
     props: {
         formInline: Object,
@@ -132,7 +133,7 @@ export default {
             if(!imgStr.test(file.name)) {
                 alert("文件不是图片类型");
                 return
-            } 
+            }
             this.fileList.push(file)
             const check = this.formInline.img_list.length < 5;
             if(!check) {
