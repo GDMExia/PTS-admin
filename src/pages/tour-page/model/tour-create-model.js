@@ -38,6 +38,16 @@ class TourCreateModel extends FormModel {
         message: '请输入发布者',
         trigger: 'blur',
       }],
+      thumb_img: [{
+        required: true,
+        message: '请上传缩略图',
+        trigger: 'blur',
+      }],
+      cover: [{
+        required: true,
+        message: '请上传封面图',
+        trigger: 'blur',
+      }]
     }
   }
 
@@ -52,6 +62,8 @@ class TourCreateModel extends FormModel {
       create_name: form.create_name,
       content: form.content,
       img_list: form.img_list,
+      thumb_img: form.thumb_img,
+      cover: form.cover,
       date: form.date
     }
     return this
@@ -71,6 +83,8 @@ class TourCreateModel extends FormModel {
       img_list: form.img_list.map(item=>{
         return item.file_url
       }),
+      thumb_img: form.thumb_img,
+      cover: form.cover,
     }
   }
 }

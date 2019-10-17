@@ -37,6 +37,23 @@
                         </Upload>
                     </FormItem>
                 </Col>
+              <Col span="6">
+                <FormItem label="缩略图" prop="thumb_img">
+                  <Upload
+                    multiple
+                    type="drag"
+                    action
+                    :before-upload="handleBeforeUploadthumb"
+                    v-model="formInline.thumb_img"
+                  >
+                    <div style="padding: 20px 0">
+                      <Icon type="ios-cloud-upload" size="52" style="color: #3399ff" v-if="!formInline.thumb_img"></Icon>
+                      <img :src="formInline.thumb_img" alt="" v-else style="height:52px"/>
+                      <p>拖动或点击上传，尺寸：90x90</p>
+                    </div>
+                  </Upload>
+                </FormItem>
+              </Col>
             </Row>
                 <FormItem label="视频" prop="vedio_url">
                     <div id="ossfile">你的浏览器不支持flash,Silverlight或者HTML5！</div>
@@ -322,6 +339,18 @@ export default {
                 }
             })
             return false
+        },
+        handleBeforeUploadthumb(file){
+          console.log(file)
+          Upload(file).then(res=>{
+            console.log(res)
+            if(res.data.code=="200"){
+              this.formInline.thumb_img=res.data.data.fileUrl
+            }else{
+              this.$Notice.error({desc:'上传失败'})
+            }
+          })
+          return false
         },
         async handleUpload(event){
             console.log(event.target.files[0])

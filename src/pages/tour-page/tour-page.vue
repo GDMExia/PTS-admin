@@ -25,7 +25,7 @@
             </div>
             <tables class="self-table-wrap" ref="tables" stripe v-model="tableData" :columns="columns" @on-edit="handleEdit" @on-delete="handleDelete" />
             <div style="margin-top:10px;text-align:right;">
-                <Page :total="page.total" :current="page.index" :page-size="page.size" @on-change="handleOnChange" 
+                <Page :total="page.total" :current="page.index" :page-size="page.size" @on-change="handleOnChange"
                 show-sizer size="small" :page-size-opts="[20,50,100]" @on-page-size-change="handleOnChangeSize"/>
             </div>
         </Card>
@@ -113,6 +113,8 @@ export default {
                 create_name: '',
                 content: '',
                 img_list: [],
+                thumb_img: '',
+                cover: ''
             }
             form.date = [form.start_time, form.end_time]
             this.setDialogProperty(900, '添加', 'TourCreateForm')
@@ -140,7 +142,9 @@ export default {
                         create_name: params.row.create_name,
                         content: params.row.content,
                         img_list: imageList,
-                        date: [params.row.start_time, params.row.end_time]
+                        date: [params.row.start_time, params.row.end_time],
+                        thumb_img: params.row.thumb_img,
+                        cover: params.row.cover
                     }
                     this.setDialogProperty(900, '编辑', 'TourCreateForm')
                     this.createForm = TourCreateModel.init(form)
@@ -157,11 +161,11 @@ export default {
             // form.content = this.$refs.TourCreateForm.getEdiotrContent()
             if(form.img_list.length==0) {
                 this.$Message.error('请上传图片')
-                return 
+                return
             }
             if(form.end_time == '' || form.start_time == '') {
                 this.$Message.error('请选择参与日期')
-                return 
+                return
             }
             if(form.id == '') {
                 this.setCreate(form)

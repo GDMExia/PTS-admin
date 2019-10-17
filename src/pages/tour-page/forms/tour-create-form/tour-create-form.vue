@@ -11,7 +11,7 @@
             <Row>
                 <Col span="24">
                     <FormItem label="图片" prop="img_list" class="ivu-form-item-required">
-                        <p>（默认第一张为封面图，尺寸：355x177）</p>
+<!--                        <p>（默认第一张为封面图，尺寸：355x177）</p>-->
 <!--                      且当被放置在首页展示，默认展示该封面图，-->
                         <div class="demo-upload-list" v-for="(item, index) in formInline.img_list" :key="index">
                             <template>
@@ -36,6 +36,61 @@
                         </Upload>
                     </FormItem>
                 </Col>
+            </Row>
+            <Row>
+              <Col span="12">
+                <FormItem label="封面图片" prop="cover" class="ivu-form-item-required">
+                  <p>（封面图，尺寸：355x177）</p>
+                  <!--                      且当被放置在首页展示，默认展示该封面图，-->
+                  <div class="demo-upload-list" v-if="formInline.cover">
+                    <template>
+                      <img :src="formInline.cover">
+                      <div class="demo-upload-list-cover">
+                        <Icon type="ios-trash-outline" @click.native="handleRemoveCover()"></Icon>
+                      </div>
+                    </template>
+                  </div>
+                  <Upload
+                    ref="upload"
+                    :show-upload-list="false"
+                    v-model="formInline.cover"
+                    :format="['jpg','jpeg','png']"
+                    :before-upload="beforeUploadCover"
+                    multiple
+                    action=""
+                    style="display: inline-block;width:58px;">
+                    <div class="demo-upload-list" style="width: 58px;height:58px;line-height: 58px;text-align: center; cursor: pointer;">
+                      <Icon type="ios-camera" size="20"></Icon>
+                    </div>
+                  </Upload>
+                </FormItem>
+              </Col>
+              <Col span="12">
+                <FormItem label="缩略图" prop="thumb_img" class="ivu-form-item-required">
+                  <p>（相关推荐中的图片，尺寸：90x90）</p>
+                  <!--                      且当被放置在首页展示，默认展示该封面图，-->
+                  <div class="demo-upload-list" v-if="formInline.thumb_img">
+                    <template>
+                      <img :src="formInline.thumb_img">
+                      <div class="demo-upload-list-cover">
+                        <Icon type="ios-trash-outline" @click.native="handleRemovethumb()"></Icon>
+                      </div>
+                    </template>
+                  </div>
+                  <Upload
+                    ref="upload"
+                    :show-upload-list="false"
+                    v-model="formInline.thumb_img"
+                    :format="['jpg','jpeg','png']"
+                    :before-upload="beforeUploadthumb"
+                    action=""
+                    style="display: inline-block;width:58px;">
+                    <div class="demo-upload-list" style="width: 58px;height:58px;line-height: 58px;text-align: center; cursor: pointer;">
+                      <Icon type="ios-camera" size="20"></Icon>
+                    </div>
+                  </Upload>
+                </FormItem>
+              </Col>
             </Row>
             <Row>
                 <Col span="12">
@@ -124,6 +179,12 @@ export default {
                 return item.file_id!=id
             });
         },
+        handleRemovethumb() {
+          this.formInline.thumb_img = ''
+        },
+        handleRemoveCover() {
+          this.formInline.cover = ''
+        },
         beforeUpload(file) {
             if(file.size > 5*1024*1024) {
                 this.$Message.warning('上传图片不得大于5兆，请重新上传')
@@ -150,7 +211,45 @@ export default {
                     this.formInline.img_list.push({file_id: res.data.data.fileId,file_url: res.data.data.fileUrl})
                 }
             })
-        }
+        },
+        beforeUploadthumb(file) {
+          if(file.size > 5*1024*1024) {
+            this.$Message.warning('上传图片不得大于5兆，请重新上传')
+            return
+          }
+          var imgStr = /\.(jpg|jpeg|png|bmp|BMP|JPG|PNG|JPEG)$/;
+          if(!imgStr.test(file.name)) {
+            alert("文件不是图片类型");
+            return
+          }
+          var formData = new FormData();
+          formData.append('file_image', file)
+          setUpload(formData).then(res=>{
+            if(res.data.code == 200) {
+              this.$Message.info('上传成功')
+              this.formInline.thumb_img = res.data.data.fileUrl
+            }
+          })
+        },
+        beforeUploadCover(file) {
+          if(file.size > 5*1024*1024) {
+            this.$Message.warning('上传图片不得大于5兆，请重新上传')
+            return
+          }
+          var imgStr = /\.(jpg|jpeg|png|bmp|BMP|JPG|PNG|JPEG)$/;
+          if(!imgStr.test(file.name)) {
+            alert("文件不是图片类型");
+            return
+          }
+          var formData = new FormData();
+          formData.append('file_image', file)
+          setUpload(formData).then(res=>{
+            if(res.data.code == 200) {
+              this.$Message.info('上传成功')
+              this.formInline.cover = res.data.data.fileUrl
+            }
+          })
+        },
     }
 }
 </script>

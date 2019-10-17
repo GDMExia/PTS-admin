@@ -24,6 +24,9 @@ class PriceCreateModel extends FormModel {
       ],
       is_top: [
         { required: true, message: '请选择', trigger: 'blur' }
+      ],
+      thumb_img: [
+        { required: true, message: '请上传图片', trigger: 'blur' }
       ]
     }
   }
@@ -37,7 +40,8 @@ class PriceCreateModel extends FormModel {
       vedio_url: form.vedio_url,
       content: form.content,
       is_top: form.is_top,
-      cover: form.cover
+      cover: form.cover,
+      thumb_img: form.thumb_img
     }
     return this
   }
@@ -51,7 +55,8 @@ class PriceCreateModel extends FormModel {
       vedio_url: form.vedio_url,
       content: form.content,
       is_top: form.is_top,
-      cover: form.cover
+      cover: form.cover,
+      thumb_img: form.thumb_img
     }
   }
 }

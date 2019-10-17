@@ -270,7 +270,7 @@ export default {
     //     },
     //     init: {
     //       PostInit: function() {
-            
+
 	// 		document.getElementById('postfiles').onclick = function() {
     //             set_upload_param(uploader, '', false);
     //             return false;
@@ -289,13 +289,13 @@ export default {
     //         set_upload_param(up, file.name, true);
     //       },
     //       UploadProgress: function(up, file) {
-            
+
     //       },
     //       FileUploaded: function(up, file, info) {
-            
+
     //       },
     //       Error: function(up, err) {
-            
+
     //       }
     //     }
     //   });
@@ -371,7 +371,8 @@ export default {
         vedio_url: '',
         content: "",
         is_top: "0",
-        cover: ""
+        cover: "",
+        thumb_img: ''
       };
       this.createForm = EditFormModel.init(form);
       this.setDialogProperty(1000, "添加", "CreateForm");
@@ -412,7 +413,8 @@ export default {
         }):[],
         content: params.row.content,
         is_top: params.row.is_top,
-        cover: params.row.cover
+        cover: params.row.cover,
+        thumb_img: params.row.thumb_img
       };
       this.editForm = CreateFormModel.init(form);
       this.setDialogProperty(1000, "编辑", "EditForm");
@@ -504,7 +506,8 @@ export default {
         vedio_url: this.createForm.formInline.vedio_url?this.createForm.formInline.vedio_url.join(','):'',
         content: this.createForm.formInline.content,
         is_top: this.createForm.formInline.is_top,
-        cover: this.createForm.formInline.cover
+        cover: this.createForm.formInline.cover,
+        thumb_img: this.createForm.formInline.thumb_img
       };
       let dat=new FormData()
       for(let i in data){
@@ -540,7 +543,8 @@ export default {
         vedio_url: this.editForm.formInline.vedio_url?this.editForm.formInline.vedio_url.join(','):'',
         content: this.editForm.formInline.content,
         is_top: this.editForm.formInline.is_top,
-        cover: this.editForm.formInline.cover
+        cover: this.editForm.formInline.cover,
+        thumb_img: this.editForm.formInline.thumb_img
       };
       // let vediolist=[]
       // data.vedio_url.forEach(el=>{
