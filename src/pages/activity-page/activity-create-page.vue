@@ -41,16 +41,30 @@
                         </div>
                         </FormItem>
                     </Col>
-                    <Col span="12">
-                        <FormItem label="封面图" prop="banner" class="ivu-form-item-required">
-                        <p>首页-精选推荐/封面图/内页图，取该图，建议上传图片尺寸【200×200】</p>
-                        <div style="width: 50px;height: 50px; position: relative;cursor:pointer">
+                      <Col span="12">
+                        <FormItem label="活动图" prop="banner" class="ivu-form-item-required">
+                          <p>首页-精选推荐/封面图/内页图，取该图，建议上传图片尺寸【375×227】</p>
+                          <div style="width: 50px;height: 50px; position: relative;cursor:pointer">
                             <div style="position:absolute;left:0;top:0;width:50px;height:50px">
-                            <Icon type="ios-person-add-outline" size="50" v-show="formInline.banner==''"/>
-                            <img :src="formInline.banner" v-show="formInline.banner!=''" style="width:50px;height:50px"/>
+                              <Icon type="ios-person-add-outline" size="50" v-show="formInline.banner==''"/>
+                              <img :src="formInline.banner" v-show="formInline.banner!=''" style="width:50px;height:50px"/>
                             </div>
                             <div style="position:absolute;left:0;top:0;width:50px;height:50px">
-                            <input type="file" id="upload" @change="uploadImageBanner" style="width:50px;height:50px;opacity:0;"/>
+                              <input type="file" id="upload" @change="uploadImageBanner" style="width:50px;height:50px;opacity:0;"/>
+                            </div>
+                          </div>
+                        </FormItem>
+                      </Col>
+                    <Col span="12">
+                        <FormItem label="封面图" prop="thumb_img" class="ivu-form-item-required">
+                        <p>相关图片，建议上传图片尺寸【200×200】</p>
+                        <div style="width: 50px;height: 50px; position: relative;cursor:pointer">
+                            <div style="position:absolute;left:0;top:0;width:50px;height:50px">
+                            <Icon type="ios-person-add-outline" size="50" v-show="formInline.thumb_img==''"/>
+                            <img :src="formInline.thumb_img" v-show="formInline.thumb_img!=''" style="width:50px;height:50px"/>
+                            </div>
+                            <div style="position:absolute;left:0;top:0;width:50px;height:50px">
+                            <input type="file" id="upload" @change="uploadImageThumb" style="width:50px;height:50px;opacity:0;"/>
                             </div>
                         </div>
                         </FormItem>
@@ -142,6 +156,7 @@ export default {
             cid: '',
             cover: '',
             banner: '',
+            thumb_img: '',
             registration_time: '',
             join_time: '',
             goods_price: '',
@@ -189,7 +204,10 @@ export default {
                 { required: true, message: '请上传首页图', trigger: 'blur' }
             ],
             banner: [
-                { required: true, message: '请上传封面图', trigger: 'blur' }
+                { required: true, message: '请上传活动图', trigger: 'blur' }
+            ],
+            thumb_img: [
+              { required: true, message: '请上传封面图', trigger: 'blur' }
             ],
             content: [
                 { required: true, message: '请输入详情', trigger: 'blur' }
@@ -216,8 +234,12 @@ export default {
             return
         }
         if(form.banner=='') {
-            this.$Message.error('请上传封面图')
+            this.$Message.error('请上传首页图')
             return
+        }
+        if(form.thumb_img=='') {
+          this.$Message.error('请上传封面图')
+          return
         }
         if(!form.registration_time) {
             this.$Message.error('请选择报名截止时间')
@@ -262,6 +284,27 @@ export default {
             this.$Message.info('上传成功')
             this.formInline.banner = `${res.data.data.fileUrl}`
           }
+      })
+    },
+    uploadImageThumb(event) {
+      var file = event.target.files[0]
+      if(file.size > 5*1024*1024) {
+        this.$Message.warning('上传图片不得大于5兆，请重新上传')
+        return
+      }
+      var imgStr = /\.(jpg|jpeg|png|bmp|BMP|JPG|PNG|JPEG)$/;
+      if(!imgStr.test(file.name)) {
+        alert("文件不是图片类型");
+        return
+      }
+      var formData = new FormData();
+      formData.append('file_image', file)
+      setUpload(formData).then(res=>{
+        event.target.value=''
+        if(res.data.code == 200) {
+          this.$Message.info('上传成功')
+          this.formInline.thumb_img = `${res.data.data.fileUrl}`
+        }
       })
     },
     uploadImage(event) {
