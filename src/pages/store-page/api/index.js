@@ -39,7 +39,7 @@ export const storeColumn = [
                     )
                 ]
                 )
-            
+
         }],
     },
     {
@@ -173,9 +173,17 @@ export const storeColumn = [
     }
 ]
 
-export const getStoreList = page => {
+export const getStoreList = (page, form) => {
+    if(form){
+
+    }else{
+      form={
+        phone:'',
+        goods_name:''
+      }
+    }
     return axios.request({
-        url: `/Merchants/getMerchantsList?page=${page.index}&pageSize=${page.size}&token=${user.token}`,
+        url: `/Merchants/getMerchantsList?page=${page.index}&pageSize=${page.size}&token=${user.token}&phone=${form.phone}&real_name=${form.goods_name}`,
         method: 'get'
     })
 }
@@ -241,7 +249,7 @@ export const applyColumn = [
     { title: '推介人姓名', key: 'recommended_real_name', tooltip: true },
     { title: '推介人手机号', key: 'recommended_phone', tooltip: true },
     { title: '提交时间', key: 'create_time', tooltip: true },
-    { 
+    {
         title: '状态',
         key: 'is_audit',
         render: (h, params) => {

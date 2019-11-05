@@ -114,7 +114,8 @@ export default {
                 content: '',
                 img_list: [],
                 thumb_img: '',
-                cover: ''
+                cover: '',
+                keyword: ''
             }
             form.date = [form.start_time, form.end_time]
             this.setDialogProperty(900, '添加', 'TourCreateForm')
@@ -144,7 +145,8 @@ export default {
                         img_list: imageList,
                         date: [params.row.start_time, params.row.end_time],
                         thumb_img: params.row.thumb_img,
-                        cover: params.row.cover
+                        cover: params.row.cover,
+                        keyword: params.row.keyword
                     }
                     this.setDialogProperty(900, '编辑', 'TourCreateForm')
                     this.createForm = TourCreateModel.init(form)

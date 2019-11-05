@@ -5,7 +5,7 @@ const user = store.state.user
 
 // import { ObjectFormatFormData, ObjectFormatQueryString, ObjectEncodeBase64, getMethodRequestUrl } from '@/libs/util'
 
-export const getData = (params, search) => { 
+export const getData = (params, search) => {
   return axios.request({
     url: `/User/index?page=${params.index}&pageSize=${params.size}&token=${user.token}&is_member=${search.is_member}&phone=${search.phone}`,
     method: 'get'
@@ -43,6 +43,21 @@ export const getIntegralDetail = () => {
   return axios.request({
     url: `/User/getUserIntegralRules?token=${user.token}`,
     method: 'get'
+  })
+}
+
+export const getContent = (params) => {
+  return axios.request({
+    url: `/Index/getSigninBase?id=2&token=${params}`,
+    method: 'get'
+  })
+}
+
+export const setContent = (params) => {
+  return axios.request({
+    url: `/Index/updateSigninBase?token=${params.token}&content=${params.content}&id=2`,
+    data: params,
+    method: 'post'
   })
 }
 

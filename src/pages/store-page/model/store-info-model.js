@@ -56,7 +56,8 @@ class StoreInfoModel extends FormModel {
       merchants_cid: form.merchants_cid,
       contact: form.contact,
       announcement: form.announcement,
-      workers: form.workers
+      workers: form.workers,
+      cover: form.cover
     }
     return this
   }
@@ -73,6 +74,7 @@ class StoreInfoModel extends FormModel {
       contact: form.contact,
       announcement: form.announcement,
       workers: form.workers,
+      cover: form.cover
     }
   }
 }

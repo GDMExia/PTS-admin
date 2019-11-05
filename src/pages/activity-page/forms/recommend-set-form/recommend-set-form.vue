@@ -5,11 +5,11 @@
         <Col span="24">
           <FormItem label="选择活动" prop="article_id">
             <Select placeholder="选择活动" multiple filterable remote :remote-method="remoteQuery"
-                :loading="loading1" v-model="formInline.article_id">
+                :loading="loading1" v-model="formInline.article_id" @on-change="handleChange">
                 <Option v-for="item in activityList" :key="item.id" :value="item.id">{{item.goods_name}}</Option>
             </Select>
-            <!-- <v-select :placeholder="placeholder" 
-              multiple 
+            <!-- <v-select :placeholder="placeholder"
+              multiple
               :activityList="activityList"
               label="name"
               @input="selecte_student"
@@ -48,6 +48,9 @@ export default {
     validate(cb) {
       this.$refs.RecommendSetForm.validate(cb)
     },
+    handleChange(){
+      console.log(this.formInline.article_id)
+    },
     resetFields() {
       this.$refs.RecommendSetForm.resetFields()
     },
@@ -59,7 +62,7 @@ export default {
     },
     remoteQuery(val) {
       this.loading1 = true;
-      getResidenceSearchList({index: 1, size: 10, search: val}).then(res=>{
+      getResidenceSearchList({index: 1, size: 30, search: val}).then(res=>{
         this.loading1 = false;
         if(res.data.code==200) {
           this.activityList = res.data.data.goodsList?res.data.data.goodsList.map(item=>{

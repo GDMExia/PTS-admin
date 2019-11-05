@@ -18,6 +18,7 @@
                                 <input type="file" id="upload" @change="uploadImage" style="width:50px;height:50px;opacity:0;"/>
                             </div>
                         </div>
+                      <p>尺寸：355x177</p>
                     </FormItem>
                 </Col>
             </Row>
@@ -75,7 +76,7 @@ export default {
       if(!imgStr.test(file.name)) {
           alert("文件不是图片类型");
           return
-      } 
+      }
       var formData = new FormData();
       formData.append('file_image', file)
       setUpload(formData).then(res=>{

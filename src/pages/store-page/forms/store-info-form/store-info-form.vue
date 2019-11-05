@@ -21,6 +21,20 @@
                     <p style="height:0">（仅限一张图，尺寸为345*150）</p>
                 </FormItem>
               </Col>
+              <Col span="12">
+                <FormItem label="缩略图" prop="cover">
+                  <div style="width: 50px;height: 50px; position: relative;cursor:pointer">
+                    <div style="position:absolute;left:0;top:0;width:50px;height:50px">
+                      <Icon type="ios-person-add-outline" size="50" v-show="formInline.cover==''"/>
+                      <img :src="formInline.cover" v-show="formInline.cover!=''" style="width:50px;height:50px"/>
+                    </div>
+                    <div style="position:absolute;left:0;top:0;width:50px;height:50px">
+                      <input type="file" id="upload" @change="uploadCover" style="width:50px;height:50px;opacity:0;"/>
+                    </div>
+                  </div>
+                  <p style="height:0">（仅限一张图，尺寸为300*300）</p>
+                </FormItem>
+              </Col>
             </Row>
             <Row>
                 <Col span="12">
@@ -137,6 +151,27 @@ export default {
                 }
             })
         },
+      uploadCover(event) {
+        var file = event.target.files[0]
+        if(file.size > 5*1024*1024) {
+          this.$Message.warning('上传图片不得大于5兆，请重新上传')
+          return
+        }
+        var imgStr = /\.(jpg|jpeg|png|bmp|BMP|JPG|PNG|JPEG)$/;
+        if(!imgStr.test(file.name)) {
+          alert("文件不是图片类型");
+          return
+        }
+        var formData = new FormData();
+        formData.append('file_image', file)
+        setUpload(formData).then(res=>{
+          event.target.value=''
+          if(res.data.code == 200) {
+            this.$Message.info('上传成功')
+            this.formInline.cover = `${res.data.data.fileUrl}`
+          }
+        })
+      },
       handleAdd(){
           if(this.formInline.workers.length>5){
             return false

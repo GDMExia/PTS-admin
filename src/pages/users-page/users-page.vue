@@ -2,7 +2,7 @@
   <div>
     <Card>
       <div>
-        <top-menu class="button" @on-create="handleCreate" @on-export="handleExport" @on-price="handlePrice" @on-sign="handleSign"></top-menu>
+        <top-menu class="button" @on-create="handleCreate" @on-export="handleExport" @on-price="handlePrice" @on-sign="handleSign" @on-content="handleContent"></top-menu>
         <div class="search search-con search-con-top">
         <Select v-model="queryForm.is_member" clearable class="search-col" style="width:100px;margin-right:10px">
             <Option v-for="(item,index) of characterList"
@@ -29,7 +29,7 @@
       >
       </Tables>
       <div style="margin-top:10px;text-align:right;">
-        <Page :total="page.total" :current="page.index" :page-size="page.size" @on-change="handleChangePage" 
+        <Page :total="page.total" :current="page.index" :page-size="page.size" @on-change="handleChangePage"
         show-sizer size="small" :page-size-opts="[20,50,100]" @on-page-size-change="handleChangePageSize"/>
       </div>
       <ModelDialog
@@ -51,6 +51,13 @@
           :ruleInline="setForm.ruleInline"
         >
         </SetForm>
+        <ContentForm
+          v-show="modelStatus.name == 'ContentForm'"
+          ref="ContentForm"
+          :formInline="contentForm.formInline"
+          :ruleInline="contentForm.ruleInline"
+        >
+        </ContentForm>
       </ModelDialog>
     </Card>
   </div>
@@ -65,14 +72,17 @@ import CreateForm from "./forms/create-form"
 import CreateFormModel from "./model/create-form";
 import SetForm from "./forms/set-form"
 import SetFormModel from "./model/set-form";
-import { userscolumns , getData , getIntegralDetail ,setIntegralInfo, setPrice } from "./api";
+import ContentForm from "./forms/content-form"
+import ContentFormModel from "./model/content-form";
+import { userscolumns, getData, getIntegralDetail, setIntegralInfo, setPrice, getContent, setContent } from './api'
 export default {
   components:{
     Tables,
     TopMenu,
     ModelDialog,
     CreateForm,
-    SetForm
+    SetForm,
+    ContentForm
   },
   data(){
     return{
@@ -92,7 +102,8 @@ export default {
       },
       characterList:[{value:'VIP',key:1},{value:'普通用户',key:0}],
       createForm:{},
-      setForm:{}
+      setForm:{},
+      contentForm:{}
     }
   },
   methods: {
@@ -184,9 +195,33 @@ export default {
         }
       })
     },
+    handleContent(){
+      getContent(this.$store.state.user.token).then(res=>{
+        console.log(res)
+        if(res.data.StatusInfo.ReturnCode==200) {
+          const form = res.data.baseInfo
+          this.contentForm = ContentFormModel.init(form)
+          this.setDialogProperty(true,'名片内容设置','ContentForm',500)
+        } else {
+          this.$Message.error(res.data.message)
+        }
+      })
+    },
     handleSetPrice() {
       const form = this.setForm.formInline
       setPrice(form).then(res=>{
+        if(res.data.code==200) {
+          this.$Message.success('设置成功')
+          this.modelStatus.show = false
+        } else {
+          this.$Message.error(res.data.message)
+        }
+      })
+    },
+    handleSetContent(){
+      const form = this.contentForm.formInline
+      form.token=this.$store.state.user.token
+      setContent(form).then(res=>{
         if(res.data.code==200) {
           this.$Message.success('设置成功')
           this.modelStatus.show = false
@@ -203,7 +238,15 @@ export default {
                 this.handleSetPrice()
             }
         })
-      } else if(name==='CreateForm') {
+      }
+      if(name==='ContentForm') {
+        this.$refs.ContentForm.validate(valid=>{
+          if(valid) {
+            this.handleSetContent()
+          }
+        })
+      }
+      if(name==='CreateForm') {
         this.$refs.CreateForm.validate(valid=>{
             if(valid) {
                 this.handleSetIntegral()

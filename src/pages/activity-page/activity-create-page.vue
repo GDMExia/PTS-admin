@@ -57,7 +57,7 @@
                       </Col>
                     <Col span="12">
                         <FormItem label="封面图" prop="thumb_img" class="ivu-form-item-required">
-                        <p>相关图片，建议上传图片尺寸【200×200】</p>
+                        <p>相关图片，建议上传图片尺寸【300×300】</p>
                         <div style="width: 50px;height: 50px; position: relative;cursor:pointer">
                             <div style="position:absolute;left:0;top:0;width:50px;height:50px">
                             <Icon type="ios-person-add-outline" size="50" v-show="formInline.thumb_img==''"/>
@@ -109,7 +109,7 @@
                     <Row>
                       <Col span="12">
                         <FormItem label="商家" prop="merchants_id">
-                            <Select placeholder="商家" v-model="formInline.merchants_id" style="width: 150px;" clearable>
+                            <Select placeholder="商家" v-model="formInline.merchants_id" style="width: 150px;" clearable :disabled="formInline.cid==2">
                                 <Option v-for="item in storeList" :value="item.mid" :key="item.mid">{{item.real_name}}</Option>
                             </Select>
                         </FormItem>
@@ -232,6 +232,14 @@ export default {
         if(form.cover=='') {
             this.$Message.error('请上传首页图')
             return
+        }
+        if(form.cid==5){
+          if(form.merchants_id==''||form.merchants_id==undefined||form.merchants_id==0) {
+            this.$Message.error('请选择商家')
+            return
+          }
+        }else{
+          form.merchants_id=''
         }
         if(form.banner=='') {
             this.$Message.error('请上传首页图')

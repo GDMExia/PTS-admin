@@ -49,7 +49,7 @@
                     <div style="padding: 20px 0">
                       <Icon type="ios-cloud-upload" size="52" style="color: #3399ff" v-if="!formInline.thumb_img"></Icon>
                       <img :src="formInline.thumb_img" alt="" v-else style="height:52px"/>
-                      <p>拖动或点击上传，尺寸：90x90</p>
+                      <p>拖动或点击上传，尺寸：300x300</p>
                     </div>
                   </Upload>
                 </FormItem>

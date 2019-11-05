@@ -7,7 +7,9 @@
                         <Icon type="md-add"/>&nbsp;&nbsp;人工添加</Button>
                 </div>
                 <div class="pull-right">
-
+                  <Input placeholder="请输入用户联系电话" v-model="queryForm.phone" style="width:150px;margin-right:10px"></Input>
+                  <Input placeholder="请输入活动标题" v-model="queryForm.goods_name" style="width:150px"></Input>
+                  <Button @click="handleSearch" class="search-btn" type="primary" style="marginLeft:10px"><Icon type="search"/>&nbsp;&nbsp;搜索</Button>
                 </div>
             </div>
             <tables class="self-table-wrap" ref="tables" stripe v-model="tableData" :columns="columns" @on-edit="handleEdit"
@@ -72,12 +74,16 @@ export default {
             modelStatus: { show: false, hide: false, loading: true, title: '', name: '' },
             createForm: {},
             infoForm: {},
-            typeList: []
+            typeList: [],
+            queryForm: {
+                phone: '',
+                goods_name: ''
+            }
         }
     },
     methods: {
         handleQuery() {
-            getStoreList(this.page).then(res=>{
+            getStoreList(this.page,this.queryForm).then(res=>{
                 if(res.data.code == 200) {
                     this.tableData = res.data.data.userList?res.data.data.userList.map(item=>{
                         item.status = item.is_disable=='0'?'启用':'禁用'
@@ -110,6 +116,10 @@ export default {
             this.$nextTick(()=>{
 
             })
+        },
+        handleSearch(){
+          this.page=pageInfo.init()
+            this.handleQuery()
         },
         // 编辑
         handleEdit(params) {

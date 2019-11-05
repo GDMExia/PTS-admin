@@ -5,7 +5,7 @@ const user = store.state.user
 import { Base64 } from 'js-base64'
 export const residenceColumns = [
     { title: 'ID', key: 'id', tooltip: true,width: 80 },
-    { title: '活动所属', key: 'pidStr', tooltip: true,width: 120 },
+    { title: '活动所属', key: 'pid_name', tooltip: true,width: 120 },
     { title: '标题', key: 'goods_name', tooltip: true,width: 120 },
     { title: '分类', key: 'cate_name', tooltip: true,width: 120 },
     { title: '截止时间', key: 'registration_time', tooltip: true,width: 120 },

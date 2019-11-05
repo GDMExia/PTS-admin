@@ -67,7 +67,7 @@
               </Col>
               <Col span="12">
                 <FormItem label="缩略图" prop="thumb_img" class="ivu-form-item-required">
-                  <p>（相关推荐中的图片，尺寸：90x90）</p>
+                  <p>（相关推荐中的图片，尺寸：300x300）</p>
                   <!--                      且当被放置在首页展示，默认展示该封面图，-->
                   <div class="demo-upload-list" v-if="formInline.thumb_img">
                     <template>
@@ -115,6 +115,13 @@
                         <Input v-model="formInline.create_name" style="width: 200px" placeholder="请输入" />
                     </FormItem>
                 </Col>
+            </Row>
+            <Row>
+              <Col span="12">
+                <FormItem label="相关套餐关键词" prop="keyword">
+                  <Input v-model="formInline.keyword" style="width: 200px" placeholder="请输入" />
+                </FormItem>
+              </Col>
             </Row>
             <Row>
                 <FormItem label="正文" prop="content">

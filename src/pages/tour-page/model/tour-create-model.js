@@ -47,6 +47,11 @@ class TourCreateModel extends FormModel {
         required: true,
         message: '请上传封面图',
         trigger: 'blur',
+      }],
+      keyword: [{
+        required: true,
+        message: '请填写相关关键词',
+        trigger: 'blur',
       }]
     }
   }
@@ -64,7 +69,8 @@ class TourCreateModel extends FormModel {
       img_list: form.img_list,
       thumb_img: form.thumb_img,
       cover: form.cover,
-      date: form.date
+      date: form.date,
+      keyword: form.keyword
     }
     return this
   }
@@ -85,6 +91,7 @@ class TourCreateModel extends FormModel {
       }),
       thumb_img: form.thumb_img,
       cover: form.cover,
+      keyword: form.keyword
     }
   }
 }
