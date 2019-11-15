@@ -10,7 +10,8 @@
         <div class="search search-con search-con-top">
           <!-- <DatePicker type="daterange" style="width:200px" v-model="date" placeholder="请选择日期/日期段进行搜索"></DatePicker> -->
           <Input placeholder="请输入用户联系电话" v-model="queryForm.phone" style="width:150px;margin-right:10px"></Input>
-          <Input placeholder="请输入活动标题" v-model="queryForm.goods_name" style="width:150px"></Input>
+          <Input placeholder="请输入活动标题" v-model="queryForm.goods_name" style="width:150px;margin-right:10px"></Input>
+          <Input placeholder="请输入订单号" v-model="queryForm.order_no" style="width:150px"></Input>
           <Button @click="handleSearch" class="search-btn" type="primary" style="marginLeft:10px"><Icon type="search"/>&nbsp;&nbsp;搜索</Button>
         </div>
       </div>
@@ -83,7 +84,8 @@
         },
         queryForm:{
           phone:'',
-          goods_name:''
+          goods_name:'',
+          order_no:''
         },
         createForm: CreateFormModel.init(),
         setForm: SetFormModel.init(),
@@ -99,7 +101,7 @@
           page: this.page,
           search: this.queryForm,
           token: this.$store.state.user.token,
-          order_status: 4
+          order_status: 5
         }
         console.log(this.page)
         getOrderList(data).then(res=>{
@@ -107,6 +109,7 @@
           if(res.data.code=='200'){
             this.tableData=res.data.data.orderList||[]
             this.page={
+              index: this.page.index,
               size:parseInt(res.data.data.PageInfo.PageSize),
               total:this.page.size*res.data.data.PageInfo.TotalPages
             }
@@ -118,7 +121,7 @@
         })
       },
       handleExport(){
-        location.href=this.$config.baseUrl.pro+`/Export/orderDataExcalPut?phone=${this.queryForm.phone}&goods_name=${this.queryForm.goods_name}&order_status=4`
+        location.href=this.$config.baseUrl.pro+`/Export/orderDataExcalPut?phone=${this.queryForm.phone}&goods_name=${this.queryForm.goods_name}&order_no=${this.queryForm.order_no}&order_status=5`
       },
       // 改变页码
       handleChangePage(params) {

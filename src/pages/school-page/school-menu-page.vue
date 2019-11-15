@@ -11,12 +11,12 @@
                         <Icon type="md-add"/>&nbsp;&nbsp;生成</Button> -->
                 </div>
                 <div class="pull-right">
-                    
+
                 </div>
             </div>
             <tables class="self-table-wrap" ref="tables" stripe v-model="tableData" :columns="columns" @on-edit="handleEdit" @on-more="handleMore"/>
             <div style="margin-top:10px;text-align:right;">
-                <Page :total="page.total" :current="page.index" :page-size="page.size" @on-change="handleOnChange" 
+                <Page :total="page.total" :current="page.index" :page-size="page.size" @on-change="handleOnChange"
                 show-sizer size="small" :page-size-opts="[20,50,100]" @on-page-size-change="handleOnChangeSize"/>
             </div>
         </Card>
@@ -26,6 +26,7 @@
                 <EditForm ref='EditForm'
                     :formInline="editForm.formInline"
                     :ruleInline="editForm.ruleInline"
+                    :pid="pid"
                     v-if="modelStatus.name=='EditForm'"/>
             </ModelDialog>
     </div>
@@ -54,6 +55,7 @@ export default {
             page: {},
             modelStatus: { show: false, hide: false, loading: true, title: '', name: '' },
             editForm: {},
+          pid:''
         }
     },
     methods: {
@@ -66,10 +68,15 @@ export default {
             })
         },
         handleEdit(params){
+          console.log(params)
             let form={
                 id: params.row.id,
-                cate_name: params.row.cate_name
+                pid:params.row.pid,
+                cate_name: params.row.cate_name,
+                is_code: params.row.is_code,
+                code_name: params.row.code_name
             }
+            this.pid=params.row.id
             this.editForm=EditFormModel.init(form)
             this.setDialogProperty(600,'编辑','EditForm')
         },
@@ -124,10 +131,10 @@ export default {
             let data={
                 token: this.$store.state.user.token,
                 id: this.editForm.formInline.id,
-                pid: 0,
+                pid: this.editForm.formInline.pid,
                 cate_name: this.editForm.formInline.cate_name,
-                is_code: 0,
-                code_name: ''
+                is_code: this.editForm.formInline.is_code,
+                code_name: this.editForm.formInline.code_name
             }
             let dat=new FormData()
             for(let i in data){

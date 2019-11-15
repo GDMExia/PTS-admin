@@ -32,6 +32,20 @@ export const setPrice = (form) => {
   })
 }
 
+export const setUserPrice = (form) => {
+  const params = qs.stringify({
+    token: user.token,
+    integral: form.integral,
+    note: form.note,
+    uid: form.uid
+  })
+  return axios.request({
+    url: `/User/createUserIntegral`,
+    data: params,
+    method: 'post'
+  })
+}
+
 export const changeworkData = (params) => {
   return axios.request({
     url: `/users/work/enable/${params.id}`,
@@ -89,7 +103,7 @@ export const userscolumns = [
     tooltip: true
   },
   {
-    title: '年龄',
+    title: '生日',
     key: 'age',
     tooltip: true
   },
@@ -98,12 +112,12 @@ export const userscolumns = [
     key: 'recommended_uid',
     tooltip: true
   },
-  {
-    title: 'VIP到期时间',
-    key: 'overtime',
-    tooltip: true,
-    width: 160
-  },
+  // {
+  //   title: 'VIP到期时间',
+  //   key: 'overtime',
+  //   tooltip: true,
+  //   width: 160
+  // },
   {
     title: '当前身份',
     key: 'identify',
@@ -114,7 +128,7 @@ export const userscolumns = [
     key: 'handle',
     fixed: 'right',
     align: 'center',
-    width: 280,
+    width: 350,
     button: [
       (h, params, vm) => {
         return h('div', [
@@ -146,7 +160,23 @@ export const userscolumns = [
                 vm.$emit('on-showlower', params)
               }
             }
-          }, '查看下级用户')
+          }, '查看下级用户'),
+          h('i-button', {
+            props: {
+              type: 'primary',
+              // icon: 'md-create',
+              size: 'small'
+            },
+            style: {
+              marginRight: '5px',
+              display: params.row.identify=='VIP'?'':'none'
+            },
+            on: {
+              click: () => {
+                vm.$emit('on-set', params)
+              }
+            }
+          }, '调整积分')
         ])
       }
     ]

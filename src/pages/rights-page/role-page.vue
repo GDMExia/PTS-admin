@@ -8,7 +8,7 @@
       <tables ref="tables" stripe v-model="tableData" :columns="columns" @on-edit="handleEdit"
         @on-delete="handleDelete" />
       <!-- <div style="margin-top:10px;text-align:right;">
-         <Page :total="page.total" :current="page.index" :page-size="page.size" @on-change="handleOnChange" 
+         <Page :total="page.total" :current="page.index" :page-size="page.size" @on-change="handleOnChange"
           show-sizer size="small" :page-size-opts="[20,50,100]" @on-page-size-change="handleOnChangeSize"/>
       </div> -->
     </Card>
@@ -42,7 +42,7 @@ import roleEditModel from './model/role-edit-model'
 import pageInfo from "@/libs/page-info"
 import {
   getRightsType,
-  roleColumns,  
+  roleColumns,
   getRoleIndex,
   setRoleCreate,
   setRoleDelete
@@ -82,6 +82,9 @@ export default {
     getRightsType() {
       getRightsType().then(res=>{
         this.rightsType = res.data.data.menuList
+        this.$nextTick(()=>{
+          this.rightsType = res.data.data.menuList
+        })
       })
     },
 
@@ -96,7 +99,7 @@ export default {
       this.$nextTick(()=>{
         this.$refs.RoleCreateForm.init([])
       })
-      
+
     },
 
     /* 新增提交 */
@@ -131,7 +134,12 @@ export default {
         } else {
           permission = form.functions.split(',')
         }
-        this.$refs.RoleEditForm.init(permission)
+        console.log(permission)
+        if(permission[0]=='') {
+          this.$refs.RoleEditForm.init([])
+        }else{
+          this.$refs.RoleEditForm.init(permission)
+        }
       })
     },
 
@@ -157,7 +165,7 @@ export default {
             this.handleCreateSubmit()
           }
         })
-        
+
       } else if (name === 'RoleEditForm') {
         this.$refs.RoleEditForm.validate(valid => {
           if (valid) {
@@ -203,7 +211,7 @@ export default {
       })
     }
   },
-  
+
   mounted() {
     // 加载表格列
     this.columns = roleColumns

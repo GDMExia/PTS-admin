@@ -296,11 +296,22 @@ export default [
     component: Main,
     children: [
       {
+        path: 'waitingpay',
+        name: 'waitingpay',
+        meta: {
+          icon: 'ios-boat-outline',
+          title: '已报名未支付',
+          access: ['super_admin'],
+          id: 30
+        },
+        component: () => import('@/pages/activityorder-page/waiting-pay-page.vue')
+      },
+      {
         path: 'waitingusing',
         name: 'waitingusing',
         meta: {
           icon: 'ios-boat-outline',
-          title: '待使用'
+          title: '已支付待核销'
         },
         component: () => import('@/pages/activityorder-page/waiting-using-page.vue')
       },
@@ -309,25 +320,25 @@ export default [
         name: 'waitingevaluate',
         meta: {
           icon: 'md-bus',
-          title: '待评价'
+          title: '已核销'
         },
         component: () => import('@/pages/activityorder-page/waiting-evaluate-page.vue')
       },
-      {
-        path: 'evaluate',
-        name: 'evaluate',
-        meta: {
-          icon: 'ios-exit-outline',
-          title: '已评价'
-        },
-        component: () => import('@/pages/activityorder-page/evaluate-page.vue')
-      },
+      // {
+      //   path: 'evaluate',
+      //   name: 'evaluate',
+      //   meta: {
+      //     icon: 'ios-exit-outline',
+      //     title: '已评价'
+      //   },
+      //   component: () => import('@/pages/activityorder-page/evaluate-page.vue')
+      // },
       {
         path: 'waitingunsubscribe',
         name: 'waitingunsubscribe',
         meta: {
           icon: 'ios-car',
-          title: '退订待审核'
+          title: '退订待确认'
         },
         component: () => import('@/pages/activityorder-page/waiting-unsubscribe-page.vue')
       },
@@ -336,7 +347,7 @@ export default [
         name: 'unsubscribe',
         meta: {
           icon: 'ios-barcode-outline',
-          title: '已退订'
+          title: '退订已确认'
         },
         component: () => import('@/pages/activityorder-page/unsubscribe-page.vue')
       },
@@ -559,7 +570,7 @@ export default [
       icon: 'ios-ice-cream-outline',
       title: '线下消费核销',
       access: ['super_admin'],
-      id: 20
+      id: 22
     },
     component: Main,
     children: [

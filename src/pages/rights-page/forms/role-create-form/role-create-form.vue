@@ -45,7 +45,7 @@ data(){
 
     init(features) {
       this.features = features
-    } 
+    }
 
   }
 }

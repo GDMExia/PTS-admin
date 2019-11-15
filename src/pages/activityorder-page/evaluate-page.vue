@@ -61,7 +61,7 @@
   import SetFormModel from "./model/entrance/set";
   import pageInfo from "@/libs/page-info"
   import moment from "moment"
-  import { waitingcolumns, getOrderList } from "./api";
+  import { evaluatecolumns, getOrderList } from "./api";
   export default {
     components:{
       Tables,
@@ -107,6 +107,7 @@
           if(res.data.code=='200'){
             this.tableData=res.data.data.orderList||[]
             this.page={
+              index: this.page.index,
               size:parseInt(res.data.data.PageInfo.PageSize),
               total:this.page.size*res.data.data.PageInfo.TotalPages
             }
@@ -168,7 +169,7 @@
       }
     },
     mounted() {
-      this.columns=waitingcolumns
+      this.columns=evaluatecolumns
       this.page = pageInfo.init()
       this.handleQuery()
       console.log(this.$store.state.user.token)

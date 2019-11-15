@@ -8,6 +8,22 @@
                     </FormItem>
                 </Col>
             </Row>
+          <div v-if="pid==2">
+            <Row>
+                <Col span="24">
+                    <FormItem label="是否开启验证" prop="is_code">
+                        <i-Switch v-model="formInline.is_code" :true-value="'1'" :false-value="'0'" />
+                    </FormItem>
+                </Col>
+            </Row>
+            <Row>
+                <Col span="24">
+                    <FormItem label="设置验证码" prop="code_name" :rules="{required: true, message: '请输入验证码', trigger: 'blur'}" v-if="formInline.is_code==1">
+                        <Input v-model="formInline.code_name" placeholder="请输入" />
+                    </FormItem>
+                </Col>
+            </Row>
+          </div>
         </Form>
     </div>
 </template>
@@ -22,10 +38,11 @@ export default {
     props: {
         formInline: Object,
         ruleInline: Object,
+      pid: String
     },
     data() {
         return {
-            
+
         }
     },
     methods: {

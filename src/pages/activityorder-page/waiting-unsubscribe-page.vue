@@ -10,7 +10,8 @@
         <div class="search search-con search-con-top">
           <!-- <DatePicker type="daterange" style="width:200px" v-model="date" placeholder="请选择日期/日期段进行搜索"></DatePicker> -->
           <Input placeholder="请输入用户联系电话" v-model="queryForm.phone" style="width:150px;margin-right:10px"></Input>
-          <Input placeholder="请输入活动标题" v-model="queryForm.goods_name" style="width:150px"></Input>
+          <Input placeholder="请输入活动标题" v-model="queryForm.goods_name" style="width:150px;margin-right:10px"></Input>
+          <Input placeholder="请输入订单号" v-model="queryForm.order_no" style="width:150px"></Input>
           <Button @click="handleSearch" class="search-btn" type="primary" style="marginLeft:10px"><Icon type="search"/>&nbsp;&nbsp;搜索</Button>
         </div>
       </div>
@@ -22,6 +23,8 @@
         :searchable="false"
         :border="false"
         :menuTopSpan = 9
+        @on-ok="handleCheck"
+        @on-cancel="handleUnCheck"
       >
       </Tables>
       <div style="margin-top:10px;text-align:right;">
@@ -61,7 +64,7 @@
   import SetFormModel from "./model/entrance/set";
   import pageInfo from "@/libs/page-info"
   import moment from "moment"
-  import { waitingcolumns, getOrderList } from "./api";
+  import { ubsubscribecolumns, getOrderList, check } from "./api";
   export default {
     components:{
       Tables,
@@ -83,7 +86,8 @@
         },
         queryForm:{
           phone:'',
-          goods_name:''
+          goods_name:'',
+          order_no:''
         },
         createForm: CreateFormModel.init(),
         setForm: SetFormModel.init(),
@@ -99,7 +103,7 @@
           page: this.page,
           search: this.queryForm,
           token: this.$store.state.user.token,
-          order_status: 3
+          order_status: 4
         }
         console.log(this.page)
         getOrderList(data).then(res=>{
@@ -107,6 +111,7 @@
           if(res.data.code=='200'){
             this.tableData=res.data.data.orderList||[]
             this.page={
+              index: this.page.index,
               size:parseInt(res.data.data.PageInfo.PageSize),
               total:this.page.size*res.data.data.PageInfo.TotalPages
             }
@@ -118,7 +123,7 @@
         })
       },
       handleExport(){
-        location.href=this.$config.baseUrl.pro+`/Export/orderDataExcalPut?phone=${this.queryForm.phone}&goods_name=${this.queryForm.goods_name}&order_status=3`
+        location.href=this.$config.baseUrl.pro+`/Export/orderDataExcalPut?phone=${this.queryForm.phone}&goods_name=${this.queryForm.goods_name}&order_no=${this.queryForm.order_no}&order_status=4`
       },
       // 改变页码
       handleChangePage(params) {
@@ -145,6 +150,36 @@
         console.log(this.date)
         this.handleQuery()
       },
+      handleCheck(params){
+        console.log(params)
+        let data = new FormData()
+        data.append('token',this.$store.state.user.token)
+        data.append('order_no',params.row.order_no)
+        data.append('is_audit',1)
+        check(data,this.$store.state.user.token).then(res=>{
+          if(res.data.code==200){
+            this.$Notice.success({desc:'操作成功'})
+            this.handleQuery()
+          }else{
+            this.$Notice.error({desc:'操作失败'})
+          }
+        })
+      },
+      handleUnCheck(params){
+        console.log(params)
+        let data = new FormData()
+        data.append('token',this.$store.state.user.token)
+        data.append('order_no',params.row.order_no)
+        data.append('is_audit',2)
+        check(data,this.$store.state.user.token).then(res=>{
+          if(res.data.code==200){
+            this.$Notice.success({desc:'操作成功'})
+            this.handleQuery()
+          }else{
+            this.$Notice.error({desc:'操作失败'})
+          }
+        })
+      },
       ok(name){
         this.$refs[name].validate((valid) => {
           if (valid) {
@@ -168,7 +203,7 @@
       }
     },
     mounted() {
-      this.columns=waitingcolumns
+      this.columns=ubsubscribecolumns
       this.page = pageInfo.init()
       this.handleQuery()
       console.log(this.$store.state.user.token)

@@ -26,6 +26,7 @@
         :menuTopSpan = 9
         @on-integral="handleIntegral"
         @on-showlower="handleShowlower"
+        @on-set="handleSet"
       >
       </Tables>
       <div style="margin-top:10px;text-align:right;">
@@ -58,6 +59,12 @@
           :ruleInline="contentForm.ruleInline"
         >
         </ContentForm>
+        <SetPriceForm
+          v-show="modelStatus.name == 'SetPriceForm'"
+          ref="SetPriceForm"
+          :formInline="priceForm.formInline"
+          :ruleInline="priceForm.ruleInline"
+        ></SetPriceForm>
       </ModelDialog>
     </Card>
   </div>
@@ -72,9 +79,11 @@ import CreateForm from "./forms/create-form"
 import CreateFormModel from "./model/create-form";
 import SetForm from "./forms/set-form"
 import SetFormModel from "./model/set-form";
+import SetPriceForm from "./forms/set-price-form"
+import SetPriceFormModel from "./model/set-price-form";
 import ContentForm from "./forms/content-form"
 import ContentFormModel from "./model/content-form";
-import { userscolumns, getData, getIntegralDetail, setIntegralInfo, setPrice, getContent, setContent } from './api'
+import { userscolumns, getData, getIntegralDetail, setIntegralInfo, setPrice,setUserPrice, getContent, setContent } from './api'
 export default {
   components:{
     Tables,
@@ -82,7 +91,8 @@ export default {
     ModelDialog,
     CreateForm,
     SetForm,
-    ContentForm
+    ContentForm,
+    SetPriceForm
   },
   data(){
     return{
@@ -91,7 +101,7 @@ export default {
       page: {},
       queryForm: {
         phone: '',
-        is_member: ''
+        is_member: 1
       },
       modelStatus: {
           show: false,
@@ -103,7 +113,8 @@ export default {
       characterList:[{value:'VIP',key:1},{value:'普通用户',key:0}],
       createForm:{},
       setForm:{},
-      contentForm:{}
+      contentForm:{},
+      priceForm:{}
     }
   },
   methods: {
@@ -195,6 +206,14 @@ export default {
         }
       })
     },
+    handleSet(params){
+      let form = {
+        token: this.$store.state.user.token,
+        uid: params.row.uid
+      }
+      this.priceForm=SetPriceFormModel.init(form)
+      this.setDialogProperty(true,'调整积分','SetPriceForm',500)
+    },
     handleContent(){
       getContent(this.$store.state.user.token).then(res=>{
         console.log(res)
@@ -212,6 +231,17 @@ export default {
       setPrice(form).then(res=>{
         if(res.data.code==200) {
           this.$Message.success('设置成功')
+          this.modelStatus.show = false
+        } else {
+          this.$Message.error(res.data.message)
+        }
+      })
+    },
+    handleSetUserPrice() {
+      const form = this.priceForm.formInline
+      setUserPrice(form).then(res=>{
+        if(res.data.code==200) {
+          this.$Message.success('修改成功')
           this.modelStatus.show = false
         } else {
           this.$Message.error(res.data.message)
@@ -237,6 +267,13 @@ export default {
             if(valid) {
                 this.handleSetPrice()
             }
+        })
+      }
+      if(name==='SetPriceForm') {
+        this.$refs.SetPriceForm.validate(valid=>{
+          if(valid) {
+            this.handleSetUserPrice()
+          }
         })
       }
       if(name==='ContentForm') {

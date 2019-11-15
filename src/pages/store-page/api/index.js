@@ -46,7 +46,7 @@ export const storeColumn = [
         title: '操作',
         key: 'handle',
         align: 'center',
-        width: 460,
+        width: 400,
         fixed: 'right',
         button: [(h, params, vm) => {
             return h('div', [
@@ -86,38 +86,38 @@ export const storeColumn = [
                     },
                     '编辑商家信息'
                 ),
-                h(
-                    'Poptip',
-                    {
-                        props: {
-                            confirm: true,
-                            title: '确定要删除吗?',
-                            transfer: true,
-                            size: 'small'
-                        },
-                        style: {
-                            marginRight: '5px'
-                        },
-                        on: {
-                            'on-ok': () => {
-                                vm.$emit('on-delete', params)
-                            }
-                        }
-                    },
-                    [
-                        h(
-                            'i-button',
-                            {
-                                props: {
-                                    type: 'error',
-                                    icon: 'ios-trash-outline',
-                                    size: 'small'
-                                }
-                            },
-                            '删除'
-                        )
-                    ]
-                ),
+                // h(
+                //     'Poptip',
+                //     {
+                //         props: {
+                //             confirm: true,
+                //             title: '确定要删除吗?',
+                //             transfer: true,
+                //             size: 'small'
+                //         },
+                //         style: {
+                //             marginRight: '5px'
+                //         },
+                //         on: {
+                //             'on-ok': () => {
+                //                 vm.$emit('on-delete', params)
+                //             }
+                //         }
+                //     },
+                //     [
+                //         h(
+                //             'i-button',
+                //             {
+                //                 props: {
+                //                     type: 'error',
+                //                     icon: 'ios-trash-outline',
+                //                     size: 'small'
+                //                 }
+                //             },
+                //             '删除'
+                //         )
+                //     ]
+                // ),
                 h(
                     'i-button', {
                         props: {

@@ -45,6 +45,18 @@ router.beforeEach((to, from, next) => {
         const pos = store.state.user.permission.findIndex(value => {
           return value == id
         })
+        console.log(r)
+        if(r.path=='/activityorder') {
+          for (let m of r.children) {
+            const ids = m.meta.id || 0
+            const poss = store.state.user.permission.findIndex(value => {
+              return value == ids
+            })
+            if (poss >= 0) {
+              m.meta.access = [store.state.user.userName]
+            }
+          }
+        }
         if (pos >= 0) {
           r.meta.access = [store.state.user.userName]
         } else {

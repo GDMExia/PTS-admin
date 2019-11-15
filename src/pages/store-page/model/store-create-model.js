@@ -10,7 +10,7 @@ class StoreCreateModel extends FormModel {
       phone: [{
         required: true,
         message: '请输入联系方式',
-        pattern: /^1[3456789]\d{9}$/,
+        // pattern: /^1[3456789]\d{9}$/,
         trigger: 'blur'
       }],
       real_name: [{
