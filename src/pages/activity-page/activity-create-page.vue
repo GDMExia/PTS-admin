@@ -83,8 +83,13 @@
                     </Col>
                     </Row>
                     <Row>
+                      <Col span="12">
+                        <FormItem label="开始时间" prop="over_time" class="ivu-form-item-required">
+                          <DatePicker v-model="formInline.over_time" type="datetime" placeholder="请选择日期+时间" :format="'yyyy-MM-dd HH:mm'" style="width: 200px"></DatePicker>
+                        </FormItem>
+                      </Col>
                     <Col span="12">
-                        <FormItem label="参与时间" prop="join_time" class="ivu-form-item-required">
+                        <FormItem label="结束时间" prop="join_time" class="ivu-form-item-required">
                             <DatePicker v-model="formInline.join_time" type="datetime" placeholder="请选择日期+时间" :format="'yyyy-MM-dd HH:mm'" style="width: 200px"></DatePicker>
                         </FormItem>
                     </Col>
@@ -109,7 +114,7 @@
                     <Row>
                       <Col span="12">
                         <FormItem label="商家" prop="merchants_id">
-                            <Select placeholder="商家" v-model="formInline.merchants_id" style="width: 150px;" clearable :disabled="formInline.cid==2">
+                            <Select placeholder="商家" v-model="formInline.merchants_id" style="width: 150px;" clearable :disabled="formInline.cid==2" filterable>
                                 <Option v-for="item in storeList" :value="item.mid" :key="item.mid">{{item.real_name}}</Option>
                             </Select>
                         </FormItem>
@@ -158,6 +163,7 @@ export default {
             banner: '',
             thumb_img: '',
             registration_time: '',
+          over_time:'',
             join_time: '',
             goods_price: '',
             discount_price: '',
@@ -214,7 +220,8 @@ export default {
             ]
         },
         typeList: [],
-        storeList: []
+        storeList: [],
+      type:this.$route.query.type
     }
   },
   methods: {
@@ -253,13 +260,18 @@ export default {
             this.$Message.error('请选择报名截止时间')
             return
         }
-        if(!form.join_time) {
-            this.$Message.error('请选择参与时间')
+        if(!form.over_time) {
+            this.$Message.error('请选择开始时间')
             return
+        }
+        if(!form.join_time) {
+          this.$Message.error('请选择结束时间')
+          return
         }
         form.merchants_id = form.merchants_id?form.merchants_id:''
         form.registration_time = form.registration_time?moment(form.registration_time).format('YYYY-MM-DD HH:mm'):''
-        form.join_time = form.join_time?moment(form.join_time).format('YYYY-MM-DD HH:mm'):''
+      form.over_time = form.over_time?moment(form.over_time).format('YYYY-MM-DD HH:mm'):''
+      form.join_time = form.join_time?moment(form.join_time).format('YYYY-MM-DD HH:mm'):''
         this.$refs.ResidenceCreateForm.validate((valid) => {
             if (valid) {
                 setResidenceCreate(form).then(res=>{
@@ -358,7 +370,12 @@ export default {
     const form = localStorage.getItem('activityDetail')
     if(form) {
         this.formInline = JSON.parse(form)
-        this.handleRichEditor()
+      console.log(this.formInline)
+      if(this.type=='reuse'){
+        this.formInline.id=''
+        this.formInline.goods_status=3
+      }
+      this.handleRichEditor()
     }
   },
   beforeDestroy() {

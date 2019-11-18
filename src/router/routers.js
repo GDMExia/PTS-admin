@@ -316,6 +316,15 @@ export default [
         component: () => import('@/pages/activityorder-page/waiting-using-page.vue')
       },
       {
+        path: 'nousing',
+        name: 'nousing',
+        meta: {
+          icon: 'ios-boat-outline',
+          title: '已支付不核销'
+        },
+        component: () => import('@/pages/activityorder-page/no-using-page.vue')
+      },
+      {
         path: 'waitingevaluate',
         name: 'waitingevaluate',
         meta: {

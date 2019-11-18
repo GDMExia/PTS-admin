@@ -31,9 +31,9 @@
                     </Form>
                 </div>
             </div>
-            <tables class="self-table-wrap" ref="tables" stripe v-model="tableData" :columns="columns" @on-audit="handleAudit" @on-edit="handleEdit" @on-view="handlePeople" @on-delete="handleDelete"/>
+            <tables class="self-table-wrap" ref="tables" stripe v-model="tableData" :columns="columns" @on-audit="handleAudit" @on-edit="handleEdit" @on-reuse="handleReuse" @on-view="handlePeople" @on-delete="handleDelete"/>
             <div style="margin-top:10px;text-align:right;">
-                <Page :total="page.total" :current="page.index" :page-size="page.size" @on-change="handleOnChange" 
+                <Page :total="page.total" :current="page.index" :page-size="page.size" @on-change="handleOnChange"
                 show-sizer size="small" :page-size-opts="[20,50,100]" @on-page-size-change="handleOnChangeSize"/>
             </div>
         </Card>
@@ -119,9 +119,9 @@ export default {
                 }
             })
         },
-        handleCreate() {   
-            localStorage.setItem('activityDetail', '')  
-            this.$router.push({name: 'activityCreate'}) 
+        handleCreate() {
+            localStorage.setItem('activityDetail', '')
+            this.$router.push({name: 'activityCreate'})
         },
         // 审核
         handleAudit(params) {
@@ -141,8 +141,12 @@ export default {
         },
         handleEdit(params) {
             localStorage.setItem('activityDetail', JSON.stringify(params.row))
-            this.$router.push({name: 'activityCreate'}) 
+            this.$router.push({name: 'activityCreate'})
         },
+      handleReuse(params){
+        localStorage.setItem('activityDetail', JSON.stringify(params.row))
+        this.$router.push({name: 'activityCreate',query:{type:'reuse'}})
+      },
         handlePeople(params) {
             this.$router.push({name: 'activityUser', query: {id: params.row.id, name: params.row.goods_name}})
         },

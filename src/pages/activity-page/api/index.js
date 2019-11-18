@@ -80,6 +80,24 @@ export const residenceColumns = [
                     },
                     '编辑'
                 ),
+              h(
+                'i-button', {
+                  props: {
+                    type: 'primary',
+                    icon: 'ios-create',
+                    size: 'small'
+                  },
+                  style: {
+                    marginRight: '5px'
+                  },
+                  on: {
+                    click: () => {
+                      vm.$emit('on-reuse', params)
+                    }
+                  }
+                },
+                '复用'
+              ),
                 h(
                     'i-button', {
                         props: {
@@ -141,9 +159,10 @@ export const usersColumns = [
     { title: '手机号码', key: 'phone', tooltip: true },
     { title: '报名人数', key: 'goods_number', tooltip: true },
     { title: '订单金额', key: 'order_price', tooltip: true },
-    { title: '支付状态', key: 'order_status',render:(h,params)=>{
-      return h('div', params.row.order_status==1||params.row.order_status==2||params.row.order_status==5?'已支付':'未支付')
-    }, tooltip: true },
+    // { title: '支付状态', key: 'order_status',render:(h,params)=>{
+    //   return h('div', params.row.order_status==1||params.row.order_status==2||params.row.order_status==5?'已支付':'未支付')
+    // }, tooltip: true },
+    { title: '支付状态', key: 'status', tooltip: true },
     { title: '核销状态', key: 'is_cancel',render:(h,params)=>{
       return h('div', params.row.is_cancel==0?'未核销':'已核销')
     }, tooltip: true },

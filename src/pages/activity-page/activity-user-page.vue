@@ -51,9 +51,18 @@ export default {
                 getActivityUsers(this.$route.query.id).then(res=>{
                     if(res.data.code==200) {
                         this.tableData = res.data.data.siginList?res.data.data.siginList.map(item=>{
-                            item.status = item.coupons_status==1?'未核销':
-                            item.coupons_status==2?'已核销':item.coupons_status==3?'已退订':''
-                            return item
+                            // item.status = item.coupons_status==1?'未核销':
+                            // item.coupons_status==2?'已核销':item.coupons_status==3?'已退订':''
+                            // return item
+                          // 0 = 未支付；1 = 待使用;5 = 待评价;2 = 已评价;3 = 退订待审核;4 = 已退订;5 = 已取消;6=已结束
+                          item.status = item.order_status==0?'未支付':
+                          item.order_status==1?'待使用':
+                          item.order_status==5?'已核销':
+                          item.order_status==2?'已核销':
+                          item.order_status==3?'退订待审核':
+                          item.order_status==4?'已退订':
+                          item.order_status==6?'已结束':''
+                          return item
                         }):[]
                     } else {
                         this.$Message.error(res.data.message)
