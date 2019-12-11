@@ -112,12 +112,11 @@ export const userscolumns = [
     key: 'recommended_uid',
     tooltip: true
   },
-  // {
-  //   title: 'VIP到期时间',
-  //   key: 'overtime',
-  //   tooltip: true,
-  //   width: 160
-  // },
+  {
+    title: 'VIP注册时间',
+    key: 'vip_time',
+    tooltip: true
+  },
   {
     title: '当前身份',
     key: 'identify',
