@@ -9,6 +9,7 @@
         </div>
         <div class="search search-con search-con-top">
           <!-- <DatePicker type="daterange" style="width:200px" v-model="date" placeholder="请选择日期/日期段进行搜索"></DatePicker> -->
+          <Input placeholder="请输入活动所属" v-model="queryForm.merchants_name" style="width:150px;margin-right:10px"></Input>
           <Input placeholder="请输入用户联系电话" v-model="queryForm.phone" style="width:150px;margin-right:10px"></Input>
           <Input placeholder="请输入活动标题" v-model="queryForm.goods_name" style="width:150px;margin-right:10px"></Input>
           <Input placeholder="请输入订单号" v-model="queryForm.order_no" style="width:150px"></Input>
@@ -87,7 +88,8 @@
         queryForm:{
           phone:'',
           goods_name:'',
-          order_no:''
+          order_no:'',
+          merchants_name:''
         },
         createForm: CreateFormModel.init(),
         setForm: SetFormModel.init(),
@@ -123,7 +125,7 @@
         })
       },
       handleExport(){
-        location.href=this.$config.baseUrl.pro+`/Export/orderDataExcalPut?phone=${this.queryForm.phone}&goods_name=${this.queryForm.goods_name}&order_no=${this.queryForm.order_no}&order_status=4`
+        location.href=this.$config.baseUrl.pro+`/Export/orderDataExcalPut?phone=${this.queryForm.phone}&goods_name=${this.queryForm.goods_name}&order_no=${this.queryForm.order_no}&merchants_name=${this.queryForm.merchants_name}&order_status=4`
       },
       // 改变页码
       handleChangePage(params) {

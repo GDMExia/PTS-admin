@@ -5,7 +5,7 @@ import { ObjectFormatFormData, ObjectFormatQueryString, ObjectEncodeBase64, getM
 
 export const getOrderList = (params) => {
   return axios.request({
-    url: `/Order/orderList?token=${params.token}&page=${params.page.index}&pageSize=${params.page.size}&order_status=${params.order_status}&phone=${params.search.phone}&goods_name=${params.search.goods_name}&order_no=${params.search.order_no}`,
+    url: `/Order/orderList?token=${params.token}&page=${params.page.index}&pageSize=${params.page.size}&order_status=${params.order_status}&phone=${params.search.phone}&goods_name=${params.search.goods_name}&order_no=${params.search.order_no}&merchants_name=${params.search.merchants_name}`,
     method: 'get'
   })
 }
